@@ -43,7 +43,7 @@ class CameraView(object):
         return result
 
     @view_config(request_method='POST')
-    def post(self):
+    def create(self):
 #        camera_dict = json.loads(self.request.json_body)["camera"]
         camera_dict = self.request.json_body["camera"]
         
@@ -67,6 +67,31 @@ class CameraView(object):
         result = {"camera":camera_dict}
         result["id"] = camera.id
         return result
+    
+    @view_config(request_method='PUT')
+    def update(self):
+        matchdict = self.request.matchdict
+        extension = matchdict.get('extension')
+        id = int(extension[0])
+        
+        camera = models.Camera.objects(id=id).first()
+        if not camera:
+            self.request.response.status = '404 Not Found'
+            return {'result':"not found id: %d"%id}
+        
+        camera_dict = self.request.json_body["camera"]
+        
+        camera.name     = camera_dict["name"]
+        camera.username = camera_dict["username"]
+        camera.password = camera_dict["password"]
+        camera.url      = camera_dict["url"]
+        camera.image_size   = camera_dict["image_size"]
+        camera.fps      = camera_dict["fps"]
+        camera.storage_periods = camera_dict["storage_periods"]
+        
+        camera.save()
+
+        return {'result':camera_dict}
 
     @view_config(request_method='DELETE')
     def delete(self):
