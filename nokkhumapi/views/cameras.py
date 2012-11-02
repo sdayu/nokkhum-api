@@ -65,7 +65,7 @@ class CameraView(object):
         camera.save()
         
         result = {"camera":camera_dict}
-        result["id"] = camera.id
+        result["camera"]["id"] = camera.id
         return result
     
     @view_config(request_method='PUT')
