@@ -41,13 +41,14 @@ class userView(object):
     def create(self):
         
         user_dict = self.request.json_body["user"]
-        user          = models.User()
-        user.first_name= user_dict["first_name"]
-        user.last_name = user_dict["last_name"]
-        user.email = user_dict["email"]
-        user.password = user_dict["password"]
-        group = models.Group.objects(name=user_dict["group"]["name"]).first()
-        user.group = group
+        user            = models.User()
+        user.first_name = user_dict["first_name"]
+        user.last_name  = user_dict["last_name"]
+        user.email      = user_dict["email"]
+        user.password   = user_dict["password"]
+        
+        group           = models.Group.objects(name=user_dict["group"]["name"]).first()
+        user.group      = group
         
         user.save()
         
@@ -79,20 +80,20 @@ class userView(object):
         result = {"user":user_dict}
         return result
         
-        @view_config(request_method='DELETE')
-        def delete(self):
-            matchdict = self.request.matchdict
-            extension = matchdict.get('extension')
-            id = int(extension[0])
-        
-            user = models.User.objects(id=id).first()
-            if not user:
-                self.request.response.status = '404 Not Found'
-                return {'result':"not found id: %d"%id}
-        
-            user.delete()
+    @view_config(request_method='DELETE')
+    def delete(self):
+        matchdict = self.request.matchdict
+        extension = matchdict.get('extension')
+        id = int(extension[0])
+    
+        user = models.User.objects(id=id).first()
+        if not user:
+            self.request.response.status = '404 Not Found'
+            return {'result':"not found id: %d"%id}
+    
+        user.delete()
 
-            return {'result':"delete success"}
+        return {'result':"delete success"}
 
                 
         
