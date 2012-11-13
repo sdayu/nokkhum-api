@@ -34,7 +34,7 @@ class ProjectView(object):
         result = ["project"]["create_date"] = project.create_date
         result = ["project"]["update_date"] = project.update_date
         result = ["project"]["ip_address"] = project.ip_address
-        result = ["project"]["owner"] = project.owner
+        result = ["project"]["user"] = dict(id=project.owner.id, username=project.owner.email)
         
         return result
     
@@ -44,6 +44,8 @@ class ProjectView(object):
         print("project dict: ", project_dict)
         print("environ: ", self.request.environ)
         
+        user_dict = self.request.json_body["project"]["user"]
+        
         project = models.Project()
         
         project.name = project_dict["name"]
@@ -52,7 +54,7 @@ class ProjectView(object):
         project.create_date = datetime.datetime.now()
         project.update_date = datetime.datetime.now()
         project.ip_address = self.request.environ.get('REMOTE_ADDR', '0.0.0.0')
-        project.owner = models.User.objects(id=1).first()
+        project.owner = models.User.objects(id=user_dict["id"]).first()
         project.save() 
         
         project_dict["id"] = project.id
