@@ -91,7 +91,7 @@ class CameraView(object):
         
         camera.save()
 
-        return {'result':camera_dict}
+        return {'camera':camera_dict}
 
     @view_config(request_method='DELETE')
     def delete(self):

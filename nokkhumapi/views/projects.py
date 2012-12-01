@@ -27,14 +27,14 @@ class ProjectView(object):
             self.request.response.status = '404 Not Found'
             return {}
         result = {"project":{}}
-        result = ["project"]["id"] = project.id
-        result = ["project"]["name"] = project.name
-        result = ["project"]["description"] = project.description
-        result = ["project"]["status"] = project.status
-        result = ["project"]["create_date"] = project.create_date
-        result = ["project"]["update_date"] = project.update_date
-        result = ["project"]["ip_address"] = project.ip_address
-        result = ["project"]["user"] = dict(id=project.owner.id, username=project.owner.email)
+        result["project"]["id"] = project.id
+        result["project"]["name"] = project.name
+        result["project"]["description"] = project.description
+        result["project"]["status"] = project.status
+        result["project"]["create_date"] = project.create_date
+        result["project"]["update_date"] = project.update_date
+        result["project"]["ip_address"] = project.ip_address
+        result["project"]["user"] = dict(id=project.owner.id, username=project.owner.email)
         
         return result
     
@@ -59,4 +59,39 @@ class ProjectView(object):
         
         project_dict["id"] = project.id
         return {"project":project_dict}
+    @view_config(request_method='PUT')
+    def update(self):
+        matchdict = self.request.matchdict
+        extension = matchdict.get('extension')
+        id = int(extension[0])
         
+        project = models.Project.objects(id=id).first()
+        
+        if not project:
+            self.request.responce.status='404 Not Found'
+            return {'result':"not found id : %d"%id}
+        
+        project_dict = self.request.json_body["project"]
+        project.name = project_dict["name"]
+        project.descriptio = project_dict["description"]
+        project.status = project_dict["status"]
+
+        #project.owner = project_dict["owner"]
+        project.save()
+        
+        result = {"project":project_dict}
+        return result
+    @view_config(request_method='DELETE')
+    def delete(self):
+        matchdict = self.request.matchdict
+        extension = matchdict.get('extension')
+        id = int(extension[0])
+        
+        project = models.Project.objects(id=id).first()
+        if not project:
+            self.request.responce.status = '404 Not Found'
+            return {'result':"not found id : %d"%id}
+        
+        project.delete()
+        
+        return {'result':"Delete suscess"}

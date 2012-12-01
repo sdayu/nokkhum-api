@@ -8,6 +8,7 @@ from pyramid import testing
 from pyramid.config import Configurator
 
 import json
+import pprint
 
 class UserApiTest(unittest.TestCase):
 
@@ -19,7 +20,7 @@ class UserApiTest(unittest.TestCase):
         self.testapp = TestApp(app)
     
     def test_userview_can_push_data_to_database(self):
-        
+        pp = pprint.PrettyPrinter(indent=4)
         # create camera
         args = dict(email       = 'test@test.com', 
                     password    = '', 
@@ -29,7 +30,8 @@ class UserApiTest(unittest.TestCase):
                     group       = dict(name="user") 
                     )
         response = self.testapp.post_json('/users', params={'user':args}, status=200)
-        print("response create: ", response.json)
+        print("response create: ")
+        pp.pprint(response.json)
         
         self.assertIn("id", response.json["user"])
 
@@ -37,7 +39,8 @@ class UserApiTest(unittest.TestCase):
 
         # retrieve camera via camera id
         response = self.testapp.get('/users/%d'%self.user_id, status=200)
-        print ("response get: ", response.json)
+        print ("response get: ")
+        pp.pprint(response.json)
         
         self.assertEqual(response.json["user"]["id"], self.user_id)
         self.user_dict =  response.json["user"]
@@ -47,12 +50,14 @@ class UserApiTest(unittest.TestCase):
         args = self.user_dict
         
         response = self.testapp.put_json('/users/%d'%response.json["user"]["id"], params={'user':args}, status=200)
-        print("response update: ", response.json)
+        print("response update: ")
+        pp.pprint(response.json)
         
         self.assertIn("id", response.json["user"])
         
         response = self.testapp.delete('/users/%d'%response.json["user"]["id"], status=200)
-        print("response delete: ", response.json)
+        print("response delete: ")
+        pp.pprint(response.json)
         
         
 
