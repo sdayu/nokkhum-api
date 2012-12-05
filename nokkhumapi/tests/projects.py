@@ -11,7 +11,9 @@ class TestProjectAPI(unittest.TestCase):
 
     def setUp(self):
         from .. import main
-        settings = {'mongodb.db_name': 'nokkhum', 'mongodb.host': 'localhost'}
+        settings = {'mongodb.db_name': 'nokkhum', 
+                    'mongodb.host': 'localhost',
+                    'nokkhum.auth.secret': 'nokkhum'}
         app = main({}, **settings)
         from webtest import TestApp
         self.testapp = TestApp(app)
