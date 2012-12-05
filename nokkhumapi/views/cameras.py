@@ -11,7 +11,7 @@ import json, datetime
 
 from .. import models
 
-@view_defaults(route_name='cameras', renderer="json")
+@view_defaults(route_name='cameras', renderer="json", permission="authenticated")
 class CameraView(object):
     def __init__(self, request):
         self.request = request
