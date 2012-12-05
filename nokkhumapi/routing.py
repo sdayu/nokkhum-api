@@ -7,6 +7,9 @@ Created on Jun 28, 2012
 def add_routes(config):
     config.add_route('index', '/')
     
+    #authentication
+    config.add_route('authentications.tokens', '/authentication/tokens')
+    
     # camera
     config.add_route('cameras', '/cameras*extension')
     config.add_route('users', '/users*extension')

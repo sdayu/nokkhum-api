@@ -10,6 +10,8 @@ requires = [
     'pyramid',
     'pyramid_debugtoolbar',
     'waitress',
+    'mongoengine',
+    'pycrypto',
     ]
 
 setup(name='nokkhum-api',
@@ -35,6 +37,8 @@ setup(name='nokkhum-api',
       entry_points = """\
       [paste.app_factory]
       main = nokkhumapi:main
+      [console_scripts]
+      initialize_nokkhum_db = nokkhumapi.scripts.initializedb:main
       """,
       )
 
