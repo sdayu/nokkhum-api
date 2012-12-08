@@ -9,7 +9,7 @@ from pyramid.response import Response
 
 import json, datetime
 
-from ..import models
+from nokkhumapi import models
 @view_defaults(route_name='projects', renderer="json", permission="authenticated")
 class ProjectView(object):
     def __init__(self, request):

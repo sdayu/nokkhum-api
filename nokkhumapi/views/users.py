@@ -11,7 +11,7 @@ import json, datetime
 
 from ..import models
 @view_defaults(route_name='users', renderer="json", permission="authenticated")
-class userView(object):
+class UserView(object):
     def __init__(self, request):
         self.request = request
         
