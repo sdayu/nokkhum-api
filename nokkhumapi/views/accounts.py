@@ -20,15 +20,22 @@ class AccountView(object):
     def register(self):
         user_dict = self.request.json_body["user"]
         
+        
         if len(user_dict["email"]) == 0 or len(user_dict["password"]) == 0:
             self.request.response.status = '500 Internal Server Error'
-            return {}
+            return {'error':{'message':'Required email and password.'}}
+        
+        user = models.User.objects(email=user_dict["email"]).first()
+        if user:
+            self.request.response.status = '500 Internal Server Error'
+            return {'error':{'message':'This email is available on system.'}}
+        
         
         user            = models.User()
         user.first_name = user_dict["first_name"]
         user.last_name  = user_dict["last_name"]
         user.email      = user_dict["email"]
-        user.password   = user_dict["password"]
+        user.password   = self.request.secret_manager.get_hash_password(user_dict["password"])
         
         role           = models.Role.objects(name='user').first()
         user.roles.append(role)

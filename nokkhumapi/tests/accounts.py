@@ -24,8 +24,8 @@ class AccountApiTest(unittest.TestCase):
     def test_accountview_can_push_data_to_database(self):
         pp = pprint.PrettyPrinter(indent=4)
         
-        args = dict(email       = 'test3@test.com', 
-                    password    = '', 
+        args = dict(email       = 'test4@test.com', 
+                    password    = '123456', 
                     first_name  = 'Boatty555', 
                     last_name   = '', 
                     )
