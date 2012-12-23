@@ -35,13 +35,18 @@ class Tokens(object):
             return {}
         
         now = datetime.datetime.now()
-        token = models.Token()
-        token.user = user
-        token.access_date   = now
-        token.expired_date  = now + datetime.timedelta(hours=2)
-        token.ip_address    = self.request.environ.get('REMOTE_ADDR', '0.0.0.0')
         
-        token.save()
+        ip_address = self.request.environ.get('REMOTE_ADDR', '0.0.0.0')
+        token = models.Token.objects(user=user, ip_address=ip_address, expired_date__gt=now).first()
+        
+        if not token:
+            token = models.Token()
+            token.user = user
+            token.access_date   = now
+            token.expired_date  = now + datetime.timedelta(hours=2)
+            token.ip_address    = ip_address
+            
+            token.save()
         
         #headers = remember(self.request, user.email)
         #print("test Header: ",headers)
