@@ -10,7 +10,7 @@ class TestProjectAPI(unittest.TestCase):
 
 
     def setUp(self):
-        from .. import main
+        from nokkhumapi import main
         settings = {'mongodb.db_name': 'nokkhum', 
                     'mongodb.host': 'localhost',
                     'nokkhum.auth.secret': 'nokkhum'}

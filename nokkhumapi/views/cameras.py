@@ -57,7 +57,7 @@ class CameraView(object):
         camera.storage_periods = camera_dict["storage_periods"]
         camera.create_date  = datetime.datetime.now()
         
-        camera.owner    = models.User.objects(id=1).first()
+        camera.owner    = models.User.objects(id=camera_dict["user"]["id"]).first()
         camera.operating = models.CameraOperating()
         camera.project  = models.Project.objects(id=1).first()
         camera.camera_model    = models.CameraModel.objects()[0]
