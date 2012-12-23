@@ -74,7 +74,9 @@ class ProjectView(object):
         project_dict = self.request.json_body["project"]
         project.name = project_dict["name"]
         project.descriptio = project_dict["description"]
-        project.status = project_dict["status"]
+        
+        if 'status' in project_dict:
+            project.status = project_dict["status"]
 
         #project.owner = project_dict["owner"]
         project.save()
