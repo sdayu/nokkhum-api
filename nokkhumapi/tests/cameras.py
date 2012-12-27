@@ -21,6 +21,17 @@ class CameraApiTest(unittest.TestCase):
         app = main({}, **settings)
         from webtest import TestApp
         self.testapp = TestApp(app)
+        
+        args = dict(password_credentials= {"email": "admin@nokkhum.local", 
+                                          "password": "password"}
+                    )
+        response = self.testapp.post_json('/authentication/tokens', params=args, status=200)
+        print("authentication: ")
+        
+        self.pp=pprint.PrettyPrinter(indent=4)
+        self.pp.pprint(response.json)
+        
+        self.token = response.json['access']['token']['id']
     
     def test_cameraview_can_push_data_to_database(self):
         pp = pprint.PrettyPrinter(indent=4)
@@ -32,9 +43,11 @@ class CameraApiTest(unittest.TestCase):
                      url='', 
                      image_size='', 
                      fps=5, 
-                    storage_periods=1
-)
-        response = self.testapp.post_json('/cameras', params={'camera':args}, status=200)
+                     storage_periods=1,
+                     project    = dict(id = 3),
+                     user       = dict(id = 3)
+                     )
+        response = self.testapp.post_json('/cameras', params={'camera':args}, headers=[('X-Auth-Token', self.token)], status=200)
         print("response create: ")
         pp.pprint(response.json)
         
@@ -43,7 +56,7 @@ class CameraApiTest(unittest.TestCase):
         self.camera_id = response.json["camera"]["id"]
 
         # retrieve camera via camera id
-        response = self.testapp.get('/cameras/%d'%self.camera_id, status=200)
+        response = self.testapp.get('/cameras/%d'%self.camera_id, headers=[('X-Auth-Token', self.token)], status=200)
         print( "response get: ")
         pp.pprint(response.json)
         
@@ -53,14 +66,14 @@ class CameraApiTest(unittest.TestCase):
         # try to change name
         args = self.camera_dict
         args["name"] = '123'
-        response = self.testapp.put_json('/cameras/1', params={'camera':args}, status=200)
+        response = self.testapp.put_json('/cameras/1', params={'camera':args},headers=[('X-Auth-Token', self.token)], status=200)
         print("response update: ") 
         pp.pprint( response.json)
         
         self.assertIn("id", response.json["camera"])
         # try to Delete
         self.camera_dict['status'] = 'Delete'
-        response = self.testapp.delete('/cameras/%d'%response.json["camera"]["id"], status=200)
+        response = self.testapp.delete('/cameras/%d'%response.json["camera"]["id"],headers=[('X-Auth-Token', self.token)], status=200)
         print("response delete: ")
         pp.pprint(response.json)
 

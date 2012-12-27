@@ -59,7 +59,7 @@ class CameraView(object):
         
         camera.owner    = models.User.objects(id=camera_dict["user"]["id"]).first()
         camera.operating = models.CameraOperating()
-        camera.project  = models.Project.objects(id=1).first()
+        camera.project  = models.Project.objects(id=camera_dict["project"]["id"]).first()
         camera.camera_model    = models.CameraModel.objects()[0]
         
         camera.save()

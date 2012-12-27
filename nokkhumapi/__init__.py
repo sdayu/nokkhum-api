@@ -40,12 +40,17 @@ def main(global_config, **settings):
 def modify_json_renderer(config):
     from pyramid.renderers import JSON
     import datetime
+    from bson import ObjectId
     
     json_renderer = JSON()
     def datetime_adapter(obj, request):
         return obj.isoformat()
     
+    def mongo_object_adapter(obj, request):
+        return str(obj)
+    
     json_renderer.add_adapter(datetime.datetime, datetime_adapter)
+    json_renderer.add_adapter(ObjectId, mongo_object_adapter)
     
     # then during configuration ....
     config.add_renderer('json', json_renderer)
