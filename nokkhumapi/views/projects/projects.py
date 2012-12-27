@@ -73,7 +73,7 @@ class ProjectView(object):
         
         project_dict = self.request.json_body["project"]
         project.name = project_dict["name"]
-        project.descriptio = project_dict["description"]
+        project.description = project_dict["description"]
         
         if 'status' in project_dict:
             project.status = project_dict["status"]
