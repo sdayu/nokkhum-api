@@ -10,20 +10,22 @@ from pyramid.response import Response
 import json, datetime
 
 from nokkhumapi import models
-#@view_config(route_name='camera_operating',renderer="json", permission="login")
+@view_config(route_name='camera.camera_operating',renderer="json", permission="authenticated")
 class Operating(object):
     def __init__(self, request):
         self.request = request
         
     def operating(self):
-        matchdict   = request.matchdict
-        camera_name = matchdict['name']
-        operating   = matchdict['operating']
+        matchdict   = self.request.matchdict
+        camera_id = matchdict['camera_id']
+        
+        
     
-        camera = models.Camera.objects(owner=request.user, name=camera_name).first()
+        camera = models.Camera.objects(owner=request.user, id=camera_id).first()
         
         if not camera:
-            return Response('Camera not found')
+            self.request.response.status = '404 Not Found'
+            return {'result':"not found id: %d"%id}
         
         command_action  = 'No-command'
         user_command    = 'Undefine'
