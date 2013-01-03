@@ -22,11 +22,7 @@ class ProjectCameraView(object):
         
         project = models.Project.objects(id=project_id).first()
         
-        cameras = models.Camera.objects(project=project).all()
-        if not cameras:
-            self.request.response.status = '404 Not Found'
-            return {'error':{'message':'This camera not found.'}}
-                
+        cameras = models.Camera.objects(project=project).all() 
 
         result = dict(
                       project=dict(
