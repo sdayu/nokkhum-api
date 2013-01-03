@@ -24,3 +24,9 @@ def add_routes(config):
 #    config.add_route('cameras_post', '/cameras')
 #    config.add_route('cameras_get', '/cameras/{id}')
 #    config.add_route('cameras_delete', '/cameras/{id}')
+
+    # storage
+    config.add_route('storage.download', '/storage/download{extension:.*}')
+    config.add_route('storage', '/storage{extension:.*}')
+    
+    

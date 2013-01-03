@@ -1,3 +1,6 @@
 [submodule "nokkhumapi/models"]
 	path = nokkhumapi/models
 	url = git://github.com/sdayu/nokkhum-models.git
+[submodule "nokkhumapi/cloud"]
+	path = nokkhumapi/cloud
+	url = https://github.com/sdayu/nokkhum-cloud.git
