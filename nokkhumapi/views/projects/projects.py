@@ -45,7 +45,7 @@ class ProjectView(object):
         print("environ: ", self.request.environ)
         
         user_dict = self.request.json_body["project"]["user"]
-        
+        #camera_dict = self.request.json_body["project"]["camera"]
         project = models.Project()
         
         project.name = project_dict["name"]

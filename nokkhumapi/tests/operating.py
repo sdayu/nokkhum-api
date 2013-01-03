@@ -24,7 +24,7 @@ class TestSelectProject(unittest.TestCase):
     def test_operation(self):
         pp=pprint.PrettyPrinter(indent=4)
         #login
-        args = dict(password_credentials= {"email": "admin@nokkhum.local", 
+        args = dict(password_credentials= {"email": "test@nokkhum.com", 
                                           "password": "password"}
                     )
         response = self.testapp.post_json('/authentication/tokens', params=args, status=200)
@@ -33,8 +33,14 @@ class TestSelectProject(unittest.TestCase):
         
         token = response.json['access']['token']['id']
         
-        response = self.testapp.get('/operating/{camera_id}/camera', headers=[('X-Auth-Token', token)], status=200)
-        print("responce get :")
+        
+        args={'camera_operating':{
+                           'action':'start'
+                           }
+              
+              }
+        response = self.testapp.post_json('/camera/1/operating', params=args, headers=[('X-Auth-Token', token)], status=200)
+        print("responce post :")
         pp.pprint(response.json)
         
         
