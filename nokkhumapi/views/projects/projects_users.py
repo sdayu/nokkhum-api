@@ -28,7 +28,7 @@ class UserProjectsView(object):
         projects = models.Project.objects(owner=user).all()
         
 
-        result = {"projects":[dict(id=project.id, name=project.name) for project in projects]
+        result = {"projects":[dict(id=project.id, name=project.name, description=project.description) for project in projects]
                   }
         
         

@@ -1,69 +1,35 @@
 '''
-Created on Dec 24, 2012
+Created on Jan 3, 2013
 
-@author: ww unsure
+@author: ww
 '''
+from pyramid.view import view_defaults
+from pyramid.view import view_config
+from pyramid.response import Response
 
-import unittest
-import pprint
+import json, datetime
 
-class TestSelectProject(unittest.TestCase):
+from nokkhumapi import models
+@view_defaults(route_name='projects.cameraproject', renderer="json", permission="authenticated")
+class UserProjectsView(object):
+    def __init__(self, request):
+        self.request = request
+        
+    @view_config(request_method='GET')
+    def get(self):
+        matchdict = self.request.matchdict
+        camera_id = matchdict.get('camera_id')
+        
+        camera = models.Camera.objects(id=camera_id).first()
+        if not camera:
+            self.request.response.status = '404 Not Found'
+            return {'error':{'message':'This camera not found.'}}
+        
+        projects = models.Project.objects(owner=camera).all()
+        
 
-    def setUp(self):
-        from nokkhumapi import main
-        settings = {'mongodb.db_name': 'nokkhum', 
-                    'mongodb.host': 'localhost',
-                    'nokkhum.auth.secret': 'nokkhum'}
-        app = main({}, **settings)
-        from webtest import TestApp
-        self.testapp = TestApp(app)
-        self.pp=pprint.PrettyPrinter(indent=4)
-        
-    def testName(self):
-        pass
-    
-    
-    def test_select_project(self):
-        pp=pprint.PrettyPrinter(indent=4)
-        #create project
-        args = dict(password_credentials= {"email": "admin@nokkhum.local", 
-                                          "password": "password"}
-                    )
-        response = self.testapp.post_json('/authentication/tokens', params=args, status=200)
-        print("authentication: ")
-        self.pp.pprint(response.json)
-        
-        token = response.json['access']['token']['id']
-        
-        args=dict(
-                  name = 'xxx',
-                  description="",
-                  user = {"id":1}
-                )
-        response = self.testapp.post_json('/projects', params={'project':args},  headers=[('X-Auth-Token', token)], status=200)
-        print("responce get :")
-        pp.pprint(response.json)
-        
-        self.assertIn("id",response.json["project"])
-        
-        self.project_id = response.json["project"]["id"]
-        
-        #retrieve project via project id
-        response = self.testapp.get('/projects/%d'%self.project_id,  headers=[('X-Auth-Token', token)], status = 200)
-        print("response get")
-        pp.pprint(response.json)
-        
-        self.assertEqual(response.json["project"]["id"], self.project_id)
-        self.project_dict =  response.json["project"]
-        
-        #get projects from user id
-        response = self.testapp.get('/cameras/1/projects',  headers=[('X-Auth-Token', token)], status = 200)
-        print("response get")
-        pp.pprint(response.json)
+        result = {"projects":[dict(id=camera.id, name=project.name, description=project.description, status=project.status) for project in projects]
+                  }
         
         
-       
-        
-if __name__ == "__main__":
-    #import sys;sys.argv = ['', 'Test.testName']
-    unittest.main()
+        return result
