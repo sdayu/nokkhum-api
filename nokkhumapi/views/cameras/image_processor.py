@@ -8,38 +8,38 @@ import json, datetime
 
 from nokkhumapi import models
 
-@view_config(route_name='cameras.image_processor', permission='authenticated', renderer='json')
+@view_defaults(route_name='cameras.image_processor', permission='authenticated', renderer='json')
 class Prosessor(object):
     def __init__(self, request):
         self.request = request
-    def processor(self):
-        matchdict = self.matchdict
-        camera_name = matchdict['name']
     
-        camera = models.Camera.objects(owner=request.user, name=camera_name).first()
+    @view_config(request_method=('POST', 'PUT'))
+    def processor(self):
+        matchdict = self.request.matchdict
+        camera_id = matchdict['camera_id']
+    
+        camera = models.Camera.objects(owner=self.request.user, id=camera_id).first()
         
         if not camera:
-            return Response('Camera not found')
+            self.request.response.status = '404 Not Found'
+            return {'result':"not found id: %d"%camera_id}
         
-        #import json
-        form = camera_form.CameraProcessorForm(self.request.POST)
-        
-        if self.request.POST and form.validate():
-            processors = json.loads(form.data['processors'])
-        else:
-            image_processors = models.ImageProcessor.objects().all()
-            form.processors.data = json.dumps(camera.processors, indent=4)
-            return dict(
-                    image_processors=image_processors,
-                    camera=camera, 
-                    form=form
-                    )
+
+        processors = self.request.json_body['processors']
+
             
         camera.processors = processors
         camera.update_date = datetime.datetime.now()
         camera.save()
         
-        return {}    
+        return dict(
+                    camera=dict(
+                                id=camera.id,
+                                name=camera.name,
+                                processors=processors
+                                )
+                    
+                    )   
 
 
 
