@@ -114,12 +114,15 @@ class Storage:
         
         uri = extension[1:]
         end_pos = uri.find("/")
+        
         if end_pos > 0:
             camera_id = uri[:end_pos]
         else:
             camera_id = uri
         
-        camera = models.Camera.objects(owner=request.user, id=camera_id).first()
+        #camera = models.Camera.objects(owner=self.request.user, id=camera_id).first()
+        camera = models.Camera.objects(id=camera_id).first()
+        
         if camera is None:
             return None
         
@@ -151,8 +154,10 @@ class Storage:
     
     @view_config(route_name='storage.download', request_method="GET")
     def download(self):
+        print('download')
     
         file_name = self.cache_file(self.request)
+        print('download -->', file_name)
     
         if file_name is None:
             self.request.response.status = '404 Not Found'
@@ -160,9 +165,9 @@ class Storage:
         
         #matchdict = self.request.matchdict
         #fizzle = matchdict['fizzle']
-        
+        print('download file->', file_name)
         response = FileResponse(file_name, request=self.request, content_encoding=None)
-        
+
         response.content_encoding = None
         
         return response
