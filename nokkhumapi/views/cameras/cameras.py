@@ -60,7 +60,8 @@ class CameraView(object):
         camera.owner    = models.User.objects(id=camera_dict["user"]["id"]).first()
         camera.operating = models.CameraOperating()
         camera.project  = models.Project.objects(id=camera_dict["project"]["id"]).first()
-        camera.camera_model    = models.CameraModel.objects()[0]
+        camera.processors = camera_dict.get('processors', [])
+        camera.camera_model    = models.Project.objects(id=camera_dict["model"]["id"]).first()
         
         camera.save()
         
@@ -88,6 +89,9 @@ class CameraView(object):
         camera.image_size   = camera_dict["image_size"]
         camera.fps      = camera_dict["fps"]
         camera.storage_periods = camera_dict["storage_periods"]
+        if camera_dict.get('processors'):
+            camera.processors = camera_dict.get('processors')
+        camera.camera_model    = models.Project.objects(id=camera_dict["model"]["id"]).first()
         
         camera.save()
 
