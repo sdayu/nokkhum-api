@@ -62,6 +62,7 @@ class StorageTest(unittest.TestCase):
     
     
     def test_delete_file(self):
+        ''''''
         response = self.testapp.get('/storage/1', headers=[('X-Auth-Token', self.token)], status=200)
         url = response.json["files"][0]['url']+"/video"
         response = self.testapp.get(url, headers=[('X-Auth-Token', self.token)], status=200)

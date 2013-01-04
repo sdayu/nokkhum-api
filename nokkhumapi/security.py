@@ -65,11 +65,11 @@ class RequestWithUserAttribute(Request):
     
     @reify
     def s3_client(self):
-        userid = unauthenticated_userid(self)
-        if userid is None:
-            return userid
-        
-        user = models.User.objects(email=userid).first()
+#        userid = unauthenticated_userid(self)
+#        if userid is None:
+#            return userid
+#        
+#        user = models.User.objects(email=userid).first()
         from .cloud.storage import s3
         from pyramid.threadlocal import get_current_registry
         setting = get_current_registry().settings

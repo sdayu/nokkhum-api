@@ -10,7 +10,7 @@ def add_routes(config):
     #authentication
     config.add_route('authentications.tokens', '/authentication/tokens')
     
-    config.add_route('projects.cameraproject', '/cameras/{camera_id}/project')
+    config.add_route('projects.cameras', '/projects/{project_id}/cameras')
     config.add_route('projects.userprojects', '/users/{user_id}/projects')
     # camera
     config.add_route('cameras', '/cameras*extension')
