@@ -9,6 +9,7 @@ from .. import models
 
 import os
 import urllib
+import datetime
 
 @view_defaults(route_name="storage")
 class Storage:
@@ -61,7 +62,7 @@ class Storage:
                 
                 download_link = None
                 if len(file_extension) > 0:
-                    download_link = self.request.route_url('storage.download', extension="/%d/%s"%(camera.id, path))
+                    download_link = self.request.route_url('storage.download', token=self.request.environ.get('HTTP_X_AUTH_TOKEN', None), extension="/%d/%s"%(camera.id, path))
                 
                 view_link = self.request.route_path('storage', extension="/%d/%s"%(camera.id, path))
                 
@@ -90,8 +91,9 @@ class Storage:
             camera_id = uri[:end_pos]
         else:
             camera_id = uri
-        
+
         camera = models.Camera.objects(owner=self.request.user, id=camera_id).first()
+
         if camera is None:
             self.request.response.status = '404 Not Found'
             return {'result':'file not found'}
@@ -107,8 +109,12 @@ class Storage:
         cache_dir = request.registry.settings['nokkhum.temp_dir']
         matchdict = request.matchdict
         extension = matchdict['extension']
+        token_str = matchdict['token']
         
-        user = request.user
+        token = models.Token.objects(id=token_str, expired_date__gt=datetime.datetime.now()).first()
+        if token is None:
+            return None
+        user = token.user
         
         camera_id = ""
         
@@ -120,9 +126,8 @@ class Storage:
         else:
             camera_id = uri
         
-        #camera = models.Camera.objects(owner=self.request.user, id=camera_id).first()
-        camera = models.Camera.objects(id=camera_id).first()
-        
+        camera = models.Camera.objects(owner=user, id=camera_id).first()
+
         if camera is None:
             return None
         
@@ -154,18 +159,15 @@ class Storage:
     
     @view_config(route_name='storage.download', request_method="GET")
     def download(self):
-        print('download')
-    
         file_name = self.cache_file(self.request)
-        print('download -->', file_name)
-    
+
         if file_name is None:
             self.request.response.status = '404 Not Found'
             return self.request.response
         
         #matchdict = self.request.matchdict
         #fizzle = matchdict['fizzle']
-        print('download file->', file_name)
+
         response = FileResponse(file_name, request=self.request, content_encoding=None)
 
         response.content_encoding = None
