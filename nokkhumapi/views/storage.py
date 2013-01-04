@@ -10,12 +10,12 @@ from .. import models
 import os
 import urllib
 
-@view_defaults(permission="authenticated", route_name="storage")
+@view_defaults(route_name="storage")
 class Storage:
     def __init__(self, request):
         self.request = request
         
-    @view_config(request_method="GET", renderer="json")
+    @view_config(request_method="GET", renderer="json", permission="authenticated")
     def storage_list(self):
         s3_client = self.request.s3_client
         file_list = []
@@ -79,7 +79,7 @@ class Storage:
                     files=file_list,
                     )
         
-    @view_config(request_method="DELETE", renderer="json")
+    @view_config(request_method="DELETE", renderer="json", permission="authenticated")
     def delete(self):
         matchdict = self.request.matchdict
         extension = matchdict['extension']
