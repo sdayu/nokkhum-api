@@ -61,7 +61,7 @@ class Storage:
                 
                 download_link = None
                 if len(file_extension) > 0:
-                    download_link = self.request.route_path('storage.download', extension="/%d/%s"%(camera.id, path))
+                    download_link = self.request.route_url('storage.download', extension="/%d/%s"%(camera.id, path))
                 
                 view_link = self.request.route_path('storage', extension="/%d/%s"%(camera.id, path))
                 
