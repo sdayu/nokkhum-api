@@ -40,7 +40,11 @@ class CameraView(object):
         result["camera"]["storage_periods"] = camera.storage_periods
         result["camera"]["create_date"] = camera.create_date
         result["camera"]["processors"] = camera.processors
-        result["camera"]["model"] = dict(id=camera.model.id, name=camera.model.name, manufactory=dict(id=camera.model.manufactory.id, name=camera.model.manufactory.name))
+        result["camera"]["model"] = dict(id=camera.camera_model.id, 
+                                         name=camera.camera_model.name, 
+                                         manufactory=dict(
+                                                id=camera.camera_model.manufactory.id, 
+                                                name=camera.camera_model.manufactory.name))
                 
         return result
 
