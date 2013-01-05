@@ -39,7 +39,8 @@ class CameraView(object):
         result["camera"]["status"] = camera.status
         result["camera"]["storage_periods"] = camera.storage_periods
         result["camera"]["create_date"] = camera.create_date
-        
+        result["camera"]["processors"] = camera.processors
+                
         return result
 
     @view_config(request_method='POST')
