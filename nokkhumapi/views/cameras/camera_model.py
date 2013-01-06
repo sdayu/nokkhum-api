@@ -23,6 +23,7 @@ class CameraModels(object):
         manufactory = models.Manufactory.objects(id=id).first()
         camera_models = models.CameraModel.objects(manufactory=manufactory).all()
 
+        self.request.response.headers['Access-Control-Allow-Origin'] = '*'
         result = {"camera_models":[dict(id=camera_model.id, name=camera_model.name) for camera_model in camera_models]
                   }
         

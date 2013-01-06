@@ -24,6 +24,5 @@ class Manufactory(object):
 
         result = {"manufactories":[dict(id=manufactory.id, name=manufactory.name) for manufactory in manufactories]
                   }
-        
-        
+        self.request.response.headers['Access-Control-Allow-Origin'] = '*'
         return result
