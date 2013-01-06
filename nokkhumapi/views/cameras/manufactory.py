@@ -10,7 +10,7 @@ from pyramid.response import Response
 import json, datetime
 
 from nokkhumapi import models
-@view_defaults(route_name='manufactories', renderer="json", permission="authenticated")
+@view_defaults(route_name='manufactories', renderer="json")
 class Manufactory(object):
     def __init__(self, request):
         self.request = request
