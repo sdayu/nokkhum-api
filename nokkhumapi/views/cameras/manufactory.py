@@ -10,7 +10,7 @@ from pyramid.response import Response
 import json, datetime
 
 from nokkhumapi import models
-@view_defaults(route_name='manufactories', renderer="json")
+@view_defaults(route_name='manufactories', renderer="json", permission="authenticated")
 class Manufactory(object):
     def __init__(self, request):
         self.request = request
@@ -24,5 +24,7 @@ class Manufactory(object):
 
         result = {"manufactories":[dict(id=manufactory.id, name=manufactory.name) for manufactory in manufactories]
                   }
+        
         self.request.response.headers['Access-Control-Allow-Origin'] = '*'
+#        print(result)
         return result

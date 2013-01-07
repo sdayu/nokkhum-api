@@ -10,7 +10,7 @@ from pyramid.response import Response
 import json, datetime
 
 from nokkhumapi import models
-@view_defaults(route_name='camera_models', renderer="json")
+@view_defaults(route_name='camera_models', renderer="json", permission="authenticated")
 class CameraModels(object):
     def __init__(self, request):
         self.request = request
