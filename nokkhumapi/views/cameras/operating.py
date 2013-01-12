@@ -38,8 +38,9 @@ class CamearaOperating(object):
         
         ccq = models.CameraCommandQueue.objects(owner=self.request.user, camera=camera, action=command_action).first()
         if ccq is not None:
-            return Response('Camera name %s on operation' % camera.name)
-        
+            self.request.response.status = '406 Not Acceptable'
+            return {'result':'camera name %s on operation' % camera.id}
+
         
         camera.operating.status = command_action
         camera.operating.user_command = user_command
@@ -55,9 +56,40 @@ class CamearaOperating(object):
         ccq.owner   = self.request.user
         ccq.save()
     
-        return {'result':"success"}
-    
-    
+        return {
+                'camera_operating':{
+                           'action':ccq.action,
+                           'id':ccq.id,
+                           'status':ccq.status,
+                           'camera':{
+                                     'id':ccq.camera.id                      
+                                     },
+                            'user':{
+                                    'id':ccq.owner.id
+                                    }
+                           },
+                'result':"success"
+                }
+        
+    @view_config(request_method='GET')
+    def get(self):
+        matchdict = self.request.matchdict
+        camera_id = matchdict.get('camera_id')
+
+        camera = models.Camera.objects(id=camera_id).first()
+
+        if not camera:
+            self.request.response.status = '404 Not Found'
+            return {}
+        result = {"camera":{"id":camera.id}}   
+        result["camera"]["operating"] = dict(
+                                         status=camera.operating.status, 
+                                         last_update=camera.operating.update_date,
+                                         user_command=camera.operating.user_command,
+#                                         compute_node={'id':camera.operating.compute_node._id}
+                                         )
+        
+        return result
             
         
     
