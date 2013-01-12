@@ -22,12 +22,21 @@ class TokenAuthenticationPolicy(object):
 
     def unauthenticated_userid(self, request):
         result = request.environ.get('HTTP_X_AUTH_TOKEN', None)
+        # print("HTTP_X_AUTH_TOKEN: ", result)
         if result:
-            return result
+            token = models.Token.objects(id=result, expired_date__gt=datetime.datetime.now()).first()
+            if token is None:
+                return None
+                
+        else: 
+            return None
+        
+        return result
 
     def authenticated_userid(self, request):
         if request.user:
             token = models.Token.objects(user=request.user, expired_date__gt=datetime.datetime.now()).first()
+            # print("token.id: ", token.id)
             return token.id
 
     def effective_principals(self, request):

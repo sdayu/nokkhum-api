@@ -34,6 +34,12 @@ class Storage:
                 file_list.append(item)
         else:
             uri = extension[1:]
+            
+            pos = uri.rfind("/")
+            check = uri[pos+1:] 
+            if check in [".jpg", ".png", ".avi", ".webm", ".webp", ".ogg", ".ogv"]:
+                return self.download()
+            
             end_pos = uri.find("/")
             if end_pos > 0:
                 camera_id = uri[:end_pos]
@@ -111,10 +117,15 @@ class Storage:
         extension = matchdict['extension']
         token_str = matchdict['token']
         
-        token = models.Token.objects(id=token_str, expired_date__gt=datetime.datetime.now()).first()
-        if token is None:
-            return None
-        user = token.user
+        if request.user:
+            user = request.user
+        else:
+            token = models.Token.objects(id=token_str, expired_date__gt=datetime.datetime.now()).first()
+            
+            if token is None:
+                return None
+            
+            user = token.user
         
         camera_id = ""
         
