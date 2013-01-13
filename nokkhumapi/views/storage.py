@@ -82,6 +82,8 @@ class Storage:
                     item['file'] = True
                     
                 file_list.append(item)
+                
+        self.request.response.headers['Access-Control-Allow-Origin'] = '*'
         return dict(
                     files=file_list,
                     )
