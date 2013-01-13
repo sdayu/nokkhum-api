@@ -22,6 +22,11 @@ def add_routes(config):
     config.add_route('cameras.operating', '/camera/{camera_id}/operating')
     config.add_route('cameras.image_processor', '/camera/{camera_id}/processors')
     config.add_route('cameras.status', '/camera/{camera_id}/status')
+    
+    #admin
+    config.add_route('admin.users.list_users', '/admin/users')
+    config.add_route('admin.users.show_users', '/admin/users/{user_id}')
+    
 #    config.add_route('cameras_post', '/cameras')
 #    config.add_route('cameras_get', '/cameras/{id}')
 #    config.add_route('cameras_delete', '/cameras/{id}')
