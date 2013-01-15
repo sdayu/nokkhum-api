@@ -36,7 +36,7 @@ class TestSelectProject(unittest.TestCase):
 
    
     def test_operation(self):
-        response = self.testapp.get('/camera/%d/operating'%self.camera_id, headers=[('X-Auth-Token', self.token)], status=200)
+        response = self.testapp.get('/cameras/%d/operating'%self.camera_id, headers=[('X-Auth-Token', self.token)], status=200)
         print( "response get: ")
         self.pp.pprint(response.json)
         

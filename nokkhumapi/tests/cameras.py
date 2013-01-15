@@ -44,8 +44,9 @@ class CameraApiTest(unittest.TestCase):
                      image_size='', 
                      fps=5, 
                      storage_periods=1,
-                     project    = dict(id = 3),
-                     user       = dict(id = 3)
+                     project    = dict(id = 1),
+                     user       = dict(id = 1),
+                     model      = dict(id = '50f566082b137a12279dcba5'),
                      )
         response = self.testapp.post_json('/cameras', params={'camera':args}, headers=[('X-Auth-Token', self.token)], status=200)
         print("response create: ")
@@ -73,7 +74,7 @@ class CameraApiTest(unittest.TestCase):
         self.assertIn("id", response.json["camera"])
         # try to Delete
         self.camera_dict['status'] = 'Delete'
-        response = self.testapp.delete('/cameras/%d'%response.json["camera"]["id"],headers=[('X-Auth-Token', self.token)], status=200)
+        #response = self.testapp.delete('/cameras/%d'%response.json["camera"]["id"],headers=[('X-Auth-Token', self.token)], status=200)
         print("response delete: ")
         pp.pprint(response.json)
 
