@@ -19,9 +19,9 @@ def add_routes(config):
     config.add_route('accounts', '/accounts*extension')
     config.add_route('camera_models', '/camera_models*extension')
     config.add_route('manufactories','/manufactories')
-    config.add_route('cameras.operating', '/camera/{camera_id}/operating')
-    config.add_route('cameras.image_processor', '/camera/{camera_id}/processors')
-    config.add_route('cameras.status', '/camera/{camera_id}/status')
+    config.add_route('cameras.operating', '/cameras/{camera_id}/operating')
+    config.add_route('cameras.image_processor', '/cameras/{camera_id}/processors')
+    config.add_route('cameras.status', '/cameras/{camera_id}/status')
     
     #admin
     config.add_route('admin.users.list_users', '/admin/users')
