@@ -88,7 +88,7 @@ class CamearaOperating(object):
                                          user_command=camera.operating.user_command,
 #                                         compute_node={'id':camera.operating.compute_node._id}
                                          )
-        
+        self.request.response.headers['Access-Control-Allow-Origin'] = '*'
         return result
             
         
