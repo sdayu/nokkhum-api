@@ -55,7 +55,7 @@ class CamearaOperating(object):
         ccq.camera  = camera
         ccq.owner   = self.request.user
         ccq.save()
-    
+        self.request.response.headers['Access-Control-Allow-Origin'] = '*'
         return {
                 'camera_operating':{
                            'action':ccq.action,
