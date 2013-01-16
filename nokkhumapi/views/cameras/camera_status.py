@@ -33,5 +33,5 @@ class CamearaStatus(object):
                 
                                 
                                 )
-        
+        self.request.response.headers['Access-Control-Allow-Origin'] = '*'
         return result
