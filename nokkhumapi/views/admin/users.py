@@ -3,6 +3,7 @@ Created on 12 Jan 2013
 
 @author: ww
 '''
+
 from pyramid.view import view_defaults
 from pyramid.view import view_config
 from pyramid.response import Response
