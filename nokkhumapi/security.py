@@ -44,7 +44,7 @@ class TokenAuthenticationPolicy(object):
         user = request.user
         if user:
             principals += [Authenticated, 'u:%s' % user.id]
-            principals.extend((['g:%s'%role.name for role in user.roles]))
+            principals.extend((['r:%s'%role.name for role in user.roles]))
         return principals
     
 class RequestWithUserAttribute(Request):

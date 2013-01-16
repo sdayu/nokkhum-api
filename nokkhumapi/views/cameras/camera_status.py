@@ -29,9 +29,6 @@ class CamearaStatus(object):
         result["camera"] = dict(
                                 id=camera.id,
                                 status=camera.status
-                                
-                
-                                
                                 )
         self.request.response.headers['Access-Control-Allow-Origin'] = '*'
         return result
