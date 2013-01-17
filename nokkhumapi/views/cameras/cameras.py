@@ -39,7 +39,7 @@ class CameraView(object):
         result["camera"]["status"] = camera.status
         result["camera"]["storage_periods"] = camera.storage_periods
         result["camera"]["create_date"] = camera.create_date
-        result["camera"]["processors"] = json.dumps(camera.processors)
+        result["camera"]["processors"] = camera.processors
         result["camera"]["model"] = dict(id=camera.camera_model.id, 
                                          name=camera.camera_model.name, 
                                          manufactory=dict(
