@@ -27,7 +27,8 @@ class Tokens(object):
         
         pass_hash = self.request.secret_manager.get_hash_password(password_credential['password'])
         user = models.User.objects(email=password_credential['email'],
-                                   password=pass_hash)\
+                                   password=pass_hash,
+                                   status='Active')\
                                    .first()
         
         if not user:
