@@ -30,6 +30,8 @@ def add_routes(config):
     config.add_route('admin.users.show_users', '/admin/users/{user_id}')
     config.add_route('admin.cameras.list_cameras', '/admin/cameras')
     config.add_route('admin.cameras.show_cameras', '/admin/cameras/{camera_id}')
+    config.add_route('admin.users.users_status', '/admin/users/status/{status_name}')
+    config.add_route('admin.users.set_status', '/admin/users/{user_id}/status/{status_name}')
 #    config.add_route('cameras_post', '/cameras')
 #    config.add_route('cameras_get', '/cameras/{id}')
 #    config.add_route('cameras_delete', '/cameras/{id}')
