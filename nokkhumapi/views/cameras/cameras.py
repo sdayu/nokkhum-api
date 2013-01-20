@@ -39,7 +39,7 @@ class CameraView(object):
         result["camera"]["status"] = camera.status
         result["camera"]["storage_periods"] = camera.storage_periods
         result["camera"]["create_date"] = camera.create_date
-        result["camera"]["processors"] = json.dumps(camera.processors)
+        result["camera"]["processors"] = camera.processors
         result["camera"]["model"] = dict(id=camera.camera_model.id, 
                                          name=camera.camera_model.name, 
                                          manufactory=dict(
@@ -57,7 +57,6 @@ class CameraView(object):
         camera.name     = camera_dict["name"]
         camera.username = camera_dict["username"]
         camera.password = camera_dict["password"]
-        camera.url      = camera_dict["url"]
         camera.image_size   = camera_dict["image_size"]
         camera.fps      = camera_dict["fps"]
         camera.storage_periods = camera_dict["storage_periods"]
@@ -68,6 +67,14 @@ class CameraView(object):
         camera.project  = models.Project.objects(id=camera_dict["project"]["id"]).first()
         camera.processors = camera_dict.get('processors', [])
         camera.camera_model   = models.CameraModel.objects(id=camera_dict["model"]["id"]).first()
+        
+        if len(camera_dict["url"]) == 0:
+            from nokkhumapi.driver.camera import factory
+            fac = factory.CameraDriverFactory(camera.camera_model.manufactory.name)
+            camera.url = fac.get_driver(camera.camera_model.name, camera.__dict__)
+            
+        if len(camera.url) == 0:
+            camera.url      = camera_dict["url"]
         
         camera.save()
         
@@ -91,13 +98,20 @@ class CameraView(object):
         camera.name     = camera_dict["name"]
         camera.username = camera_dict["username"]
         camera.password = camera_dict["password"]
-        camera.url      = camera_dict["url"]
         camera.image_size   = camera_dict["image_size"]
         camera.fps      = camera_dict["fps"]
         camera.storage_periods = camera_dict["storage_periods"]
         if camera_dict.get('processors'):
             camera.processors = camera_dict.get('processors')
         camera.camera_model    = models.CameraModel.objects(id=camera_dict["model"]["id"]).first()
+        
+        if len(camera_dict["url"]) == 0:
+            from nokkhumapi.driver.camera import factory
+            fac = factory.CameraDriverFactory(camera.camera_model.manufactory.name)
+            camera.url = fac.get_driver(camera.camera_model.name, camera.__dict__)
+            
+        if len(camera.url) == 0:
+            camera.url      = camera_dict["url"]
         
         camera.save()
 
