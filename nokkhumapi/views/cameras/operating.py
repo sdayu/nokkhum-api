@@ -27,14 +27,14 @@ class CamearaOperating(object):
             return {'result':"camera not found id: %s"%camera_id}
         
         operating = self.request.json_body["camera_operating"]["action"]
-        command_action  = 'No-command'
-        user_command    = 'Undefine'
+        command_action  = 'no-command'
+        user_command    = 'undefined'
         if operating == 'start':
-            command_action = 'Start'
-            user_command = 'Run'
+            command_action = 'start'
+            user_command = 'run'
         elif operating == 'stop':
-            command_action = 'Stop'
-            user_command = 'Suspend'
+            command_action = 'stop'
+            user_command = 'suspend'
         
         ccq = models.CameraCommandQueue.objects(owner=self.request.user, camera=camera, action=command_action).first()
         if ccq is not None:
@@ -51,7 +51,7 @@ class CamearaOperating(object):
         ccq.command_date = datetime.datetime.now()
         ccq.update_date = datetime.datetime.now()
         ccq.action  = command_action
-        ccq.status  = 'Waiting'
+        ccq.status  = 'waiting'
         ccq.camera  = camera
         ccq.owner   = self.request.user
         ccq.save()
