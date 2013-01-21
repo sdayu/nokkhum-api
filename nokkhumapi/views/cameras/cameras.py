@@ -94,7 +94,7 @@ class CameraView(object):
         camera = models.Camera.objects(id=id).first()
         if not camera:
             self.request.response.status = '404 Not Found'
-            return {'result':"not found id: %d"%id}
+            return {'message':"not found id: %d"%id}
         
         camera_dict = self.request.json_body["camera"]
         
@@ -130,9 +130,9 @@ class CameraView(object):
         camera = models.Camera.objects(id=id).first()
         if not camera:
             self.request.response.status = '404 Not Found'
-            return {'result':"not found id: %d"%id}
+            return {'message':"not found id: %d"%id}
         
         camera.delete()
 
-        return {'result':"delete success"}
+        return {'message':"delete success"}
     

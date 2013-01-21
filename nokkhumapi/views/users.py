@@ -33,7 +33,7 @@ class UserView(object):
         result["user"]["first_name"] = user.first_name
         result["user"]["last_name"] = user.last_name
         result["user"]["status"] = user.status
-        result["user"]["group"] = {"id": user.group.id, "name":user.group.name}
+        result["user"]["roles"] = [dict(id=role.id, name=role.name) for role in user.roles]
         
         return result
     
@@ -46,10 +46,9 @@ class UserView(object):
         user.last_name  = user_dict["last_name"]
         user.email      = user_dict["email"]
         user.password   = user_dict["password"]
-        user.status     = 'Disactive'
-        
-        group           = models.Group.objects(name=user_dict["group"]["name"]).first()
-        user.group      = group
+        user.status     = user_dict.get("status", 'disactive')
+            
+        user.roles.append(models.Role.objects(name='user').first())
         
         user.save()
         

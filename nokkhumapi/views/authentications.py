@@ -31,7 +31,7 @@ class Tokens(object):
                                    status='active')\
                                    .first()
         
-        if not user:
+        if user is None:
             self.request.response.status = '401 Unauthorized'
             return {}
         
@@ -39,9 +39,11 @@ class Tokens(object):
         
         ip_address = self.request.environ.get('REMOTE_ADDR', '0.0.0.0')
         token = models.Token.objects(user=user, ip_address=ip_address, expired_date__gt=now).first()
+        print('token: ', token)
         
-        if not token:
+        if token is None:
             token = models.Token()
+            print('user: ', user)
             token.user = user
             token.access_date   = now
             token.expired_date  = now + datetime.timedelta(hours=2)
