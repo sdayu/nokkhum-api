@@ -1,5 +1,5 @@
 '''
-Created on 12 Jan 2013
+Created on 13 Jan 2013
 
 @author: ww
 '''
@@ -7,7 +7,7 @@ import unittest
 import pprint
 import configparser
 
-class TestSelectProject(unittest.TestCase):
+class TestUserList(unittest.TestCase):
 
     def setUp(self):
         from nokkhumapi import main
@@ -32,18 +32,30 @@ class TestSelectProject(unittest.TestCase):
         
         self.token = response.json['access']['token']['id']
         
-        self.camera_id = 1
-
-   
-    def test_operation(self):
-        response = self.testapp.get('/cameras/%d/operating'%self.camera_id, headers=[('X-Auth-Token', self.token)], status=200)
+        self.user_id = 1
+        
+        
+    def test_admin_list_user(self):
+        response = self.testapp.get('/admin/users', headers=[('X-Auth-Token', self.token)], status=200)
         print( "response get: ")
         self.pp.pprint(response.json)
         
-            
+    def test_admin_show_user(self):
+        response = self.testapp.get('/admin/users/%d'%self.user_id, headers=[('X-Auth-Token', self.token)], status=200)
+        print( "response get: ")
+        self.pp.pprint(response.json)         
        
         
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
     unittest.main()
     
+        
+        
+        
+        
+        
+        
+        
+        
+        

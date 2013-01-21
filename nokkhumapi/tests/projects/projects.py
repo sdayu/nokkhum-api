@@ -5,19 +5,35 @@ Created on Oct 22, 2012
 '''
 import unittest
 import pprint
+import configparser
 
 class TestProjectAPI(unittest.TestCase):
 
 
     def setUp(self):
         from nokkhumapi import main
-        settings = {'mongodb.db_name': 'nokkhum', 
-                    'mongodb.host': 'localhost',
-                    'nokkhum.auth.secret': 'nokkhum'}
+        
+        cfg = configparser.ConfigParser()
+        cfg.read('../../../development.ini')
+        
+        settings = dict(cfg.items('app:main'))
+
         app = main({}, **settings)
         from webtest import TestApp
         self.testapp = TestApp(app)
 
+        args = dict(password_credentials= {"email": "admin@nokkhum.local", 
+                                          "password": "password"}
+                    )
+        response = self.testapp.post_json('/authentication/tokens', params=args, status=200)
+        print("authentication: ")
+        
+        self.pp=pprint.PrettyPrinter(indent=4)
+        self.pp.pprint(response.json)
+        
+        self.token = response.json['access']['token']['id']
+        
+        self.camera_id = 1
 
     def tearDown(self):
         pass
@@ -48,7 +64,7 @@ class TestProjectAPI(unittest.TestCase):
                   status = 'Active',
                   user = {"id":1}
                 )
-        response = self.testapp.post_json('/projects', params={'project':args}, status=200)
+        response = self.testapp.post_json('/projects', params={'project':args}, headers=[('X-Auth-Token', self.token)], status=200)
         print("responce post :")
         pp.pprint(response.json)
         
@@ -57,7 +73,7 @@ class TestProjectAPI(unittest.TestCase):
         self.project_id = response.json["project"]["id"]
         
         #retrieve project via project id
-        response = self.testapp.get('/projects/%d'%self.project_id, status = 200)
+        response = self.testapp.get('/projects/%d'%self.project_id, headers=[('X-Auth-Token', self.token)], status = 200)
         print("response get")
         pp.pprint(response.json)
         
@@ -68,13 +84,13 @@ class TestProjectAPI(unittest.TestCase):
         self.project_dict['status'] = 'Delete'
         args = self.project_dict
         
-        response = self.testapp.put_json('/projects/%d'%response.json["project"]["id"], params={'project':args}, status=200)
+        response = self.testapp.put_json('/projects/%d'%response.json["project"]["id"], params={'project':args}, headers=[('X-Auth-Token', self.token)], status=200)
         print("response update: ")
         pp.pprint(response.json)
         
         self.assertIn("id", response.json["project"])
         
-        response = self.testapp.delete('/projects/%d'%response.json["project"]["id"], status=200)
+        response = self.testapp.delete('/projects/%d'%response.json["project"]["id"], headers=[('X-Auth-Token', self.token)], status=200)
         print("response delete: ")
         pp.pprint(response.json)
         

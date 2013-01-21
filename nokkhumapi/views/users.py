@@ -46,6 +46,7 @@ class UserView(object):
         user.last_name  = user_dict["last_name"]
         user.email      = user_dict["email"]
         user.password   = user_dict["password"]
+        user.status     = 'Disactive'
         
         group           = models.Group.objects(name=user_dict["group"]["name"]).first()
         user.group      = group
