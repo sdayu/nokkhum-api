@@ -34,8 +34,6 @@ class AuthenticationApiTest(unittest.TestCase):
         response = self.testapp.post_json('/authentication/tokens', params=args, status=200)
         print("authentication: ")
         self.pp.pprint(response.json)
-        import time
-        time.sleep(5)
         
         response = self.testapp.get('/authentication/tokens', headers={'X-Auth-Token':response.json['access']['token']['id']}, status=200)
         #response = self.testapp.get('/authentication/tokens', headers={'X-Auth-Token':'test'}, status=200)

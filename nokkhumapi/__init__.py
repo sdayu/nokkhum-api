@@ -19,7 +19,7 @@ def main(global_config, **settings):
     from .routing import add_routes
     add_routes(config)
     
-    config.scan()
+    config.scan('nokkhumapi.views')
     
     from .models import initial
     initial(config.registry.settings)

@@ -11,8 +11,10 @@ def add_routes(config):
     config.add_route('authentications.tokens', '/authentication/tokens')
     
     config.add_route('projects.cameras', '/projects/{project_id}/cameras')
+    config.add_route('projects.collaborators', '/projects/{project_id}/collaborators')
+    
     config.add_route('projects.userprojects', '/users/{user_id}/projects')
-        
+    
     config.add_route('users', '/users*extension')
     config.add_route('projects', '/projects*extension')
     config.add_route('accounts', '/accounts*extension')

@@ -59,9 +59,9 @@ class TestProjectAPI(unittest.TestCase):
         pp=pprint.PrettyPrinter(indent=4)
         #create project
         args=dict(
-                  name = 'JoJo',
+                  name = 'Test Project',
                   description = '',
-                  status = 'Active',
+                  status = 'active',
                   user = {"id":1}
                 )
         response = self.testapp.post_json('/projects', params={'project':args}, headers=[('X-Auth-Token', self.token)], status=200)
