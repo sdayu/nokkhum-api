@@ -45,7 +45,7 @@ class CameraView(object):
                                          manufactory=dict(
                                                 id=camera.camera_model.manufactory.id, 
                                                 name=camera.camera_model.manufactory.name))
-                
+        self.request.response.headers['Access-Control-Allow-Origin'] = '*'        
         return result
 
     @view_config(request_method='POST')
