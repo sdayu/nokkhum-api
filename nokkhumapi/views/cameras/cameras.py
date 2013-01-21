@@ -69,9 +69,12 @@ class CameraView(object):
         camera.camera_model   = models.CameraModel.objects(id=camera_dict["model"]["id"]).first()
         
         if len(camera_dict["url"]) == 0:
-            from nokkhumapi.driver.camera import factory
-            fac = factory.CameraDriverFactory(camera.camera_model.manufactory.name)
-            camera.url = fac.get_driver(camera.camera_model.name, camera.__dict__)
+            
+            if camera.camera_model.name.lower() != "opencv":
+            
+                from nokkhumapi.driver.camera import factory
+                fac = factory.CameraDriverFactory(camera.camera_model.manufactory.name)
+                camera.url = fac.get_driver(camera.camera_model.name, camera.__dict__)
             
         if len(camera.url) == 0:
             camera.url      = camera_dict["url"]
@@ -106,9 +109,10 @@ class CameraView(object):
         camera.camera_model    = models.CameraModel.objects(id=camera_dict["model"]["id"]).first()
         
         if len(camera_dict["url"]) == 0:
-            from nokkhumapi.driver.camera import factory
-            fac = factory.CameraDriverFactory(camera.camera_model.manufactory.name)
-            camera.url = fac.get_driver(camera.camera_model.name, camera.__dict__)
+            if camera.camera_model.name.lower() != "opencv":
+                from nokkhumapi.driver.camera import factory
+                fac = factory.CameraDriverFactory(camera.camera_model.manufactory.name)
+                camera.url = fac.get_driver(camera.camera_model.name, camera.__dict__)
             
         if len(camera.url) == 0:
             camera.url      = camera_dict["url"]
