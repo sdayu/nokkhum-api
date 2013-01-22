@@ -24,13 +24,12 @@ class ProjectCollaborator:
             return {'message':"Project id %d not found"%project_id}
         
         result = dict(
-                      project=dict(id=project.id, name=project.name),
-                      collaborators=[]
+                      project=dict(id=project.id, name=project.name, collaborators=[]),
                       )
         
         for collaborator in project.collaborators:
             
-            result['collaborators'].append(
+            result['project']['collaborators'].append(
                 dict(
                      id=collaborator.user.id,
                      email=collaborator.user.email

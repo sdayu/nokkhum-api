@@ -36,6 +36,7 @@ class AccountView(object):
         user.last_name  = user_dict["last_name"]
         user.email      = user_dict["email"]
         user.password   = self.request.secret_manager.get_hash_password(user_dict["password"])
+        user.status     = "disactivate"
         
         role           = models.Role.objects(name='user').first()
         user.roles.append(role)
