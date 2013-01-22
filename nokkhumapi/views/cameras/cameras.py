@@ -114,7 +114,7 @@ class CameraView(object):
                 fac = factory.CameraDriverFactory(camera.camera_model.manufactory.name)
                 camera.url = fac.get_driver(camera.camera_model.name, camera.__dict__)
             
-        if camera.url is None:
+        else:
             camera.url      = camera_dict["url"]
         
         camera.save()
