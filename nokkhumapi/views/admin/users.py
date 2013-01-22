@@ -20,6 +20,7 @@ def list_user(request):
     
     for user in users:
         results.append({'id':user.id, 'email':user.email})
+    request.response.headers['Access-Control-Allow-Origin'] = '*'
     return dict(
             users=results
             )
@@ -38,7 +39,7 @@ def show_user(request):
     result["user"]["first_name"]=user.first_name
     result["user"]["last_name"]=user.last_name
     result["user"]["status"]=user.status
-    
+    request.response.headers['Access-Control-Allow-Origin'] = '*'
     return result
 
 
