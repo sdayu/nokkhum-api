@@ -11,7 +11,7 @@ import json, datetime
 
 from nokkhumapi import models
 
-USER_STATUS = ['active', 'disactive', 'delete']
+USER_STATUS = ['active', 'deactivate', 'delete']
 
 @view_config(route_name='admin.users.users_status', renderer='json', permission="r:admin", request_method='GET')
 def list_user_by_status(request):
