@@ -3,7 +3,7 @@ Created on Jan 18, 2013
 
 @author: boatkrap
 '''
-
+import urllib.parse
 class CameraDriver:
     def __init__(self, host, username, password, port=80):
         self.host = host
@@ -19,7 +19,7 @@ class CameraDriver:
         
     def __process(self):
         if len(self.username) > 0:
-            self.auth = "{username}:{password}@".format(**self.__dict__)
+            self.auth = "{username}:{password}@".format(username=urllib.parse.quote(self.username), password=urllib.parse.quote(self.password))
             
         if self.port != 80:
             self.add_port=':{}'.format(self.port)
