@@ -24,7 +24,7 @@ def list_user_by_status(request):
         
     users = models.User.objects(status__iexact=status_name).all()
     
-    self.request.response.headers['Access-Control-Allow-Origin'] = '*'
+    request.response.headers['Access-Control-Allow-Origin'] = '*'
     return dict(
             users=[dict(id=user.id, email=user.email) for user in users]
             )
@@ -41,7 +41,7 @@ def set_user_status(request):
         return {'result':"not found id: %d"%id}
     user.status = status_name
     user.save()
-    self.request.response.headers['Access-Control-Allow-Origin'] = '*'
+    request.response.headers['Access-Control-Allow-Origin'] = '*'
     return dict(
                 user = dict(id=user.id, email=user.email, status=user.status)
                 )
