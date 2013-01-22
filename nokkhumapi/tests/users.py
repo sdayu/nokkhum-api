@@ -42,9 +42,10 @@ class UserApiTest(unittest.TestCase):
 
         # create camera
         args = dict(email       = 'test@nokkhum.local', 
-                    password    = '', 
+                    password    = 'password', 
                     first_name  = 'iErk', 
                     last_name   = 'HamHam', 
+                    status      = "active"
                     )
         response = self.testapp.post_json('/users', params={'user':args}, headers=[('X-Auth-Token', self.token)], status=200)
         print("response create: ")
@@ -72,7 +73,7 @@ class UserApiTest(unittest.TestCase):
         
         self.assertIn("id", response.json["user"])
         
-        response = self.testapp.delete('/users/%d'%response.json["user"]["id"], status=200)
+        response = self.testapp.delete('/users/%d'%response.json["user"]["id"], headers=[('X-Auth-Token', self.token)], params={'user':args}, status=200)
         print("response delete: ")
         self.pp.pprint(response.json)
         

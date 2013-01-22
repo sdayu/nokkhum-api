@@ -35,7 +35,8 @@ class ProjectView(object):
         result["project"]["update_date"] = project.update_date
         result["project"]["ip_address"] = project.ip_address
         result["project"]["user"] = dict(id=project.owner.id, username=project.owner.email)
-        
+        result["project"]["colaborators"] = [dict(id=collaborator.user.id, email=collaborator.user.email) for collaborator in project.collaborators]
+
         return result
     
     @view_config(request_method='POST')   

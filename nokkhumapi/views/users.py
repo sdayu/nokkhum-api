@@ -45,7 +45,7 @@ class UserView(object):
         user.first_name = user_dict["first_name"]
         user.last_name  = user_dict["last_name"]
         user.email      = user_dict["email"]
-        user.password   = user_dict["password"]
+        user.password   = self.request.secret_manager.get_hash_password(user_dict["password"])
         user.status     = user_dict.get("status", 'disactive')
             
         user.roles.append(models.Role.objects(name='user').first())

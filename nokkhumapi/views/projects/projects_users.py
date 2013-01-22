@@ -26,9 +26,12 @@ class UserProjectsView(object):
             return {'error':{'message':'This user not found.'}}
         
         projects = models.Project.objects(owner=user).all()
+        collaborate_projects = models.Project.objects(collaborators__user=user).all()
         
 
-        result = {"projects":[dict(id=project.id, name=project.name, description=project.description) for project in projects]
+        result = {
+                  "projects":[dict(id=project.id, name=project.name, description=project.description) for project in projects],
+                  "collaborate_projects":[dict(id=project.id, name=project.name, description=project.description) for project in collaborate_projects]
                   }
         
         
