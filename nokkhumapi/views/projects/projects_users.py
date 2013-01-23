@@ -28,7 +28,7 @@ class UserProjectsView(object):
         projects = models.Project.objects(owner=user).all()
         collaborate_projects = models.Project.objects(collaborators__user=user).all()
         
-
+        self.request.response.headers['Access-Control-Allow-Origin'] = '*'
         result = {
                   "projects":[dict(id=project.id, name=project.name, description=project.description) for project in projects],
                   "collaborate_projects":[dict(id=project.id, name=project.name, description=project.description) for project in collaborate_projects]
