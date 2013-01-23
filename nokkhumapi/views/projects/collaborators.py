@@ -35,7 +35,7 @@ class ProjectCollaborator:
                      email=collaborator.user.email
                      )    
                 )
-            
+        self.request.response.headers['Access-Control-Allow-Origin'] = '*'
         return result
     
     @view_config(request_method='POST')
