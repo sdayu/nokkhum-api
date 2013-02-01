@@ -21,6 +21,11 @@ def add_routes(config):
     config.add_route('camera_models', '/camera_models*extension')
     config.add_route('manufactories','/manufactories')
     
+    #co_user
+    config.add_route('users.list_users', '/co_users/users')
+    config.add_route('users.show_users', '/co_users/users/{user_id}')
+    
+    
     #cameras
     config.add_route('cameras.operating', '/cameras/{camera_id}/operating')
     config.add_route('cameras.image_processor', '/cameras/{camera_id}/processors')

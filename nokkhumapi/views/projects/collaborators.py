@@ -35,7 +35,7 @@ class ProjectCollaborator:
                      email=collaborator.user.email
                      )    
                 )
-            
+        self.request.response.headers['Access-Control-Allow-Origin'] = '*'
         return result
     
     @view_config(request_method='POST')
@@ -63,7 +63,7 @@ class ProjectCollaborator:
         project.collaborators.append(collaborator)
         
         project.save()
-        
+        self.request.response.headers['Access-Control-Allow-Origin'] = '*'
         return collaborator_dict
     
     @view_config(request_method='PUT')
