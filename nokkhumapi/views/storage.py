@@ -111,6 +111,7 @@ class Storage:
         s3_client = self.request.s3_client
         s3_client.set_buckket_name(int(camera.id))
         s3_client.delete(key_name)
+        self.request.response.headers['Access-Control-Allow-Origin'] = '*'
         return {'result':'delete success'}
         
     def cache_file(self, request):

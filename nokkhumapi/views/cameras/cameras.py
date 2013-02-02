@@ -80,7 +80,7 @@ class CameraView(object):
             camera.url      = camera_dict["url"]
         
         camera.save()
-        self.request.response.headers['Access-Control-Allow-Origin'] = '*'
+        
         result = {"camera":camera_dict}
         result["camera"]["id"] = camera.id
         return result
