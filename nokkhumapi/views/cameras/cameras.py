@@ -80,7 +80,7 @@ class CameraView(object):
             camera.url      = camera_dict["url"]
         
         camera.save()
-        
+        self.request.response.headers['Access-Control-Allow-Origin'] = '*'
         result = {"camera":camera_dict}
         result["camera"]["id"] = camera.id
         return result
@@ -133,6 +133,5 @@ class CameraView(object):
             return {'message':"not found id: %d"%id}
         
         camera.delete()
-        self.request.response.headers['Access-Control-Allow-Origin'] = '*'
         return {'message':"delete success"}
     
