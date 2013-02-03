@@ -32,7 +32,7 @@ def main(global_config, **settings):
     secret_manager = SecretManager(settings.get('nokkhum.auth.secret'))
     config.registry.settings['secret_manager'] = secret_manager
     
-    config.add_subscriber(add_secret_manager, NewRequest)
+    config.add_subscriber(add_response_callback, NewRequest)
     
     return config.make_wsgi_app()
 
@@ -55,8 +55,9 @@ def modify_json_renderer(config):
     # then during configuration ....
     config.add_renderer('json', json_renderer)
     
-def add_secret_manager(event):
-    settings = event.request.registry.settings
-    secret_manager = settings['secret_manager']
-    event.request.secret_manager = secret_manager
+def add_response_callback(event):
+    
+    def set_default_header_callback(request, response):
+        response.headers['Access-Control-Allow-Origin'] = '*'
+    event.request.add_response_callback(set_default_header_callback)
 

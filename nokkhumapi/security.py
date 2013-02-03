@@ -69,6 +69,14 @@ class RequestWithUserAttribute(Request):
             return token.user
         
     @reify
+    def secret_manager(self):
+        from pyramid.threadlocal import get_current_registry
+        settings = get_current_registry().settings
+        
+        return settings.secret_manager
+        
+        
+    @reify
     def userid(self):
         return unauthenticated_userid(self)
     

@@ -133,6 +133,5 @@ class CameraView(object):
             return {'message':"not found id: %d"%id}
         
         camera.delete()
-        self.request.response.headers['Access-Control-Allow-Origin'] = '*'
         return {'message':"delete success"}
     

@@ -82,8 +82,8 @@ class Storage:
                     item['file'] = True
                     
                 file_list.append(item)
-                
-        self.request.response.headers['Access-Control-Allow-Origin'] = '*'
+        print("test :",('Access-Control-Allow-Origin' in self.request.response.headers))
+        #self.request.response.headers['Access-Control-Allow-Origin'] = '*'
         return dict(
                     files=file_list,
                     )
@@ -111,6 +111,9 @@ class Storage:
         s3_client = self.request.s3_client
         s3_client.set_buckket_name(int(camera.id))
         s3_client.delete(key_name)
+        
+        
+#        self.request.response.headers['Access-Control-Allow-Origin'] = '*'
         return {'result':'delete success'}
         
     def cache_file(self, request):
