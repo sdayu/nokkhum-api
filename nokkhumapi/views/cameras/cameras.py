@@ -33,7 +33,9 @@ class CameraView(object):
         result["camera"]["username"] = camera.username
         result["camera"]["password"] = camera.password
         result["camera"]["name"] = camera.name
-        result["camera"]["url"] = camera.url
+        result["camera"]["video_url"] = camera.video_url
+        result["camera"]["audio_url"] = camera.audio_url
+        result["camera"]["image_url"] = camera.image_url
         result["camera"]["image_size"] = camera.image_size
         result["camera"]["fps"] = camera.fps
         result["camera"]["status"] = camera.status
@@ -74,10 +76,13 @@ class CameraView(object):
             
                 from nokkhumapi.driver.camera import factory
                 fac = factory.CameraDriverFactory(camera.camera_model.manufactory.name)
-                camera.url = fac.get_driver(camera.camera_model.name, camera.__dict__)
+                camera_driver = fac.get_driver(camera.camera_model.name, camera.__dict__)
+                camera.video_url = camera_driver.get_video_url()
+                camera.audio_url = camera_driver.get_video_url()
+                camera.image_url = camera_driver.get_video_url()
             
-        if camera.url is None:
-            camera.url      = camera_dict["url"]
+        if camera.video_url is None:
+            camera.video_url      = camera_dict["url"]
         
         camera.save()
         
