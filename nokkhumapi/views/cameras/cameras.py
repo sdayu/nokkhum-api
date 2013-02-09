@@ -70,7 +70,7 @@ class CameraView(object):
         camera.processors = camera_dict.get('processors', [])
         camera.camera_model   = models.CameraModel.objects(id=camera_dict["model"]["id"]).first()
         
-        if len(camera_dict["url"]) == 0:
+        if "video_url" not in camera_dict or len(camera_dict["video_url"]) == 0:
             
             if camera.camera_model.name.lower() != "opencv":
             
@@ -82,7 +82,7 @@ class CameraView(object):
                 camera.image_url = camera_driver.get_video_url()
             
         if camera.video_url is None:
-            camera.video_url      = camera_dict["url"]
+            camera.video_url      = camera_dict["video_url"]
         
         camera.save()
         
