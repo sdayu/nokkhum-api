@@ -78,7 +78,7 @@ class CameraView(object):
             from nokkhumapi.driver.camera import factory
             fac = factory.CameraDriverFactory().get_camera_driver(camera.camera_model.manufactory.name)
             camera_driver = fac.get_driver(camera.camera_model.name, **camera_dict)
-            camera.video_url = camera_driver.get_video_url()
+            camera.video_url = camera_driver.get_video_url(extension="?.mjpg")
             camera.audio_url = camera_driver.get_audio_url()
             camera.image_url = camera_driver.get_image_url()
             
@@ -120,7 +120,7 @@ class CameraView(object):
             from nokkhumapi.driver.camera import factory
             fac = factory.CameraDriverFactory().get_camera_driver(camera.camera_model.manufactory.name)
             camera_driver = fac.get_driver(camera.camera_model.name, **camera_dict)
-            camera.video_url = camera_driver.get_video_url()
+            camera.video_url = camera_driver.get_video_url(extension="?.mjpg")
             camera.audio_url = camera_driver.get_audio_url()
             camera.image_url = camera_driver.get_image_url()
             
