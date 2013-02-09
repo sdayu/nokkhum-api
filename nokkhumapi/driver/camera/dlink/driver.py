@@ -8,6 +8,6 @@ from .DCS_930L import DLink_DCS_930L
 
 
 class DLinkDriverFactory:
-    def get_driver(self, model, **settings):
-        if model == 'DCS-930L':
+    def get_driver(self, model_name, **settings):
+        if model_name == 'DCS-930L':
             return DLink_DCS_930L(settings['host'], settings['username'], settings['password'], settings['port'])
