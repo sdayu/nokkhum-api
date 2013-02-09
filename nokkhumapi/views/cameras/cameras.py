@@ -123,7 +123,7 @@ class CameraView(object):
                 camera.image_url = camera_driver.get_image_url()
             
         else:
-            camera.url      = camera_dict["url"]
+            camera.url      = camera_dict["video_url"]
         
         camera.save()
 
