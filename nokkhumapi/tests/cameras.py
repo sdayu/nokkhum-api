@@ -37,17 +37,22 @@ class CameraApiTest(unittest.TestCase):
         pp = pprint.PrettyPrinter(indent=4)
         
         # create camera
-        args = dict(username='',
-                     password='', 
+        args = dict(username='admin',
+                     password='123456', 
                      name='Boatty',
+                     host="127.0.0.1",
+                     port=8080,
                      url='', 
                      image_size='', 
                      fps=5, 
                      storage_periods=1,
                      project    = dict(id = 1),
                      user       = dict(id = 1),
-                     model      = dict(id = '50f566082b137a12279dcba5'),
+                     model      = dict(id = '5113b19c698a974f3ee2f69e'),
                      )
+        
+        print("args: ")
+        pp.pprint(args)
         response = self.testapp.post_json('/cameras', params={'camera':args}, headers=[('X-Auth-Token', self.token)], status=200)
         print("response create: ")
         pp.pprint(response.json)
@@ -64,19 +69,19 @@ class CameraApiTest(unittest.TestCase):
         self.assertEqual(response.json["camera"]["id"], self.camera_id)
         self.camera_dict =  response.json["camera"]
         
-        # try to change name
+#        # try to change name
         args = self.camera_dict
         args["name"] = '123'
         response = self.testapp.put_json('/cameras/1', params={'camera':args},headers=[('X-Auth-Token', self.token)], status=200)
         print("response update: ") 
         pp.pprint( response.json)
-        
-        self.assertIn("id", response.json["camera"])
-        # try to Delete
-        self.camera_dict['status'] = 'Delete'
-        #response = self.testapp.delete('/cameras/%d'%response.json["camera"]["id"],headers=[('X-Auth-Token', self.token)], status=200)
-        print("response delete: ")
-        pp.pprint(response.json)
+#        
+#        self.assertIn("id", response.json["camera"])
+#        # try to Delete
+#        self.camera_dict['status'] = 'Delete'
+#        #response = self.testapp.delete('/cameras/%d'%response.json["camera"]["id"],headers=[('X-Auth-Token', self.token)], status=200)
+#        print("response delete: ")
+#        pp.pprint(response.json)
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
