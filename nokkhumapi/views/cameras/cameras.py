@@ -76,7 +76,7 @@ class CameraView(object):
             
                 from nokkhumapi.driver.camera import factory
                 fac = factory.CameraDriverFactory().get_camera_driver(camera.camera_model.manufactory.name)
-                camera_driver = fac.get_driver(camera.camera_model.name, camera.__dict__)
+                camera_driver = fac.get_driver(camera.camera_model.name, **camera.__dict__)
                 camera.video_url = camera_driver.get_video_url()
                 camera.audio_url = camera_driver.get_audio_url()
                 camera.image_url = camera_driver.get_image_url()
@@ -117,7 +117,7 @@ class CameraView(object):
             if camera.camera_model.name.lower() != "opencv":
                 from nokkhumapi.driver.camera import factory
                 fac = factory.CameraDriverFactory().get_camera_driver(camera.camera_model.manufactory.name)
-                camera_driver = fac.get_driver(camera.camera_model.name, camera.__dict__)
+                camera_driver = fac.get_driver(camera.camera_model.name, **camera.__dict__)
                 camera.video_url = camera_driver.get_video_url()
                 camera.audio_url = camera_driver.get_audio_url()
                 camera.image_url = camera_driver.get_image_url()
