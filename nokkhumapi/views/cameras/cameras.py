@@ -33,6 +33,8 @@ class CameraView(object):
         result["camera"]["username"] = camera.username
         result["camera"]["password"] = camera.password
         result["camera"]["name"] = camera.name
+        result["camera"]["host"] = camera.host
+        result["camera"]["port"] = camera.port
         result["camera"]["video_url"] = camera.video_url
         result["camera"]["audio_url"] = camera.audio_url
         result["camera"]["image_url"] = camera.image_url
@@ -57,6 +59,8 @@ class CameraView(object):
         
         camera          = models.Camera()
         camera.name     = camera_dict["name"]
+        camera.host     = camera_dict['host']
+        camera.port     = camera_dict['port']
         camera.username = camera_dict["username"]
         camera.password = camera_dict["password"]
         camera.image_size   = camera_dict["image_size"]
@@ -104,6 +108,8 @@ class CameraView(object):
         camera_dict = self.request.json_body["camera"]
         
         camera.name     = camera_dict["name"]
+        camera.host     = camera_dict['host']
+        camera.port     = camera_dict['port'
         camera.username = camera_dict["username"]
         camera.password = camera_dict["password"]
         camera.image_size   = camera_dict["image_size"]
