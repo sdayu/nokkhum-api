@@ -39,7 +39,7 @@ class CameraApiTest(unittest.TestCase):
         # create camera
         args = dict(username='admin',
                      password='123456', 
-                     name='Boatty',
+                     name='ierk hamham',
                      host="127.0.0.1",
                      port=8080,
                      url='', 
@@ -72,6 +72,7 @@ class CameraApiTest(unittest.TestCase):
 #        # try to change name
         args = self.camera_dict
         args["name"] = '123'
+        args["host"] = '172.30.23.2'
         response = self.testapp.put_json('/cameras/1', params={'camera':args},headers=[('X-Auth-Token', self.token)], status=200)
         print("response update: ") 
         pp.pprint( response.json)
