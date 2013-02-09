@@ -109,7 +109,7 @@ class CameraView(object):
         
         camera.name     = camera_dict["name"]
         camera.host     = camera_dict['host']
-        camera.port     = camera_dict['port'
+        camera.port     = camera_dict['port']
         camera.username = camera_dict["username"]
         camera.password = camera_dict["password"]
         camera.image_size   = camera_dict["image_size"]
