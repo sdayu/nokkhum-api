@@ -48,12 +48,12 @@ class Storage:
     #        print "camera name: ", camera_name
             # camera = models.Camera.objects(owner=self.request.user, id=camera_id).first()
             camera = models.Camera.objects(id=camera_id).first()
-            if camera.owner!=self.request.user:
-                for collaborator in camera.project.collaborators:
-                    if collaborator.user == self.request.user:
-                        break
-                self.request.response.status = '403 Forbidden'
-                return {'result':'user not camera owner or collaborator'}
+#            if camera.owner!=self.request.user:
+#                for collaborator in camera.project.collaborators:
+#                    if collaborator.user == self.request.user:
+#                        break
+#                self.request.response.status = '403 Forbidden'
+#                return {'result':'user not camera owner or collaborator'}
     
             s3_client.set_buckket_name(int(camera.id))
     
@@ -151,12 +151,12 @@ class Storage:
         
         # camera = models.Camera.objects(owner=self.request.user, id=camera_id).first()
         camera = models.Camera.objects(id=camera_id).first()
-        if camera.owner!=self.request.user:
-            for collaborator in camera.project.collaborators:
-                if collaborator.user == self.request.user:
-                    break
-            self.request.response.status = '403 Forbidden'
-            return {'result':'user not camera owner or collaborator'}
+#        if camera.owner!=self.request.user:
+#            for collaborator in camera.project.collaborators:
+#                if collaborator.user == self.request.user:
+#                    break
+#            self.request.response.status = '403 Forbidden'
+#            return {'result':'user not camera owner or collaborator'}
         if camera is None:
             return None
         
