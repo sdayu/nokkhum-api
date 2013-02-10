@@ -46,7 +46,14 @@ class Storage:
             else:
                 camera_id = uri
     #        print "camera name: ", camera_name
-            camera = models.Camera.objects(owner=self.request.user, id=camera_id).first()
+            # camera = models.Camera.objects(owner=self.request.user, id=camera_id).first()
+            camera = models.Camera.objects(id=camera_id).first()
+            if camera.owner!=self.request.user:
+                for collaborator in camera.project.collaborators:
+                    if collaborator.user == self.request.user:
+                        break
+                self.request.response.status = '403 Forbidden'
+                return {'result':'user not camera owner or collaborator'}
     
             s3_client.set_buckket_name(int(camera.id))
     
@@ -82,7 +89,7 @@ class Storage:
                     item['file'] = True
                     
                 file_list.append(item)
-        print("test :",('Access-Control-Allow-Origin' in self.request.response.headers))
+
         #self.request.response.headers['Access-Control-Allow-Origin'] = '*'
         return dict(
                     files=file_list,
@@ -142,8 +149,14 @@ class Storage:
         else:
             camera_id = uri
         
-        camera = models.Camera.objects(owner=user, id=camera_id).first()
-
+        # camera = models.Camera.objects(owner=self.request.user, id=camera_id).first()
+        camera = models.Camera.objects(id=camera_id).first()
+        if camera.owner!=self.request.user:
+            for collaborator in camera.project.collaborators:
+                if collaborator.user == self.request.user:
+                    break
+            self.request.response.status = '403 Forbidden'
+            return {'result':'user not camera owner or collaborator'}
         if camera is None:
             return None
         
