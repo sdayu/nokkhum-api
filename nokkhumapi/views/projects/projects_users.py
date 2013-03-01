@@ -30,7 +30,9 @@ class UserProjectsView(object):
         
         self.request.response.headers['Access-Control-Allow-Origin'] = '*'
         result = {
-                  "projects":[dict(id=project.id, name=project.name, description=project.description) for project in projects],
+                  "projects":[dict(id=project.id, name=project.name, 
+                                   description=project.description, camera_number=project.get_camera_number())
+                               for project in projects],
                   "collaborate_projects":[dict(id=project.id, name=project.name, description=project.description) for project in collaborate_projects]
                   }
         

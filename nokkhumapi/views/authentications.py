@@ -22,28 +22,26 @@ class Tokens(object):
 
     @view_config(request_method='POST')
     def tokens(self):
-        print(self.request.json)
-        password_credential = self.request.json['password_credentials']
+
+        password_credential = self.request.json_body['password_credentials']
         
         pass_hash = self.request.secret_manager.get_hash_password(password_credential['password'])
-        user = models.User.objects(email=password_credential['email'],
+        user = models.User.objects(email=password_credential['username'],
                                    password=pass_hash,
                                    status='active')\
                                    .first()
         
         if user is None:
             self.request.response.status = '401 Unauthorized'
-            return {}
+            return dict(message='username or password mismatch')
         
         now = datetime.datetime.now()
         
         ip_address = self.request.environ.get('REMOTE_ADDR', '0.0.0.0')
         token = models.Token.objects(user=user, ip_address=ip_address, expired_date__gt=now).first()
-        print('token: ', token)
         
         if token is None:
             token = models.Token()
-            print('user: ', user)
             token.user = user
             token.access_date   = now
             token.expired_date  = now + datetime.timedelta(hours=2)
