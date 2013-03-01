@@ -25,12 +25,8 @@ class ProjectCameraView(object):
         cameras = models.Camera.objects(project=project).all() 
 
         result = dict(
-                      project=dict(
-                                   id=project.id,
-                                   name=project.name,
-                                   cameras=[dict(id=camera.id, name=camera.name) for camera in cameras]
-                                   )
-                      )
+                      cameras=[dict(id=camera.id, name=camera.name) for camera in cameras]
+                    )
+                      
         
-        self.request.response.headers['Access-Control-Allow-Origin'] = '*'
         return result

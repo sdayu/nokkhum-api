@@ -19,23 +19,33 @@ class ProjectView(object):
     def get(self):
         matchdict = self.request.matchdict
         extension = matchdict.get('extension')
-        id = int(extension[0])
+        project_id = extension[0]
         
-        project = models.Project.objects(id=id).first()
+        if project_id.isdigit():
+            project = models.Project.objects(id=project_id, owner=self.request.user).first()
+        else:
+            project = models.Project.objects(name=project_id, owner=self.request.user).first()
         
         if not project:
             self.request.response.status = '404 Not Found'
             return {}
-        result = {"project":{}}
-        result["project"]["id"] = project.id
-        result["project"]["name"] = project.name
-        result["project"]["description"] = project.description
-        result["project"]["status"] = project.status
-        result["project"]["create_date"] = project.create_date
-        result["project"]["update_date"] = project.update_date
-        result["project"]["ip_address"] = project.ip_address
-        result["project"]["user"] = dict(id=project.owner.id, username=project.owner.email)
-        result["project"]["colaborators"] = [dict(id=collaborator.user.id, email=collaborator.user.email) for collaborator in project.collaborators]
+        result = dict(
+                      project=dict(
+                            id=project.id,
+                            name=project.name,
+                            description=project.description,
+                            status=project.status,
+                            create_date=project.create_date,
+                            update_date=project.update_date,
+                            ip_address=project.ip_address,
+                            user=dict(
+                                id=project.owner.id, 
+                                username=project.owner.email),
+                            colaborators=[dict(id=collaborator.user.id, email=collaborator.user.email) 
+                                          for collaborator in project.collaborators],
+                            )
+                      
+                      )
 
         return result
     
