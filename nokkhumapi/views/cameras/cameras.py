@@ -20,9 +20,12 @@ class CameraView(object):
     def get(self):
         matchdict = self.request.matchdict
         extension = matchdict.get('extension')
-        id = int(extension[0])
+        id = extension[0]
         
-        camera = models.Camera.objects(id=id).first()
+        if id.isdigit():
+            camera = models.Camera.objects(id=id, owner=self.request.user).first()
+        else:
+            camera = models.Camera.objects(name=id, owner=self.request.user).first()
         
         if not camera:
             self.request.response.status = '404 Not Found'

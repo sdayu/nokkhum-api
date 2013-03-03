@@ -22,7 +22,9 @@ class Storage:
         file_list = []
         matchdict = self.request.matchdict
         extension = matchdict['extension']
-
+        
+        single_file = False
+        
         if len(extension) == 0 or extension == "/":
             cameras = models.Camera.objects(owner=self.request.user).all()
             for camera in cameras:
@@ -35,10 +37,10 @@ class Storage:
         else:
             uri = extension[1:]
             
-            pos = uri.rfind("/")
-            check = uri[pos+1:] 
-            if check in [".jpg", ".png", ".avi", ".webm", ".webp", ".ogg", ".ogv"]:
-                return self.download()
+#            pos = uri.rfind("/")
+#            check = uri[pos+1:] 
+#            if check in [".jpg", ".png", ".avi", ".webm", ".webp", ".ogg", ".ogv"]:
+#                return self.download()
             
             end_pos = uri.find("/")
             if end_pos > 0:
@@ -59,13 +61,20 @@ class Storage:
     
             prefix = ""
             if len(uri[end_pos+1:]) > 0 and uri[end_pos+1:] != camera_id:
-                prefix = "%s/" % (uri[end_pos+1:])
+                pos = uri.rfind(".")
+                check = uri[pos:] 
+
+                if check in [".jpg", ".png", ".avi", ".webm", ".webp", ".ogg", ".ogv"]:
+                    prefix = uri[end_pos+1:]
+                    single_file = True
+                else:
+                    prefix = "%s/" % (uri[end_pos+1:])
     
             for s3_item in s3_client.list_file(prefix):
                 start_pos = s3_item.rfind("/")
     
                 path = s3_item
-                    
+
                 file_extension = ""
                 pos = path.rfind(".")
                 if pos > 0:
@@ -84,6 +93,7 @@ class Storage:
                             url = urllib.parse.unquote(view_link),
                             file = False
                             )
+                
                 if download_link is not None:
                     item['download'] = urllib.parse.unquote(download_link)
                     item['file'] = True
@@ -91,7 +101,12 @@ class Storage:
                 file_list.append(item)
 
         #self.request.response.headers['Access-Control-Allow-Origin'] = '*'
-        return dict(
+        if single_file:
+            return dict(
+                        file=file_list[0]
+                        )
+        else:
+            return dict(
                     files=file_list,
                     )
         
