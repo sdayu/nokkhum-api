@@ -25,6 +25,19 @@ class Manufactory(object):
         result = {"manufactories":[dict(id=manufactory.id, name=manufactory.name) for manufactory in manufactories]
                   }
         
-        self.request.response.headers['Access-Control-Allow-Origin'] = '*'
-#        print(result)
+        return result
+    
+    @view_config(route_name='manufactories.models', renderer="json", permission="authenticated", request_method='GET')
+    def list_model_by_manufactory(self):
+        matchdict = self.request.matchdict
+        manufactory_id = matchdict.get('manufactory_id')
+        manufactory = models.Manufactory.objects(id=manufactory_id).first()
+        camera_models = models.CameraModel.objects(manufactory=manufactory).all()
+
+        result = dict(
+                      camera_models=[
+                            dict(id=camera_model.id, name=camera_model.name) 
+                                for camera_model in camera_models]
+                  )
+        
         return result
