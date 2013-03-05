@@ -81,14 +81,16 @@ class CamearaOperating(object):
         if not camera:
             self.request.response.status = '404 Not Found'
             return {}
-        result = {"camera":{"id":camera.id}}   
-        result["camera"]["operating"] = dict(
-                                         status=camera.operating.status, 
-                                         last_update=camera.operating.update_date,
-                                         user_command=camera.operating.user_command,
+        result = dict(
+                      camera_operating=dict(
+                            status=camera.operating.status, 
+                            update_date=camera.operating.update_date,
+                            user_command=camera.operating.user_command,
 #                                         compute_node={'id':camera.operating.compute_node._id}
-                                         )
-        self.request.response.headers['Access-Control-Allow-Origin'] = '*'
+                                
+                            )
+                      )
+        
         return result
             
         

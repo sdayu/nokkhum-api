@@ -9,7 +9,8 @@ def add_routes(config):
     
     #authentication
     config.add_route('authentications.tokens', '/authentication/tokens')
-    
+
+    config.add_route('projects.acamera', '/projects/{project_id}/cameras/${camera_id}')    
     config.add_route('projects.cameras', '/projects/{project_id}/cameras')
     config.add_route('projects.collaborators', '/projects/{project_id}/collaborators')
     config.add_route('projects.userprojects', '/users/{user_id}/projects')
@@ -20,6 +21,7 @@ def add_routes(config):
     
     config.add_route('camera_models', '/camera_models*extension')
     config.add_route('manufactories','/manufactories')
+    config.add_route('manufactories.models', '/manufactories/{manufactory_id}/models')
     
     #co_user
     config.add_route('users.list_users', '/co_users/users')

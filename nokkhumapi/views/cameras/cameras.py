@@ -31,28 +31,34 @@ class CameraView(object):
             self.request.response.status = '404 Not Found'
             return {}
         
-        result = {"camera":{}}
-        result["camera"]["id"] = camera.id
-        result["camera"]["username"] = camera.username
-        result["camera"]["password"] = camera.password
-        result["camera"]["name"] = camera.name
-        result["camera"]["host"] = camera.host
-        result["camera"]["port"] = camera.port
-        result["camera"]["video_url"] = camera.video_url
-        result["camera"]["audio_url"] = camera.audio_url
-        result["camera"]["image_url"] = camera.image_url
-        result["camera"]["image_size"] = camera.image_size
-        result["camera"]["fps"] = camera.fps
-        result["camera"]["status"] = camera.status
-        result["camera"]["storage_periods"] = camera.storage_periods
-        result["camera"]["create_date"] = camera.create_date
-        result["camera"]["processors"] = camera.processors
-        result["camera"]["model"] = dict(id=camera.camera_model.id, 
-                                         name=camera.camera_model.name, 
-                                         manufactory=dict(
+        result = dict(
+                      camera=dict(
+                            id= camera.id,
+                            username=camera.username,
+                            password=camera.password,
+                            name=camera.name,
+                            host=camera.host,
+                            port=camera.port,
+                            video_url=camera.video_url,
+                            audio_url=camera.audio_url,
+                            image_url=camera.image_url,
+                            image_size=camera.image_size,
+                            fps=camera.fps,
+                            status=camera.status,
+                            storage_periods=camera.storage_periods,
+                            create_date=camera.create_date,
+                            update_date=camera.update_date,
+                            processors=camera.processors,
+                            model=dict(
+                                    id=camera.camera_model.id, 
+                                    name=camera.camera_model.name, 
+                                    manufactory=dict(
                                                 id=camera.camera_model.manufactory.id, 
-                                                name=camera.camera_model.manufactory.name))
-        self.request.response.headers['Access-Control-Allow-Origin'] = '*'        
+                                                name=camera.camera_model.manufactory.name
+                                                )
+                                    )
+                            )
+                      )
         return result
 
     @view_config(request_method='POST')

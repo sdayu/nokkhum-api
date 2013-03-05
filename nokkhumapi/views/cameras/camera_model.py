@@ -20,12 +20,11 @@ class CameraModels(object):
         matchdict = self.request.matchdict
         extension = matchdict.get('extension')
         id = extension[0]
-        manufactory = models.Manufactory.objects(id=id).first()
-        camera_models = models.CameraModel.objects(manufactory=manufactory).all()
+    
+        camera_model = models.CameraModel.objects(id=id).first()
 
-        self.request.response.headers['Access-Control-Allow-Origin'] = '*'
-        result = {"camera_models":[dict(id=camera_model.id, name=camera_model.name) for camera_model in camera_models]
-                  }
-        
+        result = dict(
+                      camera_model=dict(id=camera_model.id, name=camera_model.name) 
+                  )
         
         return result
