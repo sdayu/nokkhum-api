@@ -34,6 +34,9 @@ def add_routes(config):
     config.add_route('cameras.status', '/cameras/{camera_id}/status')
     config.add_route('cameras', '/cameras*extension')
     
+    # image processor
+    config.add_route('image_processors', '/image_processors')
+    
     #admin
     config.add_route('admin.users.list_users', '/admin/users')
     config.add_route('admin.users.show_users', '/admin/users/{user_id}')

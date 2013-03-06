@@ -16,6 +16,7 @@ class CamearaOperating(object):
         self.request = request
     
     @view_config(request_method='POST')
+    @view_config(request_method='PUT')
     def operate(self):
         matchdict   = self.request.matchdict
         camera_id = matchdict['camera_id']
@@ -55,21 +56,22 @@ class CamearaOperating(object):
         ccq.camera  = camera
         ccq.owner   = self.request.user
         ccq.save()
-        self.request.response.headers['Access-Control-Allow-Origin'] = '*'
-        return {
-                'camera_operating':{
-                           'action':ccq.action,
-                           'id':ccq.id,
-                           'status':ccq.status,
-                           'camera':{
-                                     'id':ccq.camera.id                      
-                                     },
-                            'user':{
-                                    'id':ccq.owner.id
-                                    }
-                           },
-                'result':"success"
-                }
+        print("update success")
+
+        return dict(
+                    camera_operating=dict(
+                           action=ccq.action,
+                           id=ccq.id,
+                           status=ccq.status,
+                           camera=dict(
+                                     id=ccq.camera.id                      
+                                     ),
+                            user=dict(
+                                    id=ccq.owner.id
+                                    )
+                           ),
+                    result="success"
+                )
         
     @view_config(request_method='GET')
     def get(self):
