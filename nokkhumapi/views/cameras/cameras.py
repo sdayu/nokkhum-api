@@ -48,7 +48,11 @@ class CameraView(object):
                             storage_periods=camera.storage_periods,
                             create_date=camera.create_date,
                             update_date=camera.update_date,
-                            processors=camera.processors,
+                            image_processors=camera.processors,
+                            project=dict(
+                                    id=camera.project.id,
+                                    name=camera.project.name
+                                    ),
                             model=dict(
                                     id=camera.camera_model.id, 
                                     name=camera.camera_model.name, 
@@ -80,7 +84,7 @@ class CameraView(object):
         camera.owner    = models.User.objects(id=camera_dict["user"]["id"]).first()
         camera.operating = models.CameraOperating()
         camera.project  = models.Project.objects(id=camera_dict["project"]["id"]).first()
-        camera.processors = camera_dict.get('processors', [])
+        camera.processors = camera_dict.get('image_processors', [])
         camera.camera_model   = models.CameraModel.objects(id=camera_dict["model"]["id"]).first()
 
         if camera.camera_model.name.lower() != "opencv":
@@ -121,8 +125,8 @@ class CameraView(object):
         camera.image_size   = camera_dict["image_size"]
         camera.fps      = camera_dict["fps"]
         camera.storage_periods = camera_dict["storage_periods"]
-        if camera_dict.get('processors'):
-            camera.processors = camera_dict.get('processors')
+        if camera_dict.get('image_processors', None):
+            camera.processors = camera_dict.get('image_processors')
         camera.camera_model    = models.CameraModel.objects(id=camera_dict["model"]["id"]).first()
         
         if camera.camera_model.name.lower() != "opencv":
