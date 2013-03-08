@@ -20,7 +20,8 @@ def add_routes(config):
     config.add_route('users', '/users*extension')
     
     config.add_route('camera_models', '/camera_models*extension')
-    config.add_route('manufactories','/manufactories')
+    config.add_route('manufactories.list','/manufactories')
+    config.add_route('manufactories', '/manufactories/{manufactory_id}')
     config.add_route('manufactories.models', '/manufactories/{manufactory_id}/models')
     
     #co_user
