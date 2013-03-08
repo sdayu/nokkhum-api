@@ -52,20 +52,15 @@ class ProjectView(object):
     @view_config(request_method='POST')   
     def create(self):
         project_dict = self.request.json_body["project"]
-        print("project dict: ", project_dict)
-        print("environ: ", self.request.environ)
-        
-        user_dict = self.request.json_body["project"]["user"]
-        #camera_dict = self.request.json_body["project"]["camera"]
+
         project = models.Project()
-        
         project.name = project_dict["name"]
         project.description = project_dict["description"]
-        project.status = project_dict.get('status', 'Active')
+        project.status = project_dict.get('status', 'active')
         project.create_date = datetime.datetime.now()
         project.update_date = datetime.datetime.now()
         project.ip_address = self.request.environ.get('REMOTE_ADDR', '0.0.0.0')
-        project.owner = models.User.objects(id=user_dict["id"]).first()
+        project.owner = self.request.user
         project.save() 
         
         project_dict["id"] = project.id

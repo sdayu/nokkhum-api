@@ -15,14 +15,25 @@ class Manufactory(object):
     def __init__(self, request):
         self.request = request
         
-    @view_config(request_method='GET')
-    def get(self):
+    @view_config(route_name='manufactories.list', request_method='GET')
+    def _list(self):
         matchdict = self.request.matchdict
         
      
         manufactories = models.Manufactory.objects().all()
 
         result = {"manufactories":[dict(id=manufactory.id, name=manufactory.name) for manufactory in manufactories]
+                  }
+        
+        return result
+    
+    @view_config(request_method='GET')
+    def get(self):
+        matchdict = self.request.matchdict
+        
+        manufactory = models.Manufactory.objects(id=matchdict.get('manufactory_id')).first()
+
+        result = {"manufactory":dict(id=manufactory.id, name=manufactory.name)
                   }
         
         return result
