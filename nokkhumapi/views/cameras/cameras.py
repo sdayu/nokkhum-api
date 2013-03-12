@@ -60,7 +60,11 @@ class CameraView(object):
                                                 id=camera.camera_model.manufactory.id, 
                                                 name=camera.camera_model.manufactory.name
                                                 )
-                                    )
+                                    ),
+                            owner=dict(
+                                       id=camera.owner.id,
+                                       email=camera.owner.email
+                                       )
                             )
                       )
         return result

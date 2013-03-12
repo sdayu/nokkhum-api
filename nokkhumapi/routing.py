@@ -28,29 +28,40 @@ def add_routes(config):
     config.add_route('users.list_users', '/co_users/users')
     config.add_route('users.show_users', '/co_users/users/{user_id}')
     
-    
     #cameras
     config.add_route('cameras.operating', '/cameras/{camera_id}/operating')
     config.add_route('cameras.image_processor', '/cameras/{camera_id}/processors')
     config.add_route('cameras.status', '/cameras/{camera_id}/status')
+    config.add_route('cameras.owner', '/cameras/{camera_id}/owner')
     config.add_route('cameras', '/cameras*extension')
     
     # image processor
     config.add_route('image_processors', '/image_processors')
     
-    #admin
-    config.add_route('admin.users.list_users', '/admin/users')
-    config.add_route('admin.users.show_users', '/admin/users/{user_id}')
-    config.add_route('admin.cameras.list_cameras', '/admin/cameras')
-    config.add_route('admin.cameras.show_cameras', '/admin/cameras/{camera_id}')
+    # storage
+    config.add_route('storage.download', '/storage/download/{token}{extension:.*}')
+    config.add_route('storage', '/storage{extension:.*}')
+    
+    # admin
+    config.add_route('admin.users.list', '/admin/users')
+    config.add_route('admin.users', '/admin/users/{user_id}')
     config.add_route('admin.users.users_status', '/admin/users/status/{status_name}')
     config.add_route('admin.users.set_status', '/admin/users/{user_id}/status/{status_name}')
 #    config.add_route('cameras_post', '/cameras')
 #    config.add_route('cameras_get', '/cameras/{id}')
 #    config.add_route('cameras_delete', '/cameras/{id}')
 
-    # storage
-    config.add_route('storage.download', '/storage/download/{token}{extension:.*}')
-    config.add_route('storage', '/storage{extension:.*}')
+    config.add_route('admin.cameras.list', '/admin/cameras')
+    config.add_route('admin.cameras', '/admin/cameras/{camera_id}')
+    config.add_route('admin.cameras.operating', '/admin/cameras/{camera_id}/operating')
+    
+    config.add_route('admin.command_queue.list', '/admin/camera_command_queue')
+    config.add_route('admin.command_queue', '/admin/camera_command_queue/{command_id}')
+
+    config.add_route('admin.command_log.list', '/admin/command_log')
+    config.add_route('admin.command_log', '/admin/command_log/{command_id}')
+    
+    config.add_route('admin.compute_nodes.list', '/admin/compute_nodes')
+    config.add_route('admin.compute_nodes', '/admin/compute_nodes/{compute_node_id}')
     
     
