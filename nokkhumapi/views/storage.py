@@ -84,7 +84,14 @@ class Storage:
                 
                 download_link = None
                 if len(file_extension) > 0:
-                    download_link = self.request.route_url('storage.download', token=self.request.environ.get('HTTP_X_AUTH_TOKEN', None), extension="/%d/%s"%(camera.id, path))
+                    
+                    if self.request.registry.settings.get('nokkhum.api.ip', None):
+                        download_link = self.request.environ.get('wsgi.url_scheme', "http") + "://"\
+                                        + self.request.registry.settings.get('nokkhum.api.ip', None) \
+                                        + ":" + self.request.environ.get('SERVER_PORT', '80')\
+                                        + self.request.route_path('storage.download', token=self.request.environ.get('HTTP_X_AUTH_TOKEN', None), extension="/%d/%s"%(camera.id, path))
+                    else:
+                        download_link = self.request.route_url('storage.download', token=self.request.environ.get('HTTP_X_AUTH_TOKEN', None), extension="/%d/%s"%(camera.id, path))
                 
                 view_link = self.request.route_path('storage', extension="/%d/%s"%(camera.id, path))
                 
