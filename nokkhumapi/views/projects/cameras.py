@@ -23,7 +23,7 @@ class ProjectCamerasView(object):
         
         project = models.Project.objects(id=project_id).first()
         
-        cameras = models.Camera.objects(project=project).all() 
+        cameras = models.Camera.objects(project=project).order_by("+name").all() 
 
         result = dict(
                       cameras=[dict(id=camera.id, name=camera.name) for camera in cameras]

@@ -25,7 +25,7 @@ class UserProjectsView(object):
             self.request.response.status = '404 Not Found'
             return {'error':{'message':'This user not found.'}}
         
-        projects = models.Project.objects(owner=user).all()
+        projects = models.Project.objects(owner=user).order_by("+name").all()
         collaborate_projects = models.Project.objects(collaborators__user=user).all()
         
         self.request.response.headers['Access-Control-Allow-Origin'] = '*'
