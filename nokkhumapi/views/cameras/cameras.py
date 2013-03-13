@@ -23,9 +23,9 @@ class CameraView(object):
         id = extension[0]
         
         if id.isdigit():
-            camera = models.Camera.objects(id=id, owner=self.request.user).first()
+            camera = models.Camera.objects(id=id, owner=self.request.user).order_by("+name").first()
         else:
-            camera = models.Camera.objects(name=id, owner=self.request.user).first()
+            camera = models.Camera.objects(name=id, owner=self.request.user).order_by("+name").first()
         
         if not camera:
             self.request.response.status = '404 Not Found'
