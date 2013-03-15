@@ -43,10 +43,10 @@ class CamearaOperating(object):
             return {'result':'camera name %s on operation' % camera.id}
 
         
-        camera.operating.status = command_action
-        camera.operating.user_command = user_command
-        camera.update_date = datetime.datetime.now()
-        camera.save()
+#         camera.operating.status = command_action
+#         camera.operating.user_command = user_command
+#         camera.update_date = datetime.datetime.now()
+#         camera.save()
         
         ccq         = models.CameraCommandQueue()
         ccq.command_date = datetime.datetime.now()
