@@ -20,7 +20,7 @@ class Camera:
                                               email=camera.owner.email
                                               )
                                    )
-                              for camera in models.Camera.objects().all()]
+                              for camera in models.Camera.objects().order_by("+id").all()]
                     )
         
     @view_config(request_method="GET")
