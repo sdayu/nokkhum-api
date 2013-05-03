@@ -18,7 +18,7 @@ class UserProjectsView(object):
     @view_config(request_method='GET')
     def get(self):
         matchdict = self.request.matchdict
-        user_id = matchdict.get('user_id')
+        user_id = int(matchdict.get('user_id'))
         
         user = models.User.objects(id=user_id).first()
         if not user:
