@@ -13,7 +13,7 @@ class CommandLog:
     @view_config(route_name='admin.command_log.list', permission='r:admin', renderer='json')
     def list_command(self):
         command_log = models.CommandLog.objects().order_by("-id").limit(30)
-        print("length: ",len(command_log))
+
         results = []
         for cl in command_log:
             item = dict(

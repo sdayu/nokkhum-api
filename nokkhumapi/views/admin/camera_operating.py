@@ -90,8 +90,9 @@ class CamearaOperating(object):
                             user_command=camera.operating.user_command,
                             )
                       )
+
         if camera.operating.compute_node is not None:
-            result["compute_node"] = {'id':camera.operating.compute_node.id} 
+            result["camera_operating"]["compute_node"] = {'id':camera.operating.compute_node.id} 
         
         return result
             

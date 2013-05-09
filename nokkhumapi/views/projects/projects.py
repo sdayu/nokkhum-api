@@ -21,14 +21,12 @@ class ProjectView(object):
         extension = matchdict.get('extension')
         project_id = extension[0]
         
-        if project_id.isdigit():
-            project = models.Project.objects(id=project_id, owner=self.request.user).first()
-        else:
-            project = models.Project.objects(name=project_id, owner=self.request.user).first()
-        
+        project = models.Project.objects(id=project_id, owner=self.request.user).first()
+
         if not project:
             self.request.response.status = '404 Not Found'
             return {}
+        
         result = dict(
                       project=dict(
                             id=project.id,

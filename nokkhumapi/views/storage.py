@@ -31,7 +31,7 @@ class Storage:
                 item = dict(
                             name=str(camera.id),
                             file=False,
-                            url=urllib.parse.unquote(self.request.route_path('storage', extension="/%d"%camera.id))
+                            url=urllib.parse.unquote(self.request.route_path('storage', extension="/%s"%camera.id))
                             )
                 file_list.append(item)
         else:
@@ -57,7 +57,7 @@ class Storage:
 #                self.request.response.status = '403 Forbidden'
 #                return {'result':'user not camera owner or collaborator'}
     
-            s3_client.set_buckket_name(int(camera.id))
+            s3_client.set_buckket_name(str(camera.id))
     
             prefix = ""
             if len(uri[end_pos+1:]) > 0 and uri[end_pos+1:] != camera_id:
@@ -69,8 +69,14 @@ class Storage:
                     single_file = True
                 else:
                     prefix = "%s/" % (uri[end_pos+1:])
-    
-            for s3_item in s3_client.list_file(prefix):
+                    
+            s3_items = []
+            try:
+                s3_items = s3_client.list_file(prefix)
+            except:
+                pass
+            
+            for s3_item in s3_items:
                 start_pos = s3_item.rfind("/")
     
                 path = s3_item
@@ -89,11 +95,11 @@ class Storage:
                         download_link = self.request.environ.get('wsgi.url_scheme', "http") + "://"\
                                         + self.request.registry.settings.get('nokkhum.api.ip', None) \
                                         + ":" + self.request.environ.get('SERVER_PORT', '80')\
-                                        + self.request.route_path('storage.download', token=self.request.environ.get('HTTP_X_AUTH_TOKEN', None), extension="/%d/%s"%(camera.id, path))
+                                        + self.request.route_path('storage.download', token=self.request.environ.get('HTTP_X_AUTH_TOKEN', None), extension="/%s/%s"%(camera.id, path))
                     else:
-                        download_link = self.request.route_url('storage.download', token=self.request.environ.get('HTTP_X_AUTH_TOKEN', None), extension="/%d/%s"%(camera.id, path))
+                        download_link = self.request.route_url('storage.download', token=self.request.environ.get('HTTP_X_AUTH_TOKEN', None), extension="/%s/%s"%(camera.id, path))
                 
-                view_link = self.request.route_path('storage', extension="/%d/%s"%(camera.id, path))
+                view_link = self.request.route_path('storage', extension="/%s/%s"%(camera.id, path))
                 
                 item = dict(
                             name = s3_item[start_pos+1:], 
@@ -183,11 +189,11 @@ class Storage:
             return None
         
         key_name = "%s"%(uri[end_pos+1:])
-        container_dir = "%s/%d/%s"%(cache_dir, camera.id, key_name[:key_name.rfind("/")])
-        file_name = "%s/%d/%s"%(cache_dir, camera.id, key_name)
+        container_dir = "%s/%s/%s"%(cache_dir, camera.id, key_name[:key_name.rfind("/")])
+        file_name = "%s/%s/%s"%(cache_dir, camera.id, key_name)
         
         s3_client = self.request.s3_client
-        s3_client.set_buckket_name(int(camera.id))
+        s3_client.set_buckket_name(str(camera.id))
     
         if not s3_client.is_avialabel(key_name):
             return None

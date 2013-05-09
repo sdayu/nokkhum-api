@@ -18,7 +18,7 @@ class UserProjectsView(object):
     @view_config(request_method='GET')
     def get(self):
         matchdict = self.request.matchdict
-        user_id = int(matchdict.get('user_id'))
+        user_id = matchdict.get('user_id')
         
         user = models.User.objects(id=user_id).first()
         if not user:
@@ -27,8 +27,7 @@ class UserProjectsView(object):
         
         projects = models.Project.objects(owner=user).order_by("+name").all()
         collaborate_projects = models.Project.objects(collaborators__user=user).all()
-        
-        self.request.response.headers['Access-Control-Allow-Origin'] = '*'
+
         result = {
                   "projects":[dict(id=project.id, name=project.name, 
                                    description=project.description, camera_number=project.get_camera_number())
