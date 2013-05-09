@@ -29,7 +29,6 @@ class ProjectCamerasView(object):
                       cameras=[dict(id=camera.id, name=camera.name) for camera in cameras]
                     )
                       
-        
         return result
     
 @view_defaults(route_name='projects.acamera', renderer="json", permission="authenticated")

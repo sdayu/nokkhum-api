@@ -22,10 +22,7 @@ class CameraView(object):
         extension = matchdict.get('extension')
         id = extension[0]
         
-        if id.isdigit():
-            camera = models.Camera.objects(id=id, owner=self.request.user).order_by("+name").first()
-        else:
-            camera = models.Camera.objects(name=id, owner=self.request.user).order_by("+name").first()
+        camera = models.Camera.objects(id=id, owner=self.request.user).order_by("+name").first()
         
         if not camera:
             self.request.response.status = '404 Not Found'
@@ -112,7 +109,7 @@ class CameraView(object):
     def update(self):
         matchdict = self.request.matchdict
         extension = matchdict.get('extension')
-        id = int(extension[0])
+        id = extension[0]
         
         camera = models.Camera.objects(id=id).first()
         if not camera:
@@ -155,7 +152,7 @@ class CameraView(object):
     def delete(self):
         matchdict = self.request.matchdict
         extension = matchdict.get('extension')
-        id = int(extension[0])
+        id = extension[0]
         
         camera = models.Camera.objects(id=id).first()
         if not camera:

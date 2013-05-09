@@ -26,9 +26,48 @@ class Camera:
     @view_config(request_method="GET")
     def get(self):
         matchdict = self.request.matchdict
-        camera_id = int(matchdict['id'])
+        camera_id = matchdict.get('camera_id')
         camera= models.Camera.objects(id=camera_id).first()
         
-        return dict(
-                    camera=camera
-                    )
+        if not camera:
+            self.request.response.status = '404 Not Found'
+            return {}
+        
+        result = dict(
+                      camera=dict(
+                            id= camera.id,
+                            username=camera.username,
+                            password=camera.password,
+                            name=camera.name,
+                            host=camera.host,
+                            port=camera.port,
+                            video_url=camera.video_url,
+                            audio_url=camera.audio_url,
+                            image_url=camera.image_url,
+                            image_size=camera.image_size,
+                            fps=camera.fps,
+                            status=camera.status,
+                            storage_periods=camera.storage_periods,
+                            create_date=camera.create_date,
+                            update_date=camera.update_date,
+                            image_processors=camera.processors,
+                            project=dict(
+                                    id=camera.project.id,
+                                    name=camera.project.name
+                                    ),
+                            model=dict(
+                                    id=camera.camera_model.id, 
+                                    name=camera.camera_model.name, 
+                                    manufactory=dict(
+                                                id=camera.camera_model.manufactory.id, 
+                                                name=camera.camera_model.manufactory.name
+                                                )
+                                    ),
+                            owner=dict(
+                                       id=camera.owner.id,
+                                       email=camera.owner.email
+                                       )
+                            )
+                            
+                      )
+        return result

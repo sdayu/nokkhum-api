@@ -44,9 +44,9 @@ class CamearaOperating(object):
 
         
 #         camera.operating.status = command_action
-#         camera.operating.user_command = user_command
-#         camera.update_date = datetime.datetime.now()
-#         camera.save()
+        camera.operating.user_command = user_command
+        camera.update_date = datetime.datetime.now()
+        camera.save()
         
         ccq         = models.CameraCommandQueue()
         ccq.command_date = datetime.datetime.now()
@@ -56,7 +56,6 @@ class CamearaOperating(object):
         ccq.camera  = camera
         ccq.owner   = self.request.user
         ccq.save()
-        print("update success")
 
         return dict(
                     camera_operating=dict(

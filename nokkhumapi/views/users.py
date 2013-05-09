@@ -19,7 +19,7 @@ class UserView(object):
     def get(self):
         matchdict = self.request.matchdict
         extension = matchdict.get('extension')
-        id = int(extension[0])
+        id = extension[0]
         
         user = models.User.objects(id=id).first()
         
@@ -62,7 +62,7 @@ class UserView(object):
     def update(self):
         matchdict = self.request.matchdict
         extension = matchdict.get('extension')
-        id = int(extension[0])
+        id = extension[0]
         
         user = models.User.objects(id=id).first()
         
@@ -84,7 +84,7 @@ class UserView(object):
     def delete(self):
         matchdict = self.request.matchdict
         extension = matchdict.get('extension')
-        id = int(extension[0])
+        id = extension[0]
     
         user = models.User.objects(id=id).first()
         if not user:
