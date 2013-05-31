@@ -38,8 +38,8 @@ class ComputeNode:
                                      machine=compute_node.machine,
                                      cpu=dict(
                                               count=compute_node.cpu.count,
-                                              usage=compute_node.cpu.usage,
-                                              usage_per_cpu=compute_node.cpu.usage_per_cpu
+                                              used=compute_node.cpu.used,
+                                              used_per_cpu=compute_node.cpu.used_per_cpu
                                               ),
                                      memory=dict(
                                                 total=compute_node.memory.total,
