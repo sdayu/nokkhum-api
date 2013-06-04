@@ -45,6 +45,11 @@ class ComputeNode:
                                                 total=compute_node.memory.total,
                                                 used=compute_node.memory.used,
                                                 free=compute_node.memory.free,
+                                                 ),
+                                     disk=dict(
+                                                total=compute_node.disk.total,
+                                                used=compute_node.disk.used,
+                                                free=compute_node.disk.free,
                                                  )
                                      )
                     )
