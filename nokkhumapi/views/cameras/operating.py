@@ -76,7 +76,7 @@ class CamearaOperating(object):
     def get(self):
         matchdict = self.request.matchdict
         camera_id = matchdict.get('camera_id')
-
+        
         camera = models.Camera.objects(id=camera_id).first()
 
         if not camera:

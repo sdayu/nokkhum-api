@@ -12,6 +12,7 @@ def add_routes(config):
 
     config.add_route('projects.acamera', '/projects/{project_id}/cameras/${camera_id}')    
     config.add_route('projects.cameras', '/projects/{project_id}/cameras')
+    config.add_route('projects.processors', '/projects/{project_id}/processors')
     config.add_route('projects.collaborators', '/projects/{project_id}/collaborators')
     config.add_route('projects.userprojects', '/users/{user_id}/projects')
     config.add_route('projects', '/projects*extension')
@@ -35,6 +36,10 @@ def add_routes(config):
     config.add_route('cameras.owner', '/cameras/{camera_id}/owner')
     config.add_route('cameras', '/cameras*extension')
     
+    # processor
+    config.add_route('processors.processors', '/processors/{processor_id}')
+    config.add_route('processors.create_list', '/processors')
+    
     # image processor
     config.add_route('image_processors', '/image_processors')
     
@@ -47,9 +52,6 @@ def add_routes(config):
     config.add_route('admin.users', '/admin/users/{user_id}')
     config.add_route('admin.users.users_status', '/admin/users/status/{status_name}')
     config.add_route('admin.users.set_status', '/admin/users/{user_id}/status/{status_name}')
-#    config.add_route('cameras_post', '/cameras')
-#    config.add_route('cameras_get', '/cameras/{id}')
-#    config.add_route('cameras_delete', '/cameras/{id}')
 
     config.add_route('admin.cameras.list', '/admin/cameras')
     config.add_route('admin.cameras', '/admin/cameras/{camera_id}')

@@ -60,7 +60,8 @@ def main(argv=sys.argv):
     print ("initial default manufatories and camera models")
     manufactories = {
                      'Generic': ['OpenCV'],
-                     'D-Link':['DCS-930L']
+                     'D-Link':['DCS-930L'],
+                     'Axis':['default']
                      }
    
     for manu_name in manufactories:
