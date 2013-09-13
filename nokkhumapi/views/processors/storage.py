@@ -5,7 +5,7 @@ from pyramid.view import view_defaults
 from pyramid.response import Response, FileResponse
 from pyramid.security import authenticated_userid
 
-from .. import models
+from nokkhumapi import models
 
 import os
 import urllib
