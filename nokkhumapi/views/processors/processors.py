@@ -17,13 +17,25 @@ class ProcessorView(object):
     def __init__(self, request):
         self.request = request
     
-    def build_results(self, processor):
+    def build_result(self, processor):
+        processor_operating=dict(
+                             user_command=processor.operating.user_command,
+                             status=processor.operating.status,
+                             update_date=processor.operating.update_date,
+                             )
+        if processor.operating.compute_node:
+            processor_operating['compute_node']=dict(
+                                               id=processor.operating.compute_node.id,
+                                               name=processor.operating.compute_node.name
+                                               )
         result = dict(
                       id=processor.id,
                       name=processor.name,
                       storage_period=processor.storage_period,
+                      image_processors=processor.image_processors,
                       create_date=processor.create_date,
                       update_date=processor.update_date,
+                      status=processor.status,
                       project=dict(
                             id=processor.project.id,
                             name=processor.project.name
@@ -31,8 +43,11 @@ class ProcessorView(object):
                       owner=dict(
                             id=processor.owner.id,
                             email=processor.owner.email
-                            )
+                            ),
+                      cameras=[dict(id=camera.id, name=camera.name) for camera in processor.cameras],
+                      processor_operating=processor_operating
                       )
+#         print("result:", result)
         return result
     
     @view_config(route_name="processors.create_list", request_method='GET')
@@ -44,7 +59,7 @@ class ProcessorView(object):
          
         results = dict(processors=list())
         for processor in processors:
-            results['processors'].append(self.build_results(processor))
+            results['processors'].append(self.build_result(processor))
          
         return results
     
@@ -64,15 +79,15 @@ class ProcessorView(object):
             camera = models.Camera.objects(id=camera_attribute['id']).first()
             processor.cameras.append(camera)
         
-
+        print("input create:", processor_dict)
         processor.save()
         processor.reload()
         
         return dict(
-                    processor=self.build_results(processor)
+                    processor=self.build_result(processor)
                     )
         
-    @view_config(request_method='POST')
+    @view_config(request_method='PUT')
     def update(self):
         matchdict = self.request.matchdict
         processor_id = matchdict.get('processor_id')
@@ -98,7 +113,7 @@ class ProcessorView(object):
         processor.reload()
         
         return dict(
-                    processor=self.build_results(processor)
+                    processor=self.build_result(processor)
                     )
         
     @view_config(request_method='GET')
@@ -113,7 +128,7 @@ class ProcessorView(object):
             return {}
         
         return dict(
-                    processor=self.build_results(processor)
+                    processor=self.build_result(processor)
                     )
     
     @view_config(request_method='DELETE')

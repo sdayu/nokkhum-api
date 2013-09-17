@@ -26,12 +26,12 @@ class Storage:
         single_file = False
         
         if len(extension) == 0 or extension == "/":
-            cameras = models.Camera.objects(owner=self.request.user).all()
-            for camera in cameras:
+            processors = models.Camera.objects(owner=self.request.user).all()
+            for processor in processors:
                 item = dict(
-                            name=str(camera.id),
+                            name=str(processor.id),
                             file=False,
-                            url=urllib.parse.unquote(self.request.route_path('storage', extension="/%s"%camera.id))
+                            url=urllib.parse.unquote(self.request.route_path('storage', extension="/%s"%processor.id))
                             )
                 file_list.append(item)
         else:
@@ -44,23 +44,23 @@ class Storage:
             
             end_pos = uri.find("/")
             if end_pos > 0:
-                camera_id = uri[:end_pos]
+                processor_id = uri[:end_pos]
             else:
-                camera_id = uri
-    #        print "camera name: ", camera_name
-            # camera = models.Camera.objects(owner=self.request.user, id=camera_id).first()
-            camera = models.Camera.objects(id=camera_id).first()
-#            if camera.owner!=self.request.user:
-#                for collaborator in camera.project.collaborators:
+                processor_id = uri
+    #        print "processor name: ", processor_name
+            # processor = models.Camera.objects(owner=self.request.user, id=processor_id).first()
+            processor = models.Processor.objects(id=processor_id).first()
+#            if processor.owner!=self.request.user:
+#                for collaborator in processor.project.collaborators:
 #                    if collaborator.user == self.request.user:
 #                        break
 #                self.request.response.status = '403 Forbidden'
-#                return {'result':'user not camera owner or collaborator'}
+#                return {'result':'user not processor owner or collaborator'}
     
-            s3_client.set_buckket_name(str(camera.id))
+            s3_client.set_buckket_name(str(processor.id))
     
             prefix = ""
-            if len(uri[end_pos+1:]) > 0 and uri[end_pos+1:] != camera_id:
+            if len(uri[end_pos+1:]) > 0 and uri[end_pos+1:] != processor_id:
                 pos = uri.rfind(".")
                 check = uri[pos:] 
 
@@ -74,6 +74,7 @@ class Storage:
             try:
                 s3_items = s3_client.list_file(prefix)
             except:
+                print("file item not found")
                 pass
             
             for s3_item in s3_items:
@@ -95,11 +96,11 @@ class Storage:
                         download_link = self.request.environ.get('wsgi.url_scheme', "http") + "://"\
                                         + self.request.registry.settings.get('nokkhum.api.ip', None) \
                                         + ":" + self.request.environ.get('SERVER_PORT', '80')\
-                                        + self.request.route_path('storage.download', token=self.request.environ.get('HTTP_X_AUTH_TOKEN', None), extension="/%s/%s"%(camera.id, path))
+                                        + self.request.route_path('storage.download', token=self.request.environ.get('HTTP_X_AUTH_TOKEN', None), extension="/%s/%s"%(processor.id, path))
                     else:
-                        download_link = self.request.route_url('storage.download', token=self.request.environ.get('HTTP_X_AUTH_TOKEN', None), extension="/%s/%s"%(camera.id, path))
+                        download_link = self.request.route_url('storage.download', token=self.request.environ.get('HTTP_X_AUTH_TOKEN', None), extension="/%s/%s"%(processor.id, path))
                 
-                view_link = self.request.route_path('storage', extension="/%s/%s"%(camera.id, path))
+                view_link = self.request.route_path('storage', extension="/%s/%s"%(processor.id, path))
                 
                 item = dict(
                             name = s3_item[start_pos+1:], 
@@ -131,20 +132,20 @@ class Storage:
         uri = extension[1:]
         end_pos = uri.find("/")
         if end_pos > 0:
-            camera_id = uri[:end_pos]
+            processor_id = uri[:end_pos]
         else:
-            camera_id = uri
+            processor_id = uri
 
-        camera = models.Camera.objects(owner=self.request.user, id=camera_id).first()
+        processor = models.Camera.objects(owner=self.request.user, id=processor_id).first()
 
-        if camera is None:
+        if processor is None:
             self.request.response.status = '404 Not Found'
             return {'result':'file not found'}
         
         key_name = "%s"%(uri[end_pos+1:])
         
         s3_client = self.request.s3_client
-        s3_client.set_buckket_name(int(camera.id))
+        s3_client.set_buckket_name(int(processor.id))
         s3_client.delete(key_name)
         
         
@@ -167,33 +168,33 @@ class Storage:
             
             user = token.user
         
-        camera_id = ""
+        processor_id = ""
         
         uri = extension[1:]
         end_pos = uri.find("/")
         
         if end_pos > 0:
-            camera_id = uri[:end_pos]
+            processor_id = uri[:end_pos]
         else:
-            camera_id = uri
+            processor_id = uri
         
-        # camera = models.Camera.objects(owner=self.request.user, id=camera_id).first()
-        camera = models.Camera.objects(id=camera_id).first()
-#        if camera.owner!=self.request.user:
-#            for collaborator in camera.project.collaborators:
+        # processor = models.Camera.objects(owner=self.request.user, id=processor_id).first()
+        processor = models.Processor.objects(id=processor_id).first()
+#        if processor.owner!=self.request.user:
+#            for collaborator in processor.project.collaborators:
 #                if collaborator.user == self.request.user:
 #                    break
 #            self.request.response.status = '403 Forbidden'
-#            return {'result':'user not camera owner or collaborator'}
-        if camera is None:
+#            return {'result':'user not processor owner or collaborator'}
+        if processor is None:
             return None
         
         key_name = "%s"%(uri[end_pos+1:])
-        container_dir = "%s/%s/%s"%(cache_dir, camera.id, key_name[:key_name.rfind("/")])
-        file_name = "%s/%s/%s"%(cache_dir, camera.id, key_name)
+        container_dir = "%s/%s/%s"%(cache_dir, processor.id, key_name[:key_name.rfind("/")])
+        file_name = "%s/%s/%s"%(cache_dir, processor.id, key_name)
         
         s3_client = self.request.s3_client
-        s3_client.set_buckket_name(str(camera.id))
+        s3_client.set_buckket_name(str(processor.id))
     
         if not s3_client.is_avialabel(key_name):
             return None

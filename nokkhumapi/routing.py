@@ -30,7 +30,6 @@ def add_routes(config):
     config.add_route('users.show_users', '/co_users/users/{user_id}')
     
     #cameras
-    config.add_route('cameras.operating', '/cameras/{camera_id}/operating')
     config.add_route('cameras.image_processor', '/cameras/{camera_id}/processors')
     config.add_route('cameras.status', '/cameras/{camera_id}/status')
     config.add_route('cameras.owner', '/cameras/{camera_id}/owner')
@@ -39,6 +38,8 @@ def add_routes(config):
     # processor
     config.add_route('processors.processors', '/processors/{processor_id}')
     config.add_route('processors.create_list', '/processors')
+    config.add_route('processors.cameras', '/processors/{processor_id}/cameras')
+    config.add_route('processors.operating', '/processors/{processor_id}/operating')
     
     # image processor
     config.add_route('image_processors', '/image_processors')
