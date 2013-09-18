@@ -13,7 +13,7 @@ from nokkhumapi import models
 
 USER_STATUS = ['active', 'deactivate', 'delete']
 
-@view_config(route_name='admin.users.users_status', renderer='json', permission="r:admin", request_method='GET')
+@view_config(route_name='admin.users.users_status', renderer='json', permission="role:admin", request_method='GET')
 def list_user_by_status(request):
     matchdict = request.matchdict
     status_name = matchdict['status_name']
@@ -29,7 +29,7 @@ def list_user_by_status(request):
             users=[dict(id=user.id, email=user.email) for user in users]
             )
 
-@view_config(route_name='admin.users.set_status', renderer='json', permission="r:admin", request_method='POST')
+@view_config(route_name='admin.users.set_status', renderer='json', permission="role:admin", request_method='POST')
 def set_user_status(request):
     matchdict = request.matchdict
     user_id = matchdict['user_id']

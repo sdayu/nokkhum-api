@@ -5,21 +5,24 @@ from pyramid.security import authenticated_userid
 
 from nokkhumapi import models
 
-@view_defaults(route_name='admin.compute_nodes', permission='r:admin', renderer="json")
+@view_defaults(route_name='admin.compute_nodes', permission='role:admin', renderer="json")
 class ComputeNode:
     def __init__(self, request):
         self.request = request
         
-    @view_config(route_name='admin.compute_nodes.list', permission='r:admin', renderer='json')
+    @view_config(route_name='admin.compute_nodes.list', permission='role:admin', renderer='json')
     def list_compute_node(self):
         compute_nodes = models.ComputeNode.objects().all()
-        return dict(
+        result = dict(
                     compute_nodes = [ dict(
                                            id=compute_node.id,
                                            name=compute_node.name
                                            )
                                      for compute_node in compute_nodes]
                     )
+        
+        print("result:", result)
+        return result
         
     @view_config(request_method="GET")
     def show(self):

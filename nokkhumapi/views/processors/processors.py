@@ -79,7 +79,6 @@ class ProcessorView(object):
             camera = models.Camera.objects(id=camera_attribute['id']).first()
             processor.cameras.append(camera)
         
-        print("input create:", processor_dict)
         processor.save()
         processor.reload()
         

@@ -9,7 +9,7 @@ from pyramid.response import Response
 
 from nokkhumapi import models
 
-@view_defaults(route_name='admin.camera_running_fail', permission='r:admin', renderer='json')
+@view_defaults(route_name='admin.camera_running_fail', permission='role:admin', renderer='json')
 class CameraRunningFail:
     def __init__(self, request):
         self.request = request
