@@ -46,13 +46,23 @@ class Processor:
 #         print("result:", result)
         return result
     
-    @view_config(route_name="admin.processors.list")
+    @view_config(route_name="admin.processors.list", request_method="GET")
     def list_processor(self):
         processors = models.Processor.objects().all()
         result = dict(
                 processors=[ self.build_result(processor)
                   for processor in processors
                   ]   
+                )
+        
+        return result
+    
+    @view_config(request_method="GET")
+    def get(self):
+        processor_id = self.request.matchdict['processor_id']
+        processor = models.Processor.objects().with_id(processor_id)
+        result = dict(
+                processor=self.build_result(processor)  
                 )
         
         return result
