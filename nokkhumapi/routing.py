@@ -58,8 +58,15 @@ def add_routes(config):
     config.add_route('admin.cameras', '/admin/cameras/{camera_id}')
     config.add_route('admin.cameras.operating', '/admin/cameras/{camera_id}/operating')
     
-    config.add_route('admin.command_queue.list', '/admin/camera_command_queue')
-    config.add_route('admin.command_queue', '/admin/camera_command_queue/{command_id}')
+    config.add_route('admin.processors.list', '/admin/processors')
+    config.add_route('admin.processors', '/admin/processors/{processor_id}')
+    config.add_route('admin.processors.operating', '/admin/processors/{processor_id}/operating')
+    
+    config.add_route('admin.processor_commands.list', '/admin/processor_commands')
+    config.add_route('admin.processor_commands', '/admin/processor_commands/{processor_command_id}')
+    
+    config.add_route('admin.command_queue.list', '/admin/processor_command_queue')
+    config.add_route('admin.command_queue', '/admin/processor_command_queue/{command_id}')
 
     config.add_route('admin.command_log.list', '/admin/command_log')
     config.add_route('admin.command_log', '/admin/command_log/{command_id}')

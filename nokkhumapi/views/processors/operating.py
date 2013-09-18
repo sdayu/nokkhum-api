@@ -27,7 +27,7 @@ class ProcessorOperating(object):
             self.request.response.status = '404 Not Found'
             return {'result':"camera not found id: %s"%processor_id}
         
-        operating = self.request.json_body["camera_operating"]["action"]
+        operating = self.request.json_body["processor_operating"]["action"]
         command_action  = 'no-command'
         user_command    = 'undefined'
         if operating == 'start':
@@ -37,10 +37,10 @@ class ProcessorOperating(object):
             command_action = 'stop'
             user_command = 'suspend'
         
-        ccq = models.ProcessorCommandQueue.objects(owner=self.request.user, processor=processor, action=command_action).first()
-        if ccq is not None:
+        pcq = models.ProcessorCommandQueue.objects(processor_command__owner=self.request.user, processor_command__processor=processor, processor_command__action=command_action).first()
+        if pcq is not None:
             self.request.response.status = '406 Not Acceptable'
-            return {'result':'camera name %s on operation' % processor.id}
+            return {'result':'processor name %s on operation' % processor.id}
 
         
 #         camera.operating.status = command_action
@@ -48,25 +48,29 @@ class ProcessorOperating(object):
         processor.update_date = datetime.datetime.now()
         processor.save()
         
-        ccq         = models.ProcessorCommandQueue()
-        ccq.command_date = datetime.datetime.now()
-        ccq.update_date = datetime.datetime.now()
-        ccq.action  = command_action
-        ccq.status  = 'waiting'
-        ccq.processor  = processor
-        ccq.owner   = self.request.user
-        ccq.save()
+        pc          = models.ProcessorCommand()
+        pc.command_date = datetime.datetime.now()
+        pc.update_date = datetime.datetime.now()
+        pc.action  = command_action
+        pc.status  = 'waiting'
+        pc.processor  = processor
+        pc.owner   = self.request.user
+        
+        pcq         = models.ProcessorCommandQueue()
+        pcq.processor_command = pc
+        pcq.save()
+        pcq.reload()
 
         return dict(
-                    camera_operating=dict(
-                           action=ccq.action,
-                           id=ccq.id,
-                           status=ccq.status,
-                           camera=dict(
-                                     id=ccq.camera.id                      
+                    processor_operating=dict(
+                           action=pc.action,
+                           id=pcq.id,
+                           status=pc.status,
+                           processor=dict(
+                                     id=pc.processor.id                      
                                      ),
                             user=dict(
-                                    id=ccq.owner.id
+                                    id=pc.owner.id
                                     )
                            ),
                     result="success"

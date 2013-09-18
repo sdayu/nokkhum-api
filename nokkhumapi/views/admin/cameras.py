@@ -4,22 +4,54 @@ from pyramid.response import Response
 from pyramid.security import authenticated_userid
 from nokkhumapi import models
 
-@view_defaults(route_name='admin.cameras', permission='r:admin', renderer='json')
+@view_defaults(route_name='admin.cameras', permission='role:admin', renderer='json')
 class Camera:
     def __init__(self, request):
         self.request = request
         
+    def build_camera_result(self, camera):
+        result = dict(
+                   dict(
+                        id= camera.id,
+                        username=camera.username,
+                        password=camera.password,
+                        name=camera.name,
+                        host=camera.host,
+                        port=camera.port,
+                        video_url=camera.video_url,
+                        audio_url=camera.audio_url,
+                        image_url=camera.image_url,
+                        image_size=camera.image_size,
+                        fps=camera.fps,
+                        status=camera.status,
+                        create_date=camera.create_date,
+                        update_date=camera.update_date,
+                        project=dict(
+                                id=camera.project.id,
+                                name=camera.project.name
+                                ),
+                        model=dict(
+                                id=camera.camera_model.id, 
+                                name=camera.camera_model.name, 
+                                manufactory=dict(
+                                            id=camera.camera_model.manufactory.id, 
+                                            name=camera.camera_model.manufactory.name
+                                            )
+                                ),
+                        owner=dict(
+                                   id=camera.owner.id,
+                                   email=camera.owner.email
+                                   )
+                        )
+                      
+            )
+        
+        return result
+        
     @view_config(route_name='admin.cameras.list')
     def list_camera(self):
         return dict(
-                    cameras= [dict(
-                                   id=camera.id, 
-                                   name=camera.name,
-                                   owner=dict(
-                                              id=camera.owner.id,
-                                              email=camera.owner.email
-                                              )
-                                   )
+                    cameras= [self.build_camera_result(camera)
                               for camera in models.Camera.objects().order_by("+id").all()]
                     )
         
@@ -34,40 +66,6 @@ class Camera:
             return {}
         
         result = dict(
-                      camera=dict(
-                            id= camera.id,
-                            username=camera.username,
-                            password=camera.password,
-                            name=camera.name,
-                            host=camera.host,
-                            port=camera.port,
-                            video_url=camera.video_url,
-                            audio_url=camera.audio_url,
-                            image_url=camera.image_url,
-                            image_size=camera.image_size,
-                            fps=camera.fps,
-                            status=camera.status,
-                            storage_periods=camera.storage_periods,
-                            create_date=camera.create_date,
-                            update_date=camera.update_date,
-                            image_processors=camera.processors,
-                            project=dict(
-                                    id=camera.project.id,
-                                    name=camera.project.name
-                                    ),
-                            model=dict(
-                                    id=camera.camera_model.id, 
-                                    name=camera.camera_model.name, 
-                                    manufactory=dict(
-                                                id=camera.camera_model.manufactory.id, 
-                                                name=camera.camera_model.manufactory.name
-                                                )
-                                    ),
-                            owner=dict(
-                                       id=camera.owner.id,
-                                       email=camera.owner.email
-                                       )
-                            )
-                            
+                      camera=self.build_camera_result(camera)
                       )
         return result

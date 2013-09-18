@@ -5,12 +5,12 @@ from pyramid.security import authenticated_userid
 
 from nokkhumapi import models
 
-@view_defaults(route_name='admin.command_log', permission='r:admin', renderer='json')
+@view_defaults(route_name='admin.command_log', permission='role:admin', renderer='json')
 class CommandLog:
     def __init__(self, request):
         self.request = request
         
-    @view_config(route_name='admin.command_log.list', permission='r:admin', renderer='json')
+    @view_config(route_name='admin.command_log.list', permission='role:admin', renderer='json')
     def list_command(self):
         command_log = models.CommandLog.objects().order_by("-id").limit(30)
 
