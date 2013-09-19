@@ -62,7 +62,7 @@ class ProcessorOperating(object):
         pcq.save()
         pcq.reload()
         
-        processor.operating.user_command_log.append(pcq.id)
+        processor.operating.user_command_log.append(pcq.processor_command.id)
         processor.save()
         processor.reload()
 

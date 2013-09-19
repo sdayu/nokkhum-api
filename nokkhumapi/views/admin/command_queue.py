@@ -15,7 +15,7 @@ class ProcessorCommandQueue:
         result = dict(
                        id=command_queue.id,
                        processor_command=dict(
-                            id=command_queue.id,
+                            id=command_queue.processor_command.id,
                             processor=dict(
                                 id=command_queue.processor_command.processor.id,
                                 name=command_queue.processor_command.processor.name

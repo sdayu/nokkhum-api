@@ -19,17 +19,18 @@ class ProcessorCommand:
     def build_processor_command(self, processor_command):
         result = dict(
                         id=processor_command.id,
-                        action=processor_command.processor_command.action,
-                        status=processor_command.processor_command.status,
-                        command_date=processor_command.processor_command.command_date,
-                        update_date=processor_command.processor_command.update_date,
-                        message=processor_command.processor_command.message,
+                        action=processor_command.action,
+                        status=processor_command.status,
+                        command_date=processor_command.command_date,
+                        update_date=processor_command.update_date,
+                        message=processor_command.message,
+                        command_type=processor_command.command_type,
                         processor=dict(
-                           id=processor_command.processor_command.processor.id
+                           id=processor_command.processor.id
                            ),
                         owner=dict(
-                          id=processor_command.processor_command.owner.id,
-                          email=processor_command.processor_command.owner.email
+                          id=processor_command.owner.id,
+                          email=processor_command.owner.email
                           ),
                         )
         return result
@@ -38,9 +39,9 @@ class ProcessorCommand:
     def get(self):
         processor_command_id = self.request.matchdict['processor_command_id']
         
-        command = models.ProcessorCommandQueue.objects().with_id(processor_command_id)
+        command = models.ProcessorCommandQueue.objects(processor_command__id=processor_command_id).first()
         result = dict(
-                    processor_command = self.build_processor_command(command)
+                    processor_command = self.build_processor_command(command.processor_command)
                 )
         
         return result
