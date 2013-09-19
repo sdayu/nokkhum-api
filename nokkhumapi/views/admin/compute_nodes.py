@@ -21,7 +21,6 @@ class ComputeNode:
                                      for compute_node in compute_nodes]
                     )
         
-        print("result:", result)
         return result
         
     @view_config(request_method="GET")
