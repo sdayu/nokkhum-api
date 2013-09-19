@@ -36,7 +36,7 @@ class ProcessorCommand:
     
     @view_config(request_method="GET") 
     def get(self):
-        processor_command_id = int(self.request.matchdict['processor_command_id'])
+        processor_command_id = self.request.matchdict['processor_command_id']
         
         command = models.ProcessorCommandQueue.objects().with_id(processor_command_id)
         result = dict(
