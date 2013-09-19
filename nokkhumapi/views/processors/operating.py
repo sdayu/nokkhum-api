@@ -53,6 +53,7 @@ class ProcessorOperating(object):
         pc.update_date = datetime.datetime.now()
         pc.action  = command_action
         pc.status  = 'waiting'
+        pc.command_type = 'user'
         pc.processor  = processor
         pc.owner   = self.request.user
         
@@ -60,6 +61,10 @@ class ProcessorOperating(object):
         pcq.processor_command = pc
         pcq.save()
         pcq.reload()
+        
+        processor.operating.user_command_log.append(pcq.id)
+        processor.save()
+        processor.reload()
 
         return dict(
                     processor_operating=dict(

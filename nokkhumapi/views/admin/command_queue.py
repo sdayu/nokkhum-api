@@ -41,7 +41,7 @@ class ProcessorCommandQueue:
     @view_config(request_method="GET")
     def get(self):
         matchdict = self.request.matchdict
-        command_id = int(matchdict['command_id'])
+        command_id = matchdict['command_id']
         command = models.ProcessorCommandQueue.objects().with_id(command_id)
 
         return dict(

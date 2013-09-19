@@ -74,7 +74,9 @@ def add_routes(config):
     config.add_route('admin.compute_nodes.list', '/admin/compute_nodes')
     config.add_route('admin.compute_nodes', '/admin/compute_nodes/{compute_node_id}')
     
-    config.add_route('admin.camera_running_fail.list', '/admin/camera_running_fail')
-    config.add_route('admin.camera_running_fail', '/admin/camera_running_fail/{compute_node_id}')
+    config.add_route('admin.processor_running_fail.list', '/admin/processor_running_fail')
+    config.add_route('admin.processor_running_fail', '/admin/processor_running_fail/{log_id}')
     
-    
+    # administration cache manager
+    config.add_route('admin.cache', '/admin/cache')
+ 
