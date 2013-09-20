@@ -12,6 +12,13 @@ class ProcessorCommandQueue:
         self.request = request
     
     def build_processor_command_queue(self, command_queue):
+        owner = None
+        
+        if command_queue.processor_command.owner:
+            owner=dict(
+                       id=command_queue.processor_command.owner.id
+                    )
+        
         result = dict(
                        id=command_queue.id,
                        processor_command=dict(
@@ -20,9 +27,7 @@ class ProcessorCommandQueue:
                                 id=command_queue.processor_command.processor.id,
                                 name=command_queue.processor_command.processor.name
                             ),
-                            owner=dict(
-                                id=command_queue.processor_command.owner.id
-                            )
+                            owner=owner
                         )
                     )
         return result
