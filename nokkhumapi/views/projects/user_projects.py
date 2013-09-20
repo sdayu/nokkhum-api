@@ -29,8 +29,12 @@ class UserProjectsView(object):
         collaborate_projects = models.Project.objects(collaborators__user=user).all()
 
         result = {
-                  "projects":[dict(id=project.id, name=project.name, 
-                                   description=project.description, camera_number=project.get_camera_number())
+                  "projects":[dict(id=project.id, 
+                                   name=project.name, 
+                                   description=project.description, 
+                                   camera_number=project.get_camera_number(),
+                                   processor_number=project.get_processor_number()
+                                   )
                                for project in projects],
                   "collaborate_projects":[dict(id=project.id, name=project.name, description=project.description) for project in collaborate_projects]
                   }

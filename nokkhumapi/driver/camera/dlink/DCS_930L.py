@@ -8,10 +8,10 @@ from .base_driver import DLinkCamera
 
 class DLink_DCS_930L(DLinkCamera):
     
-    def get_video_url(self, extension=''):
-        url = super().get_video_url() + extension
+    def get_video_uri(self, extension=''):
+        url = super().get_video_uri() + extension
         return url
     
-    def get_image_url(self):
-        url = super().get_image_url()
+    def get_image_uri(self):
+        url = super().get_image_uri()
         return url

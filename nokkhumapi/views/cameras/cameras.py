@@ -19,10 +19,9 @@ class CameraView(object):
     @view_config(request_method='GET')
     def get(self):
         matchdict = self.request.matchdict
-        extension = matchdict.get('extension')
-        id = extension[0]
+        camera_id = matchdict.get('camera_id')
         
-        camera = models.Camera.objects(id=id, owner=self.request.user).order_by("+name").first()
+        camera = models.Camera.objects(id=camera_id, owner=self.request.user).order_by("+name").first()
         
         if not camera:
             self.request.response.status = '404 Not Found'
@@ -36,9 +35,9 @@ class CameraView(object):
                             name=camera.name,
                             host=camera.host,
                             port=camera.port,
-                            video_url=camera.video_url,
-                            audio_url=camera.audio_url,
-                            image_url=camera.image_url,
+                            video_uri=camera.video_uri,
+                            audio_uri=camera.audio_uri,
+                            image_uri=camera.image_uri,
                             image_size=camera.image_size,
                             fps=camera.fps,
                             create_date=camera.create_date,
@@ -63,7 +62,7 @@ class CameraView(object):
                       )
         return result
 
-    @view_config(request_method='POST')
+    @view_config(route_name='cameras.create_list', request_method='POST')
     def create(self):
 #        camera_dict = json.loads(self.request.json_body)["camera"]
         camera_dict = self.request.json_body["camera"]
@@ -79,7 +78,6 @@ class CameraView(object):
         camera.create_date  = datetime.datetime.now()
         
         camera.owner    = self.request.user
-        camera.operating = models.CameraOperating()
         camera.project  = models.Project.objects(id=camera_dict["project"]["id"]).first()
         camera.camera_model   = models.CameraModel.objects(id=camera_dict["model"]["id"]).first()
 
@@ -87,12 +85,12 @@ class CameraView(object):
             from nokkhumapi.driver.camera import factory
             fac = factory.CameraDriverFactory().get_camera_driver(camera.camera_model.manufactory.name)
             camera_driver = fac.get_driver(camera.camera_model.name, **camera_dict)
-            camera.video_url = camera_driver.get_video_url(extension="?.mjpg")
-            camera.audio_url = camera_driver.get_audio_url()
-            camera.image_url = camera_driver.get_image_url()
+            camera.video_uri = camera_driver.get_video_uri(extension="?.mjpg")
+            camera.audio_uri = camera_driver.get_audio_uri()
+            camera.image_uri = camera_driver.get_image_uri()
             
-        if camera.video_url is None:
-            camera.video_url      = camera_dict["video_url"]
+        if camera.video_uri is None:
+            camera.video_uri      = camera_dict["video_uri"]
         
         camera.save()
         
@@ -103,13 +101,12 @@ class CameraView(object):
     @view_config(request_method='PUT')
     def update(self):
         matchdict = self.request.matchdict
-        extension = matchdict.get('extension')
-        id = extension[0]
+        camera_id = matchdict.get('camera_id')
         
-        camera = models.Camera.objects(id=id).first()
+        camera = models.Camera.objects(id=camera_id).first()
         if not camera:
             self.request.response.status = '404 Not Found'
-            return {'message':"not found id: %d"%id}
+            return {'message':"not found id: %d"%camera_id}
         
         camera_dict = self.request.json_body["camera"]
         
@@ -126,27 +123,25 @@ class CameraView(object):
             from nokkhumapi.driver.camera import factory
             fac = factory.CameraDriverFactory().get_camera_driver(camera.camera_model.manufactory.name)
             camera_driver = fac.get_driver(camera.camera_model.name, **camera_dict)
-            camera.video_url = camera_driver.get_video_url(extension="?.mjpg")
-            camera.audio_url = camera_driver.get_audio_url()
-            camera.image_url = camera_driver.get_image_url()
+            camera.video_uri = camera_driver.get_video_uri(extension="?.mjpg")
+            camera.audio_uri = camera_driver.get_audio_uri()
+            camera.image_uri = camera_driver.get_image_uri()
             
         else:
-            camera.url      = camera_dict["video_url"]
+            camera.url      = camera_dict["video_uri"]
         
         camera.save()
 
-        camera_dict['video_url'] = camera.video_url
-        camera_dict['audio_url'] = camera.audio_url
-        camera_dict['image_url'] = camera.image_url
+        camera_dict['video_uri'] = camera.video_uri
+        camera_dict['audio_uri'] = camera.audio_uri
         return {'camera':camera_dict}
 
     @view_config(request_method='DELETE')
     def delete(self):
         matchdict = self.request.matchdict
-        extension = matchdict.get('extension')
-        id = extension[0]
+        camera_id = matchdict.get('camera_id')
         
-        camera = models.Camera.objects(id=id).first()
+        camera = models.Camera.objects(id=camera_id).first()
         if not camera:
             self.request.response.status = '404 Not Found'
             return {'message':"not found id: %d"%id}

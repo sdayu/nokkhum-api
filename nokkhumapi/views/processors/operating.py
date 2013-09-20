@@ -37,7 +37,11 @@ class ProcessorOperating(object):
             command_action = 'stop'
             user_command = 'suspend'
         
-        pcq = models.ProcessorCommandQueue.objects(processor_command__owner=self.request.user, processor_command__processor=processor, processor_command__action=command_action).first()
+        
+        pc = models.ProcessorCommand.objects(owner=self.request.user, processor=processor, action=command_action, status__in=["waiting", "processing"]).first()
+        pcq = models.ProcessorCommandQueue.objects(processor_command=pc).first()
+        # pcq = models.ProcessorCommandQueue.objects(processor_command__owner=self.request.user, processor_command__processor=processor, processor_command__action=command_action).first()
+        
         if pcq is not None:
             self.request.response.status = '406 Not Acceptable'
             return {'result':'processor name %s on operation' % processor.id}
@@ -56,6 +60,7 @@ class ProcessorOperating(object):
         pc.command_type = 'user'
         pc.processor  = processor
         pc.owner   = self.request.user
+        pc.save()
         
         pcq         = models.ProcessorCommandQueue()
         pcq.processor_command = pc

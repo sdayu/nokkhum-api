@@ -24,7 +24,7 @@ class CameraDriver:
         if self.port != 80:
             self.add_port=':{}'.format(self.port)
         
-    def get_base_url(self):
+    def get_base_uri(self):
         
         self.__process()
         return "{protocal}://{auth}{host}{add_port}"\
