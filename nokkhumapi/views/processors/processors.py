@@ -141,7 +141,9 @@ class ProcessorView(object):
             self.request.response.status = '404 Not Found'
             return {}
         
-        processor.delete()
+        processor.status = 'delete'
+        processor.save()
+        # processor.delete()
         
         return {}
     
