@@ -14,6 +14,9 @@ class Processor:
         self.request = request
         
     def build_result(self, processor):
+        if processor is None:
+            return None
+        
         processor_operating=dict(
                              user_command=processor.operating.user_command,
                              status=processor.operating.status,
@@ -61,6 +64,7 @@ class Processor:
     def get(self):
         processor_id = self.request.matchdict['processor_id']
         processor = models.Processor.objects().with_id(processor_id)
+        
         result = dict(
                 processor=self.build_result(processor)  
                 )

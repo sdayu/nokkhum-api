@@ -55,8 +55,6 @@ class ProcessorCommand:
         result = dict(
                     processor_command = self.build_processor_command(processor_command)
                 )
-        print("result:", result)
-
         return result
     
     @view_config(route_name='admin.processor_commands.list', request_method="GET") 
