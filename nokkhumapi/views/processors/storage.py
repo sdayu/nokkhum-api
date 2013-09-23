@@ -58,7 +58,7 @@ class Storage:
 #                return {'result':'user not processor owner or collaborator'}
     
             s3_client.set_buckket_name(str(processor.id))
-    
+            
             prefix = ""
             if len(uri[end_pos+1:]) > 0 and uri[end_pos+1:] != processor_id:
                 pos = uri.rfind(".")
@@ -71,6 +71,7 @@ class Storage:
                     prefix = "%s/" % (uri[end_pos+1:])
                     
             s3_items = []
+            
             try:
                 s3_items = s3_client.list_file(prefix)
             except:
@@ -136,7 +137,7 @@ class Storage:
         else:
             processor_id = uri
 
-        processor = models.Camera.objects(owner=self.request.user, id=processor_id).first()
+        processor = models.Processor.objects(owner=self.request.user, id=processor_id).first()
 
         if processor is None:
             self.request.response.status = '404 Not Found'
@@ -145,7 +146,8 @@ class Storage:
         key_name = "%s"%(uri[end_pos+1:])
         
         s3_client = self.request.s3_client
-        s3_client.set_buckket_name(int(processor.id))
+        s3_client.set_buckket_name(processor.id)
+
         s3_client.delete(key_name)
         
         
