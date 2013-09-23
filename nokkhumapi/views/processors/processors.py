@@ -56,7 +56,9 @@ class ProcessorView(object):
         project_id = matchdict.get('project_id')
         
         processors = models.Processor.objects(owner=self.request.user, project__id=project_id).all()
-         
+        
+        print("\n\n\n\n\nprocessors:", processors)
+        
         results = dict(processors=list())
         for processor in processors:
             results['processors'].append(self.build_result(processor))
