@@ -57,7 +57,8 @@ class CameraView(object):
                             owner=dict(
                                        id=camera.owner.id,
                                        email=camera.owner.email
-                                       )
+                                       ),
+                            location=camera.location
                             )
                       )
         return result
@@ -80,6 +81,8 @@ class CameraView(object):
         camera.owner    = self.request.user
         camera.project  = models.Project.objects(id=camera_dict["project"]["id"]).first()
         camera.camera_model   = models.CameraModel.objects(id=camera_dict["model"]["id"]).first()
+        
+        camera.location = camera_dict['location']
 
         if camera.camera_model.name.lower() != "opencv":
             from nokkhumapi.driver.camera import factory
@@ -118,6 +121,8 @@ class CameraView(object):
         camera.image_size   = camera_dict["image_size"]
         camera.fps      = camera_dict["fps"]
         camera.camera_model    = models.CameraModel.objects(id=camera_dict["model"]["id"]).first()
+        
+        camera.location = camera_dict['location']
         
         if camera.camera_model.name.lower() != "opencv":
             from nokkhumapi.driver.camera import factory
