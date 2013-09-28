@@ -8,7 +8,7 @@ from .base_driver import DLinkCamera
 
 class DLink_DCS_930L(DLinkCamera):
     
-    def get_video_uri(self, extension=''):
+    def get_video_uri(self, extension='?.mjpg'):
         url = super().get_video_uri() + extension
         return url
     
