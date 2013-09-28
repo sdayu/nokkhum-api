@@ -23,7 +23,7 @@ class ProjectProcessorView(object):
         
         project = models.Project.objects(id=project_id).first()
         
-        processors = models.Processor.objects(project=project).order_by("+name").all() 
+        processors = models.Processor.objects(project=project, status='active').order_by("+name").all() 
 
         result = dict(
                       processors=[dict(id=processor.id, name=processor.name) for processor in processors]

@@ -12,14 +12,14 @@ class AxisCamera(CameraDriver):
         self.image_pattern = '/image/image.jpg'
         self.audio_pattern = '/audio.cgi'
     
-    def get_video_url(self):
-        url = super().get_base_url()+self.video_pattern
+    def get_video_uri(self):
+        url = super().get_base_uri()+self.video_pattern
         return url
     
-    def get_image_url(self):
-        url = super().get_base_url()+self.image_pattern
+    def get_image_uri(self):
+        url = super().get_base_uri()+self.image_pattern
         return url
     
-    def get_audio_url(self):
-        url = super().get_base_url()+self.audio_pattern
+    def get_audio_uri(self):
+        url = super().get_base_uri()+self.audio_pattern
         return url
