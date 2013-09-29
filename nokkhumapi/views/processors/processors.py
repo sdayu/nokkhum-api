@@ -25,9 +25,13 @@ class ProcessorView(object):
                              )
         if processor.operating.compute_node:
             processor_operating['compute_node']=dict(
-                                               id=processor.operating.compute_node.id,
-                                               name=processor.operating.compute_node.name
+                                               id=processor.operating.compute_node.id
                                                )
+            try:
+                processor_operating['compute_node']['name']=processor.operating.compute_node.name
+            except:
+                pass
+            
         result = dict(
                       id=processor.id,
                       name=processor.name,
