@@ -41,5 +41,4 @@ class UserProjectsView(object):
                   "collaborate_projects":[dict(id=project.id, name=project.name, description=project.description) for project in collaborate_projects]
                   }
         
-        
         return result
