@@ -4,12 +4,12 @@ from pyramid.events import NewRequest
 from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.authorization import ACLAuthorizationPolicy
 
-from nokkhumapi.security import TokenAuthenticationPolicy
+
 
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
-    
+    from nokkhumapi.security import TokenAuthenticationPolicy
     authn_policy =  TokenAuthenticationPolicy()
     authz_policy = ACLAuthorizationPolicy()
 
@@ -50,6 +50,7 @@ def modify_json_renderer(config):
         return str(obj)
     
     json_renderer.add_adapter(datetime.datetime, datetime_adapter)
+    json_renderer.add_adapter(datetime.date, datetime_adapter)
     json_renderer.add_adapter(ObjectId, mongo_object_adapter)
     
     # then during configuration ....
