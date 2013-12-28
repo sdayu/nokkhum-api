@@ -42,6 +42,10 @@ def add_routes(config):
     config.add_route('processors.cameras', '/processors/{processor_id}/cameras')
     config.add_route('processors.operating', '/processors/{processor_id}/operating')
     
+    #user_resource
+    config.add_route('user_resource', '/user_resources/{processor_id}')
+    #billing
+    config.add_route('billing.users', '/billing/processors/{processor_id}')
     # image processor
     config.add_route('image_processors', '/image_processors')
     
