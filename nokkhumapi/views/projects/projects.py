@@ -91,7 +91,7 @@ class ProjectView(object):
     def delete(self):
         matchdict = self.request.matchdict
         extension = matchdict.get('extension')
-        id = int(extension[0])
+        id = extension[0]
         
         project = models.Project.objects(id=id).first()
         if not project:
