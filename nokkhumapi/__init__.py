@@ -59,5 +59,7 @@ def add_response_callback(event):
     
     def set_default_header_callback(request, response):
         response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept'
+        
     event.request.add_response_callback(set_default_header_callback)
 
