@@ -20,8 +20,10 @@ class UserView(object):
         matchdict = self.request.matchdict
         extension = matchdict.get('extension')
         id = extension[0]
-        
-        user = models.User.objects(id=id).first()
+        if '@' in id:
+            user = models.User.objects(email=id).first()
+        else:
+            user = models.User.objects(id=id).first()
         
         if not user:
             self.request.response.status = '404 Not Found'
