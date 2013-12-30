@@ -21,7 +21,7 @@ class GroupCollaborator:
         group = models.Group.objects(group_id).first()
         if group is None:
             self.request.response.status = '404 Not Found'
-            return {'message':"Project id %d not found"%project_id}
+            return {'message':"Group id %d not found"%project_id}
         
         result = dict(
                       group=dict(id=group.id, name=group.name, collaborators=[]),
@@ -56,8 +56,9 @@ class GroupCollaborator:
                 self.request.response.status = '500 Internal Server Error'
                 return {'message':"This user is project collaborator"}
         
-        collaborator = models.Collaborator()
+        collaborator = models.GroupCollaborator()
         collaborator.user = user
+        collaborator.permissions.append('user')
         
         group.collaborators.append(collaborator)
         
