@@ -40,7 +40,7 @@ class ProjectCollaborator:
                     return {'message':"This Group is project collaborator"}
             project.gcollaborators.append(data)
             for collaborator in data.collaborators:
-                if collaborator.user == project.user:
+                if collaborator.user == project.owner:
                     processors=models.Processor.objects(project=project)
                     for processor in processors:
                         gcollaborator = models.GroupCollboratorPermission()
