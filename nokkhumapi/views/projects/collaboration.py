@@ -39,16 +39,18 @@ class ProjectCollaborator:
                     self.request.response.status = '500 Internal Server Error'
                     return {'message':"This Group is project collaborator"}
             project.gcollaborators.append(data)
-            for collaborator in data.collaborators:
-                if collaborator.user == project.owner:
-                    processors=models.Processor.objects(project=project)
-                    for processor in processors:
-                        gcollaborator = models.GroupCollboratorPermission()
-                        gcollaborator.processor = processor
-                        gcollaborator.permissions.append('view')
-                        collaborator.camera_permissions.append(gcollaborator)
+            for gcollaborator in project.gcollaborators:
+                if gcollaborator == data:
+                    for collaborator in gcollaborator.collaborators:
+                        if collaborator.user == project.owner:
+                            processors=models.Processor.objects(project=project)
+                            for processor in processors:
+                                gcollaborator = models.GroupCollboratorPermission()
+                                gcollaborator.processor = processor
+                                gcollaborator.permissions.append('view')
+                                collaborator.camera_permissions.append(gcollaborator)
+                            break
                     break
-            project.save()
             
         elif collaborator_dict['type'] == 'user' :
             for collaborator in project.collaborators:
@@ -64,8 +66,8 @@ class ProjectCollaborator:
                 pcollaborator.processor = processor
                 pcollaborator.permissions.append('view')
                 collaborator.camera_permissions.append(pcollaborator)
-            project.save()
-            
+        
+        project.save()   
         self.request.response.headers['Access-Control-Allow-Origin'] = '*'
         return collaborator_dict
     
