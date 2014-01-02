@@ -42,12 +42,11 @@ class ProjectCollaborator:
             for collaborator in data.collaborators:
                 if collaborator.user == project.owner:
                     processors=models.Processor.objects(project=project)
-                    print('ch1')
                     for processor in processors:
-                        print('ch2')
                         gcollaborator = models.GroupCollboratorPermission()
                         gcollaborator.processor = processor
                         gcollaborator.permissions.append('view')
+                        print(gcollaborator)
                         collaborator.camera_permissions.append(gcollaborator)
                     break
         elif collaborator_dict['type'] == 'user' :
