@@ -48,6 +48,7 @@ class ProjectCollaborator:
                         gcollaborator.permissions.append('view')
                         print(gcollaborator)
                         collaborator.camera_permissions.append(gcollaborator)
+                        print(collaborator.camera_permissions)
                     break
         elif collaborator_dict['type'] == 'user' :
             for collaborator in project.collaborators:
