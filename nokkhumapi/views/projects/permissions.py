@@ -71,7 +71,6 @@ class ProjectProcessorView(object):
     @view_config(request_method='PUT')
     def update(self):
         matchdict = self.request.matchdict
-        print(matchdict)
         project_id = matchdict.get('project_id')
         user_id = matchdict.get('user_id')
         permissions = self.request.json_body["permissions"]
@@ -97,8 +96,10 @@ class ProjectProcessorView(object):
                 if collaborator.user == user:
                     for camera_permission in collaborator.camera_permissions:
                         for permission in permissions:
+                            print('>>', camera_permission.processor.id, permission['id'])
                             if camera_permission.processor.id == permission['id']:
                                 if permission['permission'] == 'noview':
+                                    print('noview')
                                     camera_permission.permissions.remove('view')
                                 elif (permission['permission'] == 'view') and not(permission['permission'] in camera_permission.permissions):
                                     camera_permission.permissions.append('view')
