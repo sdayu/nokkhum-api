@@ -101,6 +101,7 @@ class ProjectProcessorView(object):
                     group.save()
                     break
             project.save()
+            
         else:
             for collaborator in project.collaborators:
                 if collaborator.user == user:
