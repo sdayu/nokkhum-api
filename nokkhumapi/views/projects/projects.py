@@ -42,7 +42,7 @@ class ProjectView(object):
                             colaborators=[dict(id=collaborator.user.id, email=collaborator.user.email) 
                                           for collaborator in project.collaborators],
                             gcolaborators=[dict(id=collaborator.id, email=collaborator.name) 
-                                          for collaborator in project.gcollaborators],
+                                          for collaborator in project.gcollaborators]
                             )
                       
                       )
