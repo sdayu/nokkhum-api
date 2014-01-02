@@ -26,6 +26,7 @@ class ProjectCollaborator:
             data = models.Group.objects(name=collaborator_dict['name']).first()
         elif collaborator_dict['type'] == 'user' :
             data = models.User.objects(email=collaborator_dict['email']).first()
+            
         project = models.Project.objects(id=project_id).first()
         
         if data is None or project is None:
@@ -38,6 +39,15 @@ class ProjectCollaborator:
                     self.request.response.status = '500 Internal Server Error'
                     return {'message':"This Group is project collaborator"}
             project.gcollaborators.append(data)
+            for collaborator in data.collaborators:
+                if collaborator.user == project.user:
+                    processors=models.Processor.objects(project=project)
+                    for processor in processors:
+                        gcollaborator = models.GroupCollboratorPermission()
+                        gcollaborator.processor = processor
+                        gcollaborator.permissions.append('view')
+                        collaborator.camera_permissions.append(gcollaborator)
+                    break
         elif collaborator_dict['type'] == 'user' :
             for collaborator in project.collaborators:
                 if collaborator.user == data:
@@ -46,6 +56,13 @@ class ProjectCollaborator:
             collaborator = models.Collaborator()
             collaborator.user = data
             project.collaborators.append(collaborator)
+            processors=models.Processor.objects(project=project)
+            for processor in processors:
+                pcollaborator = models.CollboratorPermission()
+                pcollaborator.processor = processor
+                pcollaborator.permissions.append('view')
+                collaborator.camera_permissions.append(pcollaborator)
+                    
         project.save()
         self.request.response.headers['Access-Control-Allow-Origin'] = '*'
         return collaborator_dict
