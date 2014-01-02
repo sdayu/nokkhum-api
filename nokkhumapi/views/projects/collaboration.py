@@ -49,6 +49,7 @@ class ProjectCollaborator:
                                 gcollaborator.processor = processor
                                 gcollaborator.permissions.append('view')
                                 collaborator.camera_permissions.append(gcollaborator)
+                            project.save()
                             break
                     break
             
@@ -66,8 +67,8 @@ class ProjectCollaborator:
                 pcollaborator.processor = processor
                 pcollaborator.permissions.append('view')
                 collaborator.camera_permissions.append(pcollaborator)
-        
-        project.save()   
+            project.save() 
+              
         self.request.response.headers['Access-Control-Allow-Origin'] = '*'
         return collaborator_dict
     
