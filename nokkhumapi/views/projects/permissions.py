@@ -98,7 +98,9 @@ class ProjectProcessorView(object):
                                             camera_permission.permissions.append('stroage')
                                         break
                             break
+                    group.save()
                     break
+            project.save()
         else:
             for collaborator in project.collaborators:
                 if collaborator.user == user:
@@ -116,5 +118,5 @@ class ProjectProcessorView(object):
                                     camera_permission.permissions.append('stroage')
                                 break
                     break
-        project.save()          
+            project.save()          
         return {'permissions': {}}
