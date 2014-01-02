@@ -77,9 +77,8 @@ class ProjectProcessorView(object):
         permissions = self.request.json_body["permissions"]
         
         project = models.Project.objects(id=project_id).first()
-        processors = models.Processor.objects(project=project, status='active').order_by("+name").all()
         user = models.User.objects(id=user_id).first()
-        permission = []
+        
         if user is None:
             user = models.Group.objects(id=user_id).first()
             for group in project.gcollaborators:
@@ -87,9 +86,9 @@ class ProjectProcessorView(object):
                     for collaborator in group.collaborators:
                         if collaborator.user == project.owner:
                             for camera_permission in collaborator.camera_permissions:
-                                for processor in processors:
+                                for permission in permissions:
                                     if camera_permission.processor == processor:
-                                        permission.append(dict(id=processor.id, name=processor.name,permissions=camera_permission.permissions))
+                                        
                                         break
                             break
                     break
@@ -97,14 +96,17 @@ class ProjectProcessorView(object):
             for collaborator in project.collaborators:
                 if collaborator.user == user:
                     for camera_permission in collaborator.camera_permissions:
-                        for processor in processors:
-                            if camera_permission.processor == processor:
-                                permission.append(dict(id=processor.id, name=processor.name,permissions=camera_permission.permissions))
+                        for permission in permissions:
+                            if camera_permission.processor.id == permission.id:
+                                if permission.permission == 'noview':
+                                    camera_permission.permissions.remove('view')
+                                elif (permission.permission == 'view') and not(permission.permission in camera_permission.permissions):
+                                    camera_permission.permissions.append('view')
+                                elif permission.permission == 'nostroage':
+                                    camera_permission.permissions.remove('stroage')
+                                elif (permission.permission == 'stroage') and not (permission.permission in camera_permission.permissions):
+                                    camera_permission.permissions.append('stroage')
                                 break
                     break
-        
-        result = dict(
-                      permissions=permission
-                    )
                       
-        return result
+        return {}
