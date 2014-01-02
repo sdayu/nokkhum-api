@@ -39,9 +39,9 @@ class ProjectCollaborator:
                     self.request.response.status = '500 Internal Server Error'
                     return {'message':"This Group is project collaborator"}
             project.gcollaborators.append(data)
-            for gcollaborator in project.gcollaborators:
-                if gcollaborator == data:
-                    for collaborator in gcollaborator.collaborators:
+            for ggcollaborator in project.gcollaborators:
+                if ggcollaborator == data:
+                    for collaborator in ggcollaborator.collaborators:
                         if collaborator.user == project.owner:
                             processors=models.Processor.objects(project=project)
                             for processor in processors:
@@ -49,7 +49,7 @@ class ProjectCollaborator:
                                 gcollaborator.processor = processor
                                 gcollaborator.permissions.append('view')
                                 collaborator.camera_permissions.append(gcollaborator)
-                            project.save()
+                            ggcollaborator.save()
                             break
                     break
             
