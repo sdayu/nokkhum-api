@@ -39,7 +39,7 @@ class ProjectView(object):
                             user=dict(
                                 id=project.owner.id, 
                                 username=project.owner.email),
-                            colaborators=[dict(id=collaborator.user.id, email=collaborator.user.email, camera_permissions=collaborator.camera_permissions) 
+                            colaborators=[dict(id=collaborator.user.id, email=collaborator.user.email) 
                                           for collaborator in project.collaborators],
                             gcolaborators=[dict(id=collaborator.id, name=collaborator.name) 
                                           for collaborator in project.gcollaborators]
