@@ -71,9 +71,10 @@ class ProjectProcessorView(object):
     @view_config(request_method='PUT')
     def update(self):
         matchdict = self.request.matchdict
+        print(matchdict)
         project_id = matchdict.get('project_id')
         user_id = matchdict.get('user_id')
-        #permissions = matchdict.get('permissions')
+        permissions = self.request.json_body["permissions"]
         
         project = models.Project.objects(id=project_id).first()
         processors = models.Processor.objects(project=project, status='active').order_by("+name").all()
