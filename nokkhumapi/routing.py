@@ -1,6 +1,5 @@
 '''
 Created on Jun 28, 2012
-
 @author: boatkrap
 '''
 
@@ -13,6 +12,7 @@ def add_routes(config):
     config.add_route('projects.acamera', '/projects/{project_id}/cameras/${camera_id}')    
     config.add_route('projects.cameras', '/projects/{project_id}/cameras')
     config.add_route('projects.processors', '/projects/{project_id}/processors')
+    config.add_route('projects.collaboration', '/projects/{project_id}/collaboration')
     config.add_route('projects.collaborators', '/projects/{project_id}/collaborators')
     config.add_route('projects.userprojects', '/users/{user_id}/projects')
     config.add_route('projects', '/projects*extension')

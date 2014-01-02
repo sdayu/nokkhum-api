@@ -6,7 +6,7 @@ Created on Dec 28, 2013
 from pyramid.view import view_defaults
 from pyramid.view import view_config
 from pyramid.response import Response
-
+import re
 import json, datetime
 
 from nokkhumapi import models
@@ -20,9 +20,12 @@ class GroupView(object):
         matchdict = self.request.matchdict
         extension = matchdict.get('extension')
         group_id = extension[0]
-        
-        group = models.Group.objects(id=group_id,collaborators__user=self.request.user).first()
-        
+        if not re.search('\d+', group_id):
+            # no numbers
+            group = models.Group.objects(name=group_id, collaborators__user=self.request.user).first()
+        else:
+            # numbers present
+            group = models.Group.objects(id=group_id, collaborators__user=self.request.user).first()
         if not group:
             self.request.response.status = '404 Not Found'
             return {}
