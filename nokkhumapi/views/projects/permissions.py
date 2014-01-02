@@ -96,8 +96,8 @@ class ProjectProcessorView(object):
                 if collaborator.user == user:
                     for permission in permissions:
                         for camera_permission in collaborator.camera_permissions:
+                            print('>>', camera_permission.processor.id, permission['id'], permission['permission'])
                             if camera_permission.processor.id == permission['id']:
-                                print('>>', camera_permission.processor.id, permission['id'], permission['permission'])
                                 if permission['permission'] == 'noview':
                                     print('noview')
                                     camera_permission.permissions.remove('view')
