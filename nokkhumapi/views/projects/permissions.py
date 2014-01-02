@@ -97,16 +97,16 @@ class ProjectProcessorView(object):
                 if collaborator.user == user:
                     for camera_permission in collaborator.camera_permissions:
                         for permission in permissions:
-                            if camera_permission.processor.id == permission.id:
-                                if permission.permission == 'noview':
+                            if camera_permission.processor.id == permission['id']:
+                                if permission['permission'] == 'noview':
                                     camera_permission.permissions.remove('view')
-                                elif (permission.permission == 'view') and not(permission.permission in camera_permission.permissions):
+                                elif (permission['permission'] == 'view') and not(permission['permission'] in camera_permission.permissions):
                                     camera_permission.permissions.append('view')
-                                elif permission.permission == 'nostroage':
+                                elif permission['permission'] == 'nostroage':
                                     camera_permission.permissions.remove('stroage')
-                                elif (permission.permission == 'stroage') and not (permission.permission in camera_permission.permissions):
+                                elif (permission['permission'] == 'stroage') and not (permission['permission'] in camera_permission.permissions):
                                     camera_permission.permissions.append('stroage')
                                 break
                     break
-                      
-        return {}
+        project.save()          
+        return {'permissions': {}}
