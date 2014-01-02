@@ -68,6 +68,7 @@ class GroupCollaborator:
     
     @view_config(request_method='PUT')
     def update_collaborator(self):
+        print('hi')
         pass
     
     @view_config(request_method='DELETE')
