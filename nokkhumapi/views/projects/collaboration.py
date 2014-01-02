@@ -49,10 +49,10 @@ class ProjectCollaborator:
                                 gcollaborator.processor = processor
                                 gcollaborator.permissions.append('view')
                                 collaborator.camera_permissions.append(gcollaborator)
-                            ggcollaborator.save()
                             break
+                    ggcollaborator.save()
                     break
-            
+            project.save()
         elif collaborator_dict['type'] == 'user' :
             for collaborator in project.collaborators:
                 if collaborator.user == data:
@@ -68,7 +68,6 @@ class ProjectCollaborator:
                 pcollaborator.permissions.append('view')
                 collaborator.camera_permissions.append(pcollaborator)
             project.save() 
-              
         self.request.response.headers['Access-Control-Allow-Origin'] = '*'
         return collaborator_dict
     
