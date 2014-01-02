@@ -24,11 +24,8 @@ class ProjectProcessorView(object):
         processors = models.Processor.objects(project=project, status='active').order_by("+name").all()
         user = models.User.objects(id=user_id).first()
         permission = []
-        print('>>', user)
         if user is None:
-            
             user = models.Group.objects(id=user_id).first()
-            print('>>', user)
             for group in project.gcollaborators:
                 if group == user:
                     for collaborator in group.collaborators:
@@ -36,7 +33,7 @@ class ProjectProcessorView(object):
                             for camera_permission in collaborator.camera_permissions:
                                 for processor in processors:
                                     if camera_permission.processor == processor:
-                                        permission.append(dict(id=processor.id, name=processor.name,permissions=camera_permission.permissions))
+                                        permission.append(dict(id=processor.id, name=processor.name, permissions=camera_permission.permissions))
                                         break
                             break
                     break
