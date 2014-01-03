@@ -124,7 +124,7 @@ class ProcessorView(object):
         matchdict = self.request.matchdict
         processor_id = matchdict.get('processor_id')
         
-        processor = models.Processor.objects(id=processor_id, owner=self.request.user).first()
+        processor = models.Processor.objects(id=processor_id).first()
         
         if not processor:
             self.request.response.status = '404 Not Found'

@@ -38,7 +38,7 @@ class UserProjectsView(object):
                                    create_date=project.create_date
                                    )
                                for project in projects],
-                  "collaborate_projects":[dict(id=project.id, name=project.name, description=project.description, owner=project.owner.email, ownerid=project.owner.id) for project in collaborate_projects]
+                  "collaborate_projects":[dict(id=project.id, name=project.name, description=project.description, owner=project.owner.email) for project in collaborate_projects]
                   }
         
         return result
