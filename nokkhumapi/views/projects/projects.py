@@ -21,7 +21,7 @@ class ProjectView(object):
         extension = matchdict.get('extension')
         project_id = extension[0]
         
-        project = models.Project.objects(id=project_id, owner=self.request.user).first()
+        project = models.Project.objects(id=project_id).first()
 
         if not project:
             self.request.response.status = '404 Not Found'
