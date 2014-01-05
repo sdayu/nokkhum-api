@@ -23,6 +23,7 @@ class GroupCollaborator:
             self.request.response.status = '404 Not Found'
             return {'message':"Group id %d not found"%project_id}
         collaborate_projects = models.Project.objects(gcollaborators__=group).all()
+        print(collaborate_projects)
         result = dict(
                       group=dict(id=group.id, name=group.name, collaborators=[]),
                       )
