@@ -21,20 +21,10 @@ class GroupCollaborator:
         group = models.Group.objects(id=group_id).first()
         if group is None:
             self.request.response.status = '404 Not Found'
-            return {'message':"Group id %d not found"%project_id}
-        collaborate_projects = models.Project.objects().all()
-        print(collaborate_projects)
+            return {'message':"Group id %d not found"%group_id}
         result = dict(
-                      group=dict(id=group.id, name=group.name, collaborators=[]),
+                      group=dict(id=group.id, name=group.name, collaborators=group.collaborators),
                       )
-        
-        for collaborator in group.collaborators:
-            result['group']['collaborators'].append(
-                dict(
-                     id=collaborator.user.id,
-                     email=collaborator.user.email
-                     )    
-                )
         self.request.response.headers['Access-Control-Allow-Origin'] = '*'
         return result
     
