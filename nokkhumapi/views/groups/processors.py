@@ -18,7 +18,7 @@ class GroupCollaborator:
         matchdict = self.request.matchdict
         group_id = matchdict['group_id']
         
-        group = models.Group.objects(group_id).first()
+        group = models.Group.objects(id=group_id).first()
         if group is None:
             self.request.response.status = '404 Not Found'
             return {'message':"Group id %d not found"%project_id}
