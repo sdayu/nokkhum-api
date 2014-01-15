@@ -22,6 +22,7 @@ class Notification(object):
         cameras = models.Camera.objects(owner=self.request.user).all()
         number = 0
         for camera in cameras:
+            print('>>', camera.id)
             notifications = models.Notification.objects(camera=camera.id, status='False').all()
             number += len(notifications) 
                 
