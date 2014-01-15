@@ -31,22 +31,22 @@ class Notification(object):
                       
         return result
 
-@view_defaults(route_name='notifications', renderer="json", permission="authenticated")
-class Notification(object):
-    def __init__(self, request):
-        self.request = request
-        
-    @view_config(request_method='GET')
-    def get(self):
-        
-        cameras = models.Camera.objects(owner=self.request.user).all()
-        number = 0
-        for camera in cameras:
-            notifications = models.Notification.objects(camera=camera.id, status='False').all()
-            number += len(notifications) 
-                
-        result = dict(
-                      number=number
-                    )
-                      
-        return result
+# @view_defaults(route_name='notifications', renderer="json", permission="authenticated")
+# class Notification(object):
+#     def __init__(self, request):
+#         self.request = request
+#         
+#     @view_config(request_method='GET')
+#     def get(self):
+#         
+#         cameras = models.Camera.objects(owner=self.request.user).all()
+#         number = 0
+#         for camera in cameras:
+#             notifications = models.Notification.objects(camera=camera.id, status='False').all()
+#             number += len(notifications) 
+#                 
+#         result = dict(
+#                       number=number
+#                     )
+#                       
+#         return result
