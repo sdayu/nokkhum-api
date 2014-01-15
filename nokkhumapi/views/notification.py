@@ -29,7 +29,7 @@ class Notification(object):
         result = dict(
                       number=number
                     )
-        self.request.response.headers['Access-Control-Allow-Origin'] = '*'
+        
         return result
 
 # @view_defaults(route_name='notifications', renderer="json", permission="authenticated")
