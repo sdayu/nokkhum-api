@@ -10,6 +10,7 @@ def add_routes(config):
     config.add_route('authentications.tokens', '/authentication/tokens')
     
     config.add_route('notifications.number', '/notifications/number')
+    config.add_route('notifications', '/notifications*extension')
 
     config.add_route('projects.acamera', '/projects/{project_id}/cameras/${camera_id}')    
     config.add_route('projects.cameras', '/projects/{project_id}/cameras')
