@@ -61,5 +61,7 @@ class Notification(object):
     @view_config(request_method='POST')   
     def create(self):
         notifications = self.request.json_body["notifications"]
+        for notification in notifications:
+            print(notification.id)
         
-        return {'notifications':notifications}
+        return {}
