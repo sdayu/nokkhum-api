@@ -62,6 +62,8 @@ class Notification(object):
     def create(self):
         notifications = self.request.json_body["notifications"]
         for notification in notifications:
-            print(notification['id'])
+            noti = models.Notification.objects(id=notification['id']).first()
+            noti.status = 'True'
+            noti.save()
         
         return {}
