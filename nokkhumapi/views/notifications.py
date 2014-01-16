@@ -62,4 +62,4 @@ class Notification(object):
     def create(self):
         notifications = self.request.json_body["notifications"]
         
-        return {'notifications':''}
+        return {'notifications':notifications}
