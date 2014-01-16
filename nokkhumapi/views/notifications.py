@@ -29,6 +29,7 @@ class Notification(object):
             for notification in notifications:
                 result['new'].append(
                                      dict(
+                                          id=notification.id,
                                           camera=dict(
                                                       name=camera.name
                                                       ),
@@ -56,23 +57,9 @@ class Notification(object):
         return dict(
                     notifications=result
                     )
-
-# @view_defaults(route_name='notifications', renderer="json", permission="authenticated")
-# class Notification(object):
-#     def __init__(self, request):
-#         self.request = request
-#         
-#     @view_config(request_method='GET')
-#     def get(self):
-#         
-#         cameras = models.Camera.objects(owner=self.request.user).all()
-#         number = 0
-#         for camera in cameras:
-#             notifications = models.Notification.objects(camera=camera.id, status='False').all()
-#             number += len(notifications) 
-#                 
-#         result = dict(
-#                       number=number
-#                     )
-#                       
-#         return result
+        
+    @view_config(request_method='POST')   
+    def create(self):
+        notifications = self.request.json_body["notifications"]
+        
+        return {}
