@@ -49,28 +49,24 @@ class ForumView(object):
     
     @view_config(request_method='POST')   
     def create(self):
-        group_dict = self.request.json_body["group"]
+        topic = self.request.json_body["topic"]
 
-        group = models.Group()
-        group.name = group_dict["name"]
-        group.description = group_dict["description"]
-        group.status = group_dict.get('status', 'active')
-        group.create_date = datetime.datetime.now()
-        group.update_date = datetime.datetime.now()
-        group.ip_address = self.request.environ.get('REMOTE_ADDR', '0.0.0.0')
+        forum = models.Forum()
+        forum.description = topic["description"]
+        forum.create_date = datetime.datetime.now()
+        forum.update_date = datetime.datetime.now()
+        forum.ip_address = self.request.environ.get('REMOTE_ADDR', '0.0.0.0')
         
-        collaborator = models.GroupCollaborator()
-        collaborator.user = self.request.user
-        if group_dict.get('permission', None) is not None:
-            collaborator.permissions.append(group_dict.get('permission', None))
-            collaborator.permissions.append('user')
-                
-        group.collaborators.append(collaborator)
+        forum.owner = self.request.user
+        group = models.Group.objects(id=topic["group_id"],collaborators__user=self.request.user).first()        
+        if group is None:
+            self.request.response.status = '404 Not Found'
+            return {}
         
-        group.save()
+        forum.group = group
+        forum.save()
         
-        group_dict["id"] = group.id
-        return {"group":group_dict}
+        return {}
     
     @view_config(request_method='PUT')
     def update(self):
