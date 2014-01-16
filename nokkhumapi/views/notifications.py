@@ -62,6 +62,6 @@ class Notification(object):
     def create(self):
         notifications = self.request.json_body["notifications"]
         for notification in notifications:
-            print(notification.id)
+            print(notification['id'])
         
         return {}
