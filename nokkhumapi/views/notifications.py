@@ -65,5 +65,4 @@ class Notification(object):
             noti = models.Notification.objects(id=notification['id']).first()
             noti.status = 'True'
             noti.save()
-        
         return {}
