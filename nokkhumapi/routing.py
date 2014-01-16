@@ -21,6 +21,8 @@ def add_routes(config):
     config.add_route('projects.userprojects', '/users/{user_id}/projects')
     config.add_route('projects', '/projects*extension')
     
+    config.add_route('forums', '/forums*extension')
+    
     config.add_route('groups.processors', '/groups/{group_id}/processors')
     config.add_route('groups.collaborators', '/groups/{group_id}/collaborators')
     config.add_route('groups.usergroups', '/users/{user_id}/groups')
