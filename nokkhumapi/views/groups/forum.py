@@ -20,33 +20,21 @@ class ForumView(object):
         matchdict = self.request.matchdict
         extension = matchdict.get('extension')
         group_id = extension[0]
-        print('>>', group_id)
-#         if not re.search('\d+', group_id):
-#             # no numbers
-#             group = models.Group.objects(name=group_id, collaborators__user=self.request.user).first()
-#         else:
-#             # numbers present
-#             group = models.Group.objects(id=group_id, collaborators__user=self.request.user).first()
-#         if not group:
-#             self.request.response.status = '404 Not Found'
-#             return {}
-#         
-#         result = dict(
-#                       group=dict(
-#                             id=group.id,
-#                             name=group.name,
-#                             description=group.description,
-#                             status=group.status,
-#                             create_date=group.create_date,
-#                             update_date=group.update_date,
-#                             ip_address=group.ip_address,
-#                             colaborators=[dict(id=collaborator.user.id, email=collaborator.user.email, permissions=[permission for permission in collaborator.permissions]) 
-#                                           for collaborator in group.collaborators],
-#                             )
-#                       
-#                       )
+        group = models.Group.objects(id=group_id, collaborators__user=self.request.user).first()
+        
+        if group is None:
+            self.request.response.status = '404 Not Found'
+            return {'result':"not found id : %d"%group_id}
+        
+        forums = models.Forum.objects(group=group).all()
+        
         result = dict(
-                      forums=dict()
+                      forums=[dict(id=forum.id,
+                                   description=forum.description,
+                                   ownerid=forum.owner.id,
+                                   name=forum.owner.email,
+                                   reply=[dict(id=reply.id,description=reply.description, name=reply.user.email)for reply in forum.reply]) 
+                                   for forum in forums]
                       )
         return result
     
