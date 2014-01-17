@@ -33,7 +33,7 @@ class ForumView(object):
                                    description=forum.description,
                                    ownerid=forum.owner.id,
                                    name=forum.owner.email,
-                                   reply=[dict(id=reply.id,description=reply.description, name=reply.user.email)for reply in forum.reply]) 
+                                   replys=[dict(id=reply.id,description=reply.description, name=reply.user.email)for reply in forum.replys]) 
                                    for forum in forums]
                       )
         return result
