@@ -20,31 +20,34 @@ class ForumView(object):
         matchdict = self.request.matchdict
         extension = matchdict.get('extension')
         group_id = extension[0]
-        if not re.search('\d+', group_id):
-            # no numbers
-            group = models.Group.objects(name=group_id, collaborators__user=self.request.user).first()
-        else:
-            # numbers present
-            group = models.Group.objects(id=group_id, collaborators__user=self.request.user).first()
-        if not group:
-            self.request.response.status = '404 Not Found'
-            return {}
-        
+        print('>>', group_id)
+#         if not re.search('\d+', group_id):
+#             # no numbers
+#             group = models.Group.objects(name=group_id, collaborators__user=self.request.user).first()
+#         else:
+#             # numbers present
+#             group = models.Group.objects(id=group_id, collaborators__user=self.request.user).first()
+#         if not group:
+#             self.request.response.status = '404 Not Found'
+#             return {}
+#         
+#         result = dict(
+#                       group=dict(
+#                             id=group.id,
+#                             name=group.name,
+#                             description=group.description,
+#                             status=group.status,
+#                             create_date=group.create_date,
+#                             update_date=group.update_date,
+#                             ip_address=group.ip_address,
+#                             colaborators=[dict(id=collaborator.user.id, email=collaborator.user.email, permissions=[permission for permission in collaborator.permissions]) 
+#                                           for collaborator in group.collaborators],
+#                             )
+#                       
+#                       )
         result = dict(
-                      group=dict(
-                            id=group.id,
-                            name=group.name,
-                            description=group.description,
-                            status=group.status,
-                            create_date=group.create_date,
-                            update_date=group.update_date,
-                            ip_address=group.ip_address,
-                            colaborators=[dict(id=collaborator.user.id, email=collaborator.user.email, permissions=[permission for permission in collaborator.permissions]) 
-                                          for collaborator in group.collaborators],
-                            )
-                      
+                      forums=dict()
                       )
-
         return result
     
     @view_config(request_method='POST')   
