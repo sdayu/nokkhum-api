@@ -47,7 +47,7 @@ class Facetraining(object):
             break
         print('>>', f)
         face_name = models.Facetraining.objects(name=processor_dict['name'], owner=self.request.user).first()
-        if face_name in None:
+        if face_name is None:
             face_name = models.Facetraining()
              
             face_name.name = processor_dict['name']
