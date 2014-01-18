@@ -66,9 +66,12 @@ class Facetraining(object):
         for dirnames in walk(mypath):
             f.extend(dirnames)
             break
+        number = 0
         print('//', f)
+        if len(f) > 0:
+            number = len(f[2])
         result = dict(
-                      number=len(f[2])
+                      number=number
                     )
         
         return result
