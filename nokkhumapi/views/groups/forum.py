@@ -33,6 +33,7 @@ class ForumView(object):
                                    description=forum.description,
                                    ownerid=forum.owner.id,
                                    name=forum.owner.email,
+                                   create_date=forum.create_date,
                                    replys=[dict(description=reply.description, name=reply.user.email)for reply in forum.replys]) 
                                    for forum in forums]
                       )
