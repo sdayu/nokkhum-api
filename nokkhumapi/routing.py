@@ -59,6 +59,8 @@ def add_routes(config):
     config.add_route('user_resource', '/user_resources/{processor_id}')
     #billing
     config.add_route('billing.users', '/billing/processors/{processor_id}')
+    config.add_route('billing.billing_cycle', '/billing/processors/{processor_id}/cycle')
+    
     # image processor
     config.add_route('image_processors', '/image_processors')
     
