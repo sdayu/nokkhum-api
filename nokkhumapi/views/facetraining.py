@@ -78,28 +78,24 @@ class Facetraining(object):
         processor = models.Processor()
         
         f = []
-        mypath = '/home/superizer/Documents/myfacedb/face-' + self.request.user.face_id
+        mypath = '/home/superizer/Documents/myfacedb'
         for dirnames in walk(mypath):
             f.extend(dirnames)
             break
         print('>>', f)
         face_name = models.Facetraining.objects(name=processor_dict['name'], owner=self.request.user).first()
         if face_name is None:
-            num = models.Facetraining.objects(owner=self.request.user).all()
-            num = len(num)
             face_name = models.Facetraining()
-             
             face_name.name = processor_dict['name']
             face_name.owner = self.request.user
-            face_name.faceid = str(num)
+            face_name.faceid = str(len(f[1]))
             face_name.save()
+            
         else:
             if 'face-' + face_name.faceid in f[1]:
                 shutil.rmtree(mypath + '/face-' + face_name.faceid)
     
         processor_dict['image_processors'][0]['face_id'] = face_name.faceid
-        processor_dict['image_processors'][0]['face_database'] = mypath + '/face-' + face_name.faceid
-        
         processor = models.Processor()
         processor.name = processor_dict['name']
         processor.storage_period = processor_dict['storage_period']
