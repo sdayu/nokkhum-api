@@ -56,7 +56,8 @@ class Facetraining(object):
             face_name.save()
             processor_dict['image_processors'][0]['face_id'] = face_name.faceid
         else:
-            shutil.rmtree(mypath + '/face-' + face_name.faceid)
+            if 'face-' + face_name.faceid in f[1]:
+                shutil.rmtree(mypath + '/face-' + face_name.faceid)
             processor_dict['image_processors'][0]['face_id'] = face_name.faceid
             
         processor = models.Processor()
