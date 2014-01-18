@@ -45,6 +45,7 @@ class Facetraining(object):
         for dirnames in walk(mypath):
             f.extend(dirnames)
             break
+        print(processor_dict['image_processors'][0]['face_id'])
         if processor_dict['image_processors'][0]['face_id'] in f[1]:
             print('hi')
 #         processor.name = processor_dict['name']
