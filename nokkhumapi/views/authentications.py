@@ -52,9 +52,6 @@ class Tokens(object):
         #headers = remember(self.request, user.email)
         #print("test Header: ",headers)
         
-        user.face_id = '0'
-        user.save()
-        
         result = {
             "access": {
                 "token": {
