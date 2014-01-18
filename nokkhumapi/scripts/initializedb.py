@@ -50,7 +50,7 @@ def main(argv=sys.argv):
         user.password = secret_manager.get_hash_password('password')
         user.email = 'admin@nokkhum.local'
         role = models.Role.objects(name='admin').first()
-
+        user.face_id = '0'
         user.roles.append(role)
 
         user.save()
@@ -123,6 +123,20 @@ def main(argv=sys.argv):
                                     "fps" : 10,
                                     "height" : 480
                                 },
+                            'Face Recognition' : 
+                                {
+                                    "name" : "Face Recognition",
+                                    "directory": "/tmp/nokkhum-records/test",
+                                    "face_database": "/tmp/myfacedb",
+                                    "interval": 5,
+                                    "width": 640,
+                                    "fps": 25,
+                                    "height": 480
+                                },
+                            'Notification' :
+                               {
+                                    "name" : "Notification"
+                               }
                             }
     
     for processor_name in processor_attributes:
