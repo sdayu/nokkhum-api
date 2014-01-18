@@ -45,6 +45,7 @@ class Facetraining(object):
         for dirnames in walk(mypath):
             f.extend(dirnames)
             break
+        print('>>', f)
 #         face_name = models.Facetraining.objects(name=processor_dict['name'], owner=self.request.user).first()
 #         if face_name in None:
 #             face_name = models.Facetraining()
