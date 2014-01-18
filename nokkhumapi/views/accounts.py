@@ -41,6 +41,7 @@ class AccountView(object):
         role           = models.Role.objects(name='user').first()
         user.roles.append(role)
         
+        user.face_id = models.User.objects().count()
         user.save()
         
         user_dict["id"] = user.id
