@@ -10,6 +10,7 @@ from pyramid.response import Response
 import json, datetime
 
 from nokkhumapi import models
+
 @view_defaults(route_name='projects.userprojects', renderer="json", permission="authenticated")
 class UserProjectsView(object):
     def __init__(self, request):
@@ -33,11 +34,11 @@ class UserProjectsView(object):
                                    name=project.name, 
                                    description=project.description, 
                                    camera_number=project.get_camera_number(),
-                                   processor_number=project.get_processor_number()
+                                   processor_number=project.get_processor_number(),
+                                   create_date=project.create_date
                                    )
                                for project in projects],
-                  "collaborate_projects":[dict(id=project.id, name=project.name, description=project.description) for project in collaborate_projects]
+                  "collaborate_projects":[dict(id=project.id, name=project.name, description=project.description, owner=project.owner.email) for project in collaborate_projects]
                   }
-        
         
         return result

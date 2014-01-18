@@ -20,8 +20,10 @@ class UserView(object):
         matchdict = self.request.matchdict
         extension = matchdict.get('extension')
         id = extension[0]
-        
-        user = models.User.objects(id=id).first()
+        if '@' in id:
+            user = models.User.objects(email=id).first()
+        else:
+            user = models.User.objects(id=id).first()
         
         if user is None:
             user = models.User.objects(email=id).first()
@@ -52,7 +54,7 @@ class UserView(object):
         user.status     = user_dict.get("status", 'disactive')
             
         user.roles.append(models.Role.objects(name='user').first())
-        
+        user.face_id = models.User.objects().count()
         user.save()
         
         user_dict["id"] = user.id

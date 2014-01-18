@@ -36,11 +36,12 @@ class AccountView(object):
         user.last_name  = user_dict["last_name"]
         user.email      = user_dict["email"]
         user.password   = self.request.secret_manager.get_hash_password(user_dict["password"])
-        user.status     = "deactivate"
+        user.status     = "active"
         
         role           = models.Role.objects(name='user').first()
         user.roles.append(role)
         
+        user.face_id = str(models.User.objects().count())
         user.save()
         
         user_dict["id"] = user.id

@@ -1,6 +1,5 @@
 '''
 Created on Jun 28, 2012
-
 @author: boatkrap
 '''
 
@@ -9,13 +8,27 @@ def add_routes(config):
     
     #authentication
     config.add_route('authentications.tokens', '/authentication/tokens')
+    
+    config.add_route('notifications.number', '/notifications/number')
+    config.add_route('notifications', '/notifications*extension')
+    
+    config.add_route('facetraining', '/facetraining*extension')
 
     config.add_route('projects.acamera', '/projects/{project_id}/cameras/${camera_id}')    
     config.add_route('projects.cameras', '/projects/{project_id}/cameras')
+    config.add_route('projects.permissions', '/projects/{project_id}/permissions/{user_id}')
     config.add_route('projects.processors', '/projects/{project_id}/processors')
+    config.add_route('projects.collaboration', '/projects/{project_id}/collaboration')
     config.add_route('projects.collaborators', '/projects/{project_id}/collaborators')
     config.add_route('projects.userprojects', '/users/{user_id}/projects')
     config.add_route('projects', '/projects*extension')
+    
+    config.add_route('forums', '/forums*extension')
+    
+    config.add_route('groups.processors', '/groups/{group_id}/processors')
+    config.add_route('groups.collaborators', '/groups/{group_id}/collaborators')
+    config.add_route('groups.usergroups', '/users/{user_id}/groups')
+    config.add_route('groups', '/groups*extension')
     
     config.add_route('accounts', '/accounts*extension')
     config.add_route('users', '/users*extension')
@@ -42,6 +55,10 @@ def add_routes(config):
     config.add_route('processors.cameras', '/processors/{processor_id}/cameras')
     config.add_route('processors.operating', '/processors/{processor_id}/operating')
     
+    #user_resource
+    config.add_route('user_resource', '/user_resources/{processor_id}')
+    #billing
+    config.add_route('billing.users', '/billing/processors/{processor_id}')
     # image processor
     config.add_route('image_processors', '/image_processors')
     
