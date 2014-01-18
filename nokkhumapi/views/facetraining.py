@@ -58,15 +58,19 @@ class Facetraining(object):
     
     @view_config(request_method='GET')
     def get(self):
+        matchdict = self.request.matchdict
+        extension = matchdict.get('extension')
+        face_id = extension[0]
         
-        cameras = models.Camera.objects(owner=self.request.user).all()
-        number = 0
-        for camera in cameras:
-            notifications = models.Notification.objects(camera=str(camera.id),status='False').all()
-            number += len(notifications) 
+        f = []
+        mypath = '/home/superizer/Documents/myfacedb/face-' + face_id
+        for dirnames in walk(mypath):
+            f.extend(dirnames)
+            break
+        print('>>', f)
                 
         result = dict(
-                      number=number
+                      number=0
                     )
         
         return result
