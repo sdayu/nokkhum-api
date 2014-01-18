@@ -1,7 +1,6 @@
 '''
-Created on Jan 3, 2013
-
-@author: ww
+Created on Jan 2, 2014
+@author: yoschanin.s
 '''
 from pyramid.view import view_defaults
 from pyramid.view import view_config

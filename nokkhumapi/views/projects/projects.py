@@ -21,7 +21,7 @@ class ProjectView(object):
         extension = matchdict.get('extension')
         project_id = extension[0]
         
-        project = models.Project.objects(id=project_id, owner=self.request.user).first()
+        project = models.Project.objects(id=project_id).first()
 
         if not project:
             self.request.response.status = '404 Not Found'
@@ -41,6 +41,8 @@ class ProjectView(object):
                                 username=project.owner.email),
                             colaborators=[dict(id=collaborator.user.id, email=collaborator.user.email) 
                                           for collaborator in project.collaborators],
+                            gcolaborators=[dict(id=collaborator.id, name=collaborator.name) 
+                                          for collaborator in project.gcollaborators]
                             )
                       
                       )
@@ -91,7 +93,7 @@ class ProjectView(object):
     def delete(self):
         matchdict = self.request.matchdict
         extension = matchdict.get('extension')
-        id = int(extension[0])
+        id = extension[0]
         
         project = models.Project.objects(id=id).first()
         if not project:
