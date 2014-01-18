@@ -85,11 +85,13 @@ class Facetraining(object):
         print('>>', f)
         face_name = models.Facetraining.objects(name=processor_dict['name'], owner=self.request.user).first()
         if face_name is None:
+            num = models.Facetraining.objects(owner=self.request.user).all()
+            num = len(num)
             face_name = models.Facetraining()
              
             face_name.name = processor_dict['name']
             face_name.owner = self.request.user
-            face_name.faceid = str(len(f[1]))
+            face_name.faceid = str(num)
             face_name.save()
         else:
             if 'face-' + face_name.faceid in f[1]:
