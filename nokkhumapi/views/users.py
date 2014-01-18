@@ -23,6 +23,9 @@ class UserView(object):
         
         user = models.User.objects(id=id).first()
         
+        if user is None:
+            user = models.User.objects(email=id).first()
+        
         if not user:
             self.request.response.status = '404 Not Found'
             return {}
