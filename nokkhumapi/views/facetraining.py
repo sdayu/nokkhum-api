@@ -46,33 +46,32 @@ class Facetraining(object):
             f.extend(dirnames)
             break
         print('>>', f)
-#         face_name = models.Facetraining.objects(name=processor_dict['name'], owner=self.request.user).first()
-#         if face_name in None:
-#             face_name = models.Facetraining()
-#             
-#             face_name.name = processor_dict['name']
-#             face_name.owner = self.request.user
-#             face_name.faceid = 
-            
-        print(processor_dict['image_processors'][0]['face_id'])
+        face_name = models.Facetraining.objects(name=processor_dict['name'], owner=self.request.user).first()
+        if face_name in None:
+            face_name = models.Facetraining()
+             
+            face_name.name = processor_dict['name']
+            face_name.owner = self.request.user
+            face_name.faceid = str(len(f[1]))
+            face_name.save()
+            processor_dict['image_processors'][0]['face_id'] = face_name.faceid
+        else:
+            shutil.rmtree(mypath + '/face-' + face_name.faceid)
+            processor_dict['image_processors'][0]['face_id'] = face_name.faceid
         
-        if processor_dict['image_processors'][0]['face_id'] in f[1]:
-            print('hi')
-#         processor.name = processor_dict['name']
-#         processor.storage_period = processor_dict['storage_period']
-#         processor.image_processors = processor_dict['image_processors']
-#         
-#         
-#         
-#         processor.owner    = self.request.user
-#         processor.project  = models.Project.objects(id=processor_dict["project"]["id"]).first()
-#         
-#         for camera_attribute in processor_dict['cameras']:
-#             camera = models.Camera.objects(id=camera_attribute['id']).first()
-#             processor.cameras.append(camera)
-#    
-#         processor.save()
-#         processor.reload()
+        processor.name = processor_dict['name']
+        processor.storage_period = processor_dict['storage_period']
+        processor.image_processors = processor_dict['image_processors']
+        
+        processor.owner    = self.request.user
+        processor.project  = models.Project.objects(id=processor_dict["project"]["id"]).first()
+         
+        for camera_attribute in processor_dict['cameras']:
+            camera = models.Camera.objects(id=camera_attribute['id']).first()
+            processor.cameras.append(camera)
+    
+        processor.save()
+        processor.reload()
         
         return dict(
                     processor=self.build_result(processor)
