@@ -51,6 +51,9 @@ class Tokens(object):
         
         #headers = remember(self.request, user.email)
         #print("test Header: ",headers)
+        if user.face_id is None:
+            user.face_id = str(models.User.objects(face_id=None).count())
+            user.save()
         
         result = {
             "access": {
@@ -64,6 +67,7 @@ class Tokens(object):
                     "last_name": user.last_name,
                     "roles": [dict(id=role.id, name=role.name) for role in user.roles], 
                     "email": user.email,
+                    "face_id" : user.face_id
                 }
             }
         }
