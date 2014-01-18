@@ -45,7 +45,16 @@ class Facetraining(object):
         for dirnames in walk(mypath):
             f.extend(dirnames)
             break
+#         face_name = models.Facetraining.objects(name=processor_dict['name'], owner=self.request.user).first()
+#         if face_name in None:
+#             face_name = models.Facetraining()
+#             
+#             face_name.name = processor_dict['name']
+#             face_name.owner = self.request.user
+#             face_name.faceid = 
+            
         print(processor_dict['image_processors'][0]['face_id'])
+        
         if processor_dict['image_processors'][0]['face_id'] in f[1]:
             print('hi')
 #         processor.name = processor_dict['name']
