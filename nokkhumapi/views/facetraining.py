@@ -92,6 +92,7 @@ class Facetraining(object):
             face_name.save()
             
         else:
+            print('>>', 'face-' + face_name.faceid, mypath + '/face-' + face_name.faceid)
             if 'face-' + face_name.faceid in f[1]:
                 shutil.rmtree(mypath + '/face-' + face_name.faceid)
     
