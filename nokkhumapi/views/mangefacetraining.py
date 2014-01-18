@@ -7,15 +7,12 @@ from pyramid.view import view_defaults
 from pyramid.view import view_config
 from pyramid.response import Response
 
-from os import walk
-import shutil
-
 import json, datetime
 
 from nokkhumapi import models
 
 @view_defaults(route_name='facetraining.delimage', renderer="json", permission="authenticated")
-class Facetraining(object):
+class FacetrainingManage(object):
     def __init__(self, request):
         self.request = request
     
