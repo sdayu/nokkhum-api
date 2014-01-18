@@ -41,21 +41,32 @@ class ForumView(object):
     @view_config(request_method='POST')   
     def create(self):
         topic = self.request.json_body["topic"]
-
-        forum = models.Forum()
-        forum.description = topic["description"]
-        forum.create_date = datetime.datetime.now()
-        forum.update_date = datetime.datetime.now()
-        forum.ip_address = self.request.environ.get('REMOTE_ADDR', '0.0.0.0')
-        
-        forum.owner = self.request.user
-        group = models.Group.objects(id=topic["group_id"],collaborators__user=self.request.user).first()        
-        if group is None:
-            self.request.response.status = '404 Not Found'
-            return {}
-        
-        forum.group = group
-        forum.save()
+        if topic["forum_id"] is '':
+            forum = models.Forum()
+            forum.description = topic["description"]
+            forum.create_date = datetime.datetime.now()
+            forum.update_date = datetime.datetime.now()
+            forum.ip_address = self.request.environ.get('REMOTE_ADDR', '0.0.0.0')
+            
+            forum.owner = self.request.user
+            group = models.Group.objects(id=topic["group_id"],collaborators__user=self.request.user).first()        
+            if group is None:
+                self.request.response.status = '404 Not Found'
+                return {}
+            
+            forum.group = group
+            forum.save()
+        else: 
+            forum = models.Forum.objects(id=topic["forum_id"]).first() 
+            if forum is None:
+                self.request.response.status = '404 Not Found'
+                return {}
+            reply = models.Reply()
+            reply.description = topic["description"]
+            reply.user = self.request.user
+            
+            forum.replys.append(reply)
+            forum.save()
         
         return {}
     
