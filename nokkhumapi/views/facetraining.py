@@ -91,12 +91,13 @@ class Facetraining(object):
             face_name.owner = self.request.user
             face_name.faceid = str(len(f[1]))
             face_name.save()
-            processor_dict['image_processors'][0]['face_id'] = face_name.faceid
         else:
             if 'face-' + face_name.faceid in f[1]:
                 shutil.rmtree(mypath + '/face-' + face_name.faceid)
-            processor_dict['image_processors'][0]['face_id'] = face_name.faceid
-            
+    
+        processor_dict['image_processors'][0]['face_id'] = face_name.faceid
+        processor_dict['image_processors'][0]['face_database'] = mypath + '/face-' + face_name.faceid
+        
         processor = models.Processor()
         processor.name = processor_dict['name']
         processor.storage_period = processor_dict['storage_period']
