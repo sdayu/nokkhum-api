@@ -6,7 +6,9 @@ Created on Jan 15, 2014
 from pyramid.view import view_defaults
 from pyramid.view import view_config
 from pyramid.response import Response
+
 from os import walk
+import shutil
 
 import json, datetime
 
@@ -39,11 +41,11 @@ class Facetraining(object):
         processor = models.Processor()
         
         f = []
-        mypath = '/home/superizer/Documents/myfacedb'
+        mypath = '/home/superizer/Documents/myfacedb/face-' + self.request.user.face_id
         for dirnames in walk(mypath):
             f.extend(dirnames)
             break
-        print('>>', f[1])
+        print('>>', f)
 #         processor.name = processor_dict['name']
 #         processor.storage_period = processor_dict['storage_period']
 #         processor.image_processors = processor_dict['image_processors']
@@ -53,12 +55,10 @@ class Facetraining(object):
 #         processor.owner    = self.request.user
 #         processor.project  = models.Project.objects(id=processor_dict["project"]["id"]).first()
 #         
-        for camera_attribute in processor_dict['cameras']:
-            camera = models.Camera.objects(id=camera_attribute['id']).first()
-            if camera is None:
-                print('hi')
+#         for camera_attribute in processor_dict['cameras']:
+#             camera = models.Camera.objects(id=camera_attribute['id']).first()
 #             processor.cameras.append(camera)
-#         
+#    
 #         processor.save()
 #         processor.reload()
         
