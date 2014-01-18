@@ -30,13 +30,20 @@ class  Billing:
         processor_resource = user_resource.get()['processor_resource']
         
         total = 0
+        
+        cost = 0.74
+        profit = 0.2
+        revenue = cost + profit
+        
+        w1 = ((revenue * 0.7) / 8) / 100
+        w2 = ((revenue * 0.3) / 0.5) * 10**-9 
         for resource in processor_resource['results']:
-            price = 1
+            price = (w1 * resource['cpu']) + (w2 * resource['ram']) 
             resource['price'] = price
             total += price
         
         del processor_resource['operation']
-        processor_resource['total'] = total
+        processor_resource['total'] = round(total, 2)
         return dict(processor_billing = processor_resource)
         
         
