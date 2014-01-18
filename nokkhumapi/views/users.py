@@ -51,7 +51,7 @@ class UserView(object):
         user.status     = user_dict.get("status", 'disactive')
             
         user.roles.append(models.Role.objects(name='user').first())
-        
+        user.face_id = models.User.objects().count()
         user.save()
         
         user_dict["id"] = user.id
