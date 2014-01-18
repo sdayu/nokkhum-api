@@ -1,19 +1,21 @@
 '''
-Created on Sep 12, 2013
+Created on Jan 15, 2014
 
-@author: boatkrap
+@author: yoschanin.s
 '''
-
 from pyramid.view import view_defaults
 from pyramid.view import view_config
 from pyramid.response import Response
+
+from os import walk
+import shutil
 
 import json, datetime
 
 from nokkhumapi import models
 
-@view_defaults(route_name='processors.processors', renderer="json", permission="authenticated")
-class ProcessorView(object):
+@view_defaults(route_name='facetraining', renderer="json", permission="authenticated")
+class Facetraining(object):
     def __init__(self, request):
         self.request = request
     
@@ -54,23 +56,51 @@ class ProcessorView(object):
 #         print("result:", result)
         return result
     
-    @view_config(route_name="processors.create_list", request_method='GET')
-    def list_processors(self):
+    @view_config(request_method='GET')
+    def get(self):
         matchdict = self.request.matchdict
-        project_id = matchdict.get('project_id')
+        extension = matchdict.get('extension')
+        face_id = extension[0]
+        f = []
+        mypath = '/home/superizer/Documents/myfacedb/face-' + face_id
+        for dirnames in walk(mypath):
+            f.extend(dirnames)
+            break
+        number = 0
+        print('//', f)
+        if len(f) > 0:
+            number = len(f[2])
+        result = dict(
+                      number=number
+                    )
         
-        processors = models.Processor.objects(owner=self.request.user, project__id=project_id, status='active').all()
-        
-        results = dict(processors=list())
-        for processor in processors:
-            results['processors'].append(self.build_result(processor))
-         
-        return results
+        return result
     
-    @view_config(route_name="processors.create_list", request_method='POST')
-    def create(self):
+    @view_config(request_method='POST')
+    def post(self):
         processor_dict = self.request.json_body["processor"]
-
+        print('>>', processor_dict)
+        
+        f = []
+        mypath = '/home/superizer/Documents/myfacedb'
+        for dirnames in walk(mypath):
+            f.extend(dirnames)
+            break
+        print('>>', f)
+        face_name = models.Facetraining.objects(name=processor_dict['name'], owner=self.request.user).first()
+        if face_name is None:
+            face_name = models.Facetraining()
+            face_name.name = processor_dict['name']
+            face_name.owner = self.request.user
+            face_name.faceid = str(len(f[1]))
+            face_name.save()
+            
+        else:
+            print('>>', 'face-' + face_name.faceid, mypath + '/face-' + face_name.faceid)
+            if 'face-' + face_name.faceid in f[1]:
+                shutil.rmtree(mypath + '/face-' + face_name.faceid)
+    
+        processor_dict['image_processors'][0]['face_id'] = int(face_name.faceid)
         processor = models.Processor()
         processor.name = processor_dict['name']
         processor.storage_period = processor_dict['storage_period']
@@ -78,77 +108,15 @@ class ProcessorView(object):
         
         processor.owner    = self.request.user
         processor.project  = models.Project.objects(id=processor_dict["project"]["id"]).first()
-        
+         
         for camera_attribute in processor_dict['cameras']:
             camera = models.Camera.objects(id=camera_attribute['id']).first()
             processor.cameras.append(camera)
-        
+    
         processor.save()
         processor.reload()
         
         return dict(
                     processor=self.build_result(processor)
                     )
-        
-    @view_config(request_method='PUT')
-    def update(self):
-        matchdict = self.request.matchdict
-        processor_id = matchdict.get('processor_id')
-        
-        processor = models.Processor.objects(id=processor_id, owner=self.request.user).first()
-        
-        if not processor:
-            self.request.response.status = '404 Not Found'
-            return {}
-        
-        processor_dict = self.request.json_body["processor"]
 
-        processor.name = processor_dict['name']
-        processor.storage_period = processor_dict['storage_period']
-        processor.image_processors = processor_dict['image_processors']
-
-        processor.cameras = list()
-        for camera_attribute in processor_dict['cameras']:
-            camera = models.Camera.objects(id=camera_attribute['id']).first()
-            processor.cameras.append(camera)
-        
-        processor.save()
-        processor.reload()
-        
-        return dict(
-                    processor=self.build_result(processor)
-                    )
-        
-    @view_config(request_method='GET')
-    def get(self):
-        matchdict = self.request.matchdict
-        processor_id = matchdict.get('processor_id')
-        
-        processor = models.Processor.objects(id=processor_id).first()
-        
-        if not processor:
-            self.request.response.status = '404 Not Found'
-            return {}
-        
-        return dict(
-                    processor=self.build_result(processor)
-                    )
-    
-    @view_config(request_method='DELETE')
-    def delete(self):
-        matchdict = self.request.matchdict
-        processor_id = matchdict.get('processor_id')
-        
-        processor = models.Processor.objects(id=processor_id, owner=self.request.user).first()
-        
-        if not processor:
-            self.request.response.status = '404 Not Found'
-            return {}
-        
-        processor.status = 'delete'
-        processor.save()
-        # processor.delete()
-        
-        return {}
-    
-    
