@@ -75,7 +75,6 @@ class Facetraining(object):
     def post(self):
         processor_dict = self.request.json_body["processor"]
         print('>>', processor_dict)
-        processor = models.Processor()
         
         f = []
         mypath = '/home/superizer/Documents/myfacedb'
@@ -96,7 +95,7 @@ class Facetraining(object):
             if 'face-' + face_name.faceid in f[1]:
                 shutil.rmtree(mypath + '/face-' + face_name.faceid)
     
-        processor_dict['image_processors'][0]['face_id'] = face_name.faceid
+        processor_dict['image_processors'][0]['face_id'] = int(face_name.faceid)
         processor = models.Processor()
         processor.name = processor_dict['name']
         processor.storage_period = processor_dict['storage_period']
