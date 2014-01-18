@@ -12,7 +12,7 @@ def add_routes(config):
     config.add_route('notifications.number', '/notifications/number')
     config.add_route('notifications', '/notifications*extension')
     
-    config.add_route('facetraining.delimage', '/facetraining/{processor_id}')
+    config.add_route('facetraining.delimage', '/mfacetraining/{processor_id}')
     config.add_route('facetraining', '/facetraining*extension')
 
     config.add_route('projects.acamera', '/projects/{project_id}/cameras/${camera_id}')    
