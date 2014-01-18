@@ -53,10 +53,10 @@ class Facetraining(object):
 #         processor.owner    = self.request.user
 #         processor.project  = models.Project.objects(id=processor_dict["project"]["id"]).first()
 #         
-#         for camera_attribute in processor_dict['cameras']:
-        camera = models.Camera.objects(id=camera_attribute['id']).first()
-        if camera is None:
-            print('hi')
+        for camera_attribute in processor_dict['cameras']:
+            camera = models.Camera.objects(id=camera_attribute['id']).first()
+            if camera is None:
+                print('hi')
 #             processor.cameras.append(camera)
 #         
 #         processor.save()
