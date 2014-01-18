@@ -52,7 +52,7 @@ class Tokens(object):
         #headers = remember(self.request, user.email)
         #print("test Header: ",headers)
         if user.face_id is None:
-            user.face_id = str(models.User.objects(face_id=None).count())
+            user.face_id = '0'
             user.save()
         
         result = {
