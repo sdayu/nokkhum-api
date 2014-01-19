@@ -32,7 +32,7 @@ class  Billing:
         total = 0
         
         cost = 0.74
-        profit = 0.2
+        profit = 0.074
         revenue = cost + profit
         
         w1 = ((revenue * 0.7) / 8) / 100
