@@ -36,7 +36,7 @@ class Notification(object):
                                                       ),
                                           method=notification.method,
                                           filename=notification.filename,
-                                          face_name=names.name,
+                                          face_name=names['name'],
                                           description=notification.description,
                                           create_date=notification.create_date
                                           )
@@ -51,7 +51,7 @@ class Notification(object):
                                                       ),
                                           method=notification.method,
                                           filename=notification.filename,
-                                          face_name=names.name,
+                                          face_name=names['name'],
                                           description=notification.description,
                                           create_date=notification.create_date
                                           )
