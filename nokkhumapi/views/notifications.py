@@ -30,7 +30,9 @@ class Notification(object):
                 names = models.Facetraining.objects(faceid=str(notification.face_name[5:]), owner=self.request.user).first()
                 print('>>' , names, notification.face_name[5:])
                 if names is None:
-                    names.name = notification.face_name
+                    cname = notification.face_name
+                else:
+                    cname = names.name
                 result['new'].append(
                                      dict(
                                           id=notification.id,
@@ -39,7 +41,7 @@ class Notification(object):
                                                       ),
                                           method=notification.method,
                                           filename=notification.filename,
-                                          face_name=names.name,
+                                          face_name=cname,
                                           description=notification.description,
                                           create_date=notification.create_date
                                           )
@@ -49,7 +51,9 @@ class Notification(object):
                 names = models.Facetraining.objects(faceid=str(notification.face_name[5:]), owner=self.request.user).first()
                 print('>>' , names, notification.face_name[5:])
                 if names is None:
-                    names.name = notification.face_name
+                    cname = notification.face_name
+                else:
+                    cname = names.name
                 result['old'].append(
                                      dict(
                                           camera=dict(
@@ -57,7 +61,7 @@ class Notification(object):
                                                       ),
                                           method=notification.method,
                                           filename=notification.filename,
-                                          face_name=names.name,
+                                          face_name=cname,
                                           description=notification.description,
                                           create_date=notification.create_date
                                           )
