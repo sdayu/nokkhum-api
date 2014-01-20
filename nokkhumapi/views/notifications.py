@@ -28,6 +28,7 @@ class Notification(object):
             notifications = models.Notification.objects(camera=str(camera.id), status='False').all()
             for notification in notifications:
                 names = models.Facetraining.objects(faceid=str(notification.face_name[5:]), owner=self.request.user).first()
+                print('>>' , names, notification.face_name[5:])
                 result['new'].append(
                                      dict(
                                           id=notification.id,
@@ -44,6 +45,7 @@ class Notification(object):
             notifications = models.Notification.objects(camera=str(camera.id), status='True').all()
             for notification in notifications:
                 names = models.Facetraining.objects(faceid=str(notification.face_name[5:]), owner=self.request.user).first()
+                print('>>' , names, notification.face_name[5:])
                 result['old'].append(
                                      dict(
                                           camera=dict(
