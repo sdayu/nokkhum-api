@@ -24,8 +24,11 @@ class Tokens(object):
     def tokens(self):
 
         password_credential = self.request.json_body['password_credentials']
+        try:
+            pass_hash = self.request.secret_manager.get_hash_password(password_credential['password'])
+        except:
+            return None
         
-        pass_hash = self.request.secret_manager.get_hash_password(password_credential['password'])
         user = models.User.objects(email=password_credential['username'],
                                    password=pass_hash,
                                    status='active')\
