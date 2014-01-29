@@ -64,10 +64,14 @@ class Tokens(object):
                     "last_name": user.last_name,
                     "roles": [dict(id=role.id, name=role.name) for role in user.roles], 
                     "email": user.email,
-                    "face_id" : user.face_id
                 }
             }
         }
+        
+        # this attribute need to be discussion
+        if hasattr(user, 'face_id'): 
+            result['user']['face_id'] = user.face_id
+            
         
         return result
 
