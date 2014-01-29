@@ -126,6 +126,7 @@ class SecretManager:
 
         
     def get_hash_password(self, password):
+
         salt = hashlib.sha1(self.get_password_secret().encode('utf-8'))
         hashPass = hashlib.sha1(password.encode('utf-8'))
         

@@ -59,7 +59,8 @@ class ProcessorCommand:
     
     @view_config(route_name='admin.processor_commands.list', request_method="GET") 
     def list(self):
-        processor_commands = models.ProcessorCommand.objects().order_by("-id").all()
+        processor_commands = models.ProcessorCommand.objects().order_by("-id").limit(20)
+        
         result = dict(
                     processor_commands = [
                         self.build_processor_command(command)
