@@ -30,7 +30,6 @@ class AccountView(object):
             self.request.response.status = '500 Internal Server Error'
             return {'error':{'message':'This email is available on system.'}}
         
-        
         user            = models.User()
         user.first_name = user_dict["first_name"]
         user.last_name  = user_dict["last_name"]
