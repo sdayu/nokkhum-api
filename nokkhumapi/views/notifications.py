@@ -27,6 +27,12 @@ class Notification(object):
         for camera in cameras:
             notifications = models.Notification.objects(camera=str(camera.id), status='False').all()
             for notification in notifications:
+                names = models.Facetraining.objects(faceid=str(notification.face_name[5:]), owner=self.request.user).first()
+                print('>>' , names, notification.face_name[5:])
+                if names is None:
+                    cname = notification.face_name
+                else:
+                    cname = names.name
                 result['new'].append(
                                      dict(
                                           id=notification.id,
@@ -35,13 +41,19 @@ class Notification(object):
                                                       ),
                                           method=notification.method,
                                           filename=notification.filename,
-                                          face_name=notification.face_name,
+                                          face_name=cname,
                                           description=notification.description,
                                           create_date=notification.create_date
                                           )
                                      )
             notifications = models.Notification.objects(camera=str(camera.id), status='True').all()
             for notification in notifications:
+                names = models.Facetraining.objects(faceid=str(notification.face_name[5:]), owner=self.request.user).first()
+                print('>>' , names, notification.face_name[5:])
+                if names is None:
+                    cname = notification.face_name
+                else:
+                    cname = names.name
                 result['old'].append(
                                      dict(
                                           camera=dict(
@@ -49,7 +61,7 @@ class Notification(object):
                                                       ),
                                           method=notification.method,
                                           filename=notification.filename,
-                                          face_name=notification.face_name,
+                                          face_name=cname,
                                           description=notification.description,
                                           create_date=notification.create_date
                                           )

@@ -61,16 +61,17 @@ class Facetraining(object):
         matchdict = self.request.matchdict
         extension = matchdict.get('extension')
         face_id = extension[0]
-        print('>>', face_id)
         f = []
         mypath = '/home/superizer/Documents/myfacedb/face-' + face_id
         for dirnames in walk(mypath):
             f.extend(dirnames)
             break
-        print('>>', f)
-                
+        number = 0
+        print('//', f)
+        if len(f) > 0:
+            number = len(f[2])
         result = dict(
-                      number=0
+                      number=number
                     )
         
         return result
