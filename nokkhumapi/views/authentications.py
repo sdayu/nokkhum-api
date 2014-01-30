@@ -73,7 +73,7 @@ class Tokens(object):
         
         # this attribute need to be discussion
         if hasattr(user, 'face_id'): 
-            result['user']['face_id'] = user.face_id
+            result['access']['user']['face_id'] = user.face_id
             
         
         return result
