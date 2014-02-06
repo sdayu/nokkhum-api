@@ -50,7 +50,7 @@ def main(argv=sys.argv):
         user.password = secret_manager.get_hash_password('password')
         user.email = 'admin@nokkhum.local'
         role = models.Role.objects(name='admin').first()
-
+        user.face_id = '0'
         user.roles.append(role)
 
         user.save()

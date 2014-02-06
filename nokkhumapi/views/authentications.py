@@ -64,6 +64,7 @@ class Tokens(object):
                     "last_name": user.last_name,
                     "roles": [dict(id=role.id, name=role.name) for role in user.roles], 
                     "email": user.email,
+                    # "face_id" : user.face_id
                 }
             }
         }
