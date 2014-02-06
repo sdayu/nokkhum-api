@@ -32,6 +32,7 @@ def add_routes(config):
     config.add_route('groups', '/groups*extension')
     
     config.add_route('accounts', '/accounts*extension')
+    
     config.add_route('users', '/users*extension')
     
     config.add_route('camera_models', '/camera_models*extension')
