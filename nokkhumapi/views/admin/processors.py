@@ -27,6 +27,7 @@ class Processor:
                                                id=processor.operating.compute_node.id,
                                                name=processor.operating.compute_node.name
                                                )
+
         result = dict(
                       id=processor.id,
                       name=processor.name,
@@ -41,7 +42,7 @@ class Processor:
                             ),
                       owner=dict(
                             id=processor.owner.id,
-                            email=processor.owner.email
+#                             email=processor.owner.email
                             ),
                       cameras=[dict(id=camera.id, name=camera.name) for camera in processor.cameras],
                       processor_operating=processor_operating
@@ -51,7 +52,11 @@ class Processor:
     
     @view_config(route_name="admin.processors.list", request_method="GET")
     def list_processor(self):
-        processors = models.Processor.objects().all()
+        if 'user_id' in self.request.GET:
+            user = models.User.objects.with_id(self.request.GET.get('user_id'))
+            processors = models.Processor.objects(owner=user, status="active").all()
+        else:
+            processors = models.Processor.objects(status="active").all()
         result = dict(
                 processors=[ self.build_result(processor)
                   for processor in processors
