@@ -6,6 +6,7 @@ Created on Nov 18, 2013
 from pyramid.view import view_defaults
 from pyramid.view import view_config
 from pyramid.response import Response
+from pyramid.security import has_permission
 
 import mongoengine as me
 
@@ -27,7 +28,12 @@ class  UserResource:
         date_list = [int(d) for d in self.request.GET.get('end_date').split('-')]
         end_date = datetime.date(date_list[0], date_list[1], date_list[2])
         operation = self.request.GET.get('operation', 'max')
-        processor = models.Processor.objects(id=processor_id, owner = self.request.user).first()
+        
+        if 'user_id' in self.request.GET and has_permission("role:admin", self.request.context, self.request):
+            owner = models.User.objects.with_id(self.request.GET.get("user_id"))
+            processor = models.Processor.objects(id=processor_id, owner = owner).first()
+        else:
+            processor = models.Processor.objects(id=processor_id, owner = self.request.user).first()
         
         processor_status = models.ProcessorStatus.objects(me.Q(report_date__gte = start_date) & me.Q(report_date__lt = end_date)
                                                           & me.Q(processor = processor)).all()
