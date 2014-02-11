@@ -20,7 +20,6 @@ class AccountView(object):
     def register(self):
         user_dict = self.request.json_body["user"]
         
-        
         if len(user_dict["email"]) == 0 or len(user_dict["password"]) == 0:
             self.request.response.status = '500 Internal Server Error'
             return {'error':{'message':'Required email and password.'}}

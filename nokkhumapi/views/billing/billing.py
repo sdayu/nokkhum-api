@@ -6,6 +6,7 @@ Created on Nov 27, 2013
 from pyramid.view import view_defaults
 from pyramid.view import view_config
 from pyramid.response import Response
+from pyramid.security import has_permission 
 
 from nokkhumapi import models
 
@@ -26,14 +27,23 @@ class  Billing:
         self.request.GET['operation'] = 'AVG'
         
         user_resource = resources.user_resource.UserResource(self.request)
-        
         processor_resource = user_resource.get()['processor_resource']
         
         total = 0
         
-        cost = 0.74
-        profit = 0.074
-        revenue = cost + profit
+        service_plan = None
+        if has_permission('role:admin', self.request.context, self.request):
+            if 'service_plan' in self.request.GET:
+                service_plan = models.ServicePlan.objects.with_id(self.request.GET.get('service_plan'))
+
+        if service_plan is None:
+            service_plan = models.ServicePlan.objects().first()
+            
+        if service_plan is None:
+            service_plan = models.ServicePlan()
+            service_plan.sell_price_per_minute = 1
+            
+        revenue = service_plan.sell_price_per_minute
         
         w1 = ((revenue * 0.7) / 8) / 100
         w2 = ((revenue * 0.3) / 0.5) * 10**-9 

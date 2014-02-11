@@ -34,6 +34,20 @@ class  UserResource:
                            
 #         print("start_processor_status :", processor_status[0])
 #         print("end_processor_status :",processor_status[-1])
+        
+        resource_result = dict(
+                      processor_resource=dict(
+                          results = [],
+                          start_date =  start_date,
+                          end_date = end_date,
+                          operation = operation.upper(),
+                          processor=dict(id=processor_id)
+                          )
+                )
+        
+        if len(processor_status) == 0:
+            return resource_result
+        
         first_date = processor_status[0].report_date
         start_time = datetime.datetime(first_date.year, first_date.month, first_date.day, first_date.hour, first_date.minute)
         end_time = start_time + datetime.timedelta(minutes = 1)
@@ -85,16 +99,8 @@ class  UserResource:
 #         print("results:")
 #         pp.pprint(results)
         
-        result = dict(
-                      processor_resource=dict(
-                          results = results,
-                          start_date =  start_date,
-                          end_date = end_date,
-                          operation = operation.upper(),
-                          processor=dict(id=processor_id)
-                          )
-                )
+        resource_result['processor_resource']['results'] = results
         
-        return result
+        return resource_result
     
         
