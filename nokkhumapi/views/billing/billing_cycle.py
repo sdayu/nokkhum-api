@@ -26,14 +26,15 @@ class  BillingCycle:
     def get(self):  
         matchdict = self.request.matchdict
         processor_id = matchdict.get('processor_id')
-        
+
         processor = models.Processor.objects.with_id(processor_id)
-        start_processor_status = models.ProcessorStatus.objects(processor = processor).order_by('+report_date').first()
-        end_processor_status = models.ProcessorStatus.objects(processor = processor).order_by('-report_date').first()
-        
+        start_processor_status = models.ProcessorStatus.objects(processor = processor).first()
+        # end_processor_status = models.ProcessorStatus.objects(processor = processor).order_by('-report_date').first()
+
         results = []
         
         started_date = start_processor_status.report_date.date()
+        end_date = datetime.datetime.now().date()
         while(True):
             
             
@@ -42,12 +43,12 @@ class  BillingCycle:
             result = dict(started_date=started_date, finished_date=finished_date)
             results.append(result)
             
-            if finished_date > end_processor_status.report_date.date():
-                result['finished_date'] = end_processor_status.report_date.date()
+            if finished_date > end_date:
+                result['finished_date'] = end_date
                 break
             else:
                 started_date = finished_date + datetime.timedelta(days=1)
-        
+
         return dict(
                     billing_cycle=results
                     )

@@ -63,8 +63,9 @@ def add_routes(config):
     config.add_route('billing.users', '/billing/processors/{processor_id}')
     config.add_route('billing.billing_cycle', '/billing/processors/{processor_id}/cycle')
     
-    config.add_route('billing.set_cost.create_list', '/billing/service_plans')
-    config.add_route('billing.set_cost', '/billing/service_plans/{service_plan_id}')
+    config.add_route('billing.service_plans.create_list', '/billing/service_plans')
+    config.add_route('billing.service_plans', '/billing/service_plans/{service_plan_id}')
+    config.add_route('billing.default_service_plans', '/billing/service_plans/{service_plan_id}/default')
     # image processor
     config.add_route('image_processors', '/image_processors')
     

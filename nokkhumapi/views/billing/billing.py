@@ -37,16 +37,22 @@ class  Billing:
                 service_plan = models.ServicePlan.objects.with_id(self.request.GET.get('service_plan'))
 
         if service_plan is None:
-            service_plan = models.ServicePlan.objects().first()
-            
+            service_plan = models.ServicePlan.objects(default=True, status='active').first()
+        
+        print("set True: ", service_plan.id)
+        if service_plan is None:
+            service_plan = models.ServicePlan.objects(status='active').first()
+        print("set not true: ", service_plan.id)    
         if service_plan is None:
             service_plan = models.ServicePlan()
             service_plan.sell_price_per_minute = 1
             
         revenue = service_plan.sell_price_per_minute
         
-        w1 = ((revenue * 0.7) / 8) / 100
-        w2 = ((revenue * 0.3) / 0.5) * 10**-9 
+        print("service_plan.scaling_factor",service_plan.scaling_factor)
+        print("service_plan.scaling_factor",1-service_plan.scaling_factor)
+        w1 = ((revenue * service_plan.scaling_factor) / 8) / 100
+        w2 = ((revenue * (1-service_plan.scaling_factor)) / 0.5) * 10**-9 
         for resource in processor_resource['results']:
             price = (w1 * resource['cpu']) + (w2 * resource['ram']) 
             resource['price'] = price
