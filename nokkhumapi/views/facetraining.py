@@ -62,7 +62,7 @@ class Facetraining(object):
         extension = matchdict.get('extension')
         face_id = extension[0]
         f = []
-        mypath = '/home/superizer/Documents/myfacedb/face-' + face_id
+        mypath = '/home/yoschanin/Documents/myfacedb/face-' + face_id
         for dirnames in walk(mypath):
             f.extend(dirnames)
             break
@@ -82,7 +82,7 @@ class Facetraining(object):
         print('>>', processor_dict)
         
         f = []
-        mypath = '/home/superizer/Documents/myfacedb'
+        mypath = '/home/yoschanin/Documents/myfacedb'
         for dirnames in walk(mypath):
             f.extend(dirnames)
             break
@@ -92,7 +92,8 @@ class Facetraining(object):
             face_name = models.Facetraining()
             face_name.name = processor_dict['name']
             face_name.owner = self.request.user
-            face_name.faceid = str(len(f[1]))
+            face_name.faceid = str(models.Facetraining.objects().count())
+            print('>>', face_name.faceid)
             face_name.save()
             
         else:
