@@ -92,7 +92,8 @@ class Facetraining(object):
             face_name = models.Facetraining()
             face_name.name = processor_dict['name']
             face_name.owner = self.request.user
-            face_name.faceid = str(len(f[1]))
+            face_name.faceid = str(models.Facetraining.objects().count())
+            print('>>', face_name.faceid)
             face_name.save()
             
         else:
