@@ -55,6 +55,12 @@ def main(argv=sys.argv):
 
         user.save()
         
+        face_name = models.Facetraining()
+        face_name.name = 'admin'
+        face_name.owner = models.User.objects(email='admin@nokkhum.local').first()
+        face_name.faceid = '0'
+        face_name.save()
+        
     user = models.User.objects(email='admin@nokkhum.local').first()
     
     print ("initial default manufatories and camera models")
