@@ -62,7 +62,7 @@ class Facetraining(object):
         extension = matchdict.get('extension')
         face_id = extension[0]
         f = []
-        mypath = '/home/superizer/Documents/myfacedb/face-' + face_id
+        mypath = '/home/yoschanin/Documents/myfacedb/face-' + face_id
         for dirnames in walk(mypath):
             f.extend(dirnames)
             break
