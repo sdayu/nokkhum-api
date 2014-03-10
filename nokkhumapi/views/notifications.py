@@ -47,7 +47,8 @@ class Notification(object):
                                           )
                                      )
             notifications = models.Notification.objects(camera=str(camera.id), status='True').all()
-            for notification in notifications:
+            i = 0
+            for notification in reversed(notifications):
                 names = models.Facetraining.objects(faceid=str(notification.face_name[5:]), owner=self.request.user).first()
                 print('>>' , names, notification.face_name[5:])
                 if names is None:
@@ -66,6 +67,9 @@ class Notification(object):
                                           create_date=notification.create_date
                                           )
                                      )
+                i = i + 1
+                if i > 10:
+                    break
         return dict(
                     notifications=result
                     )
