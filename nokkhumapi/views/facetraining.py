@@ -82,7 +82,7 @@ class Facetraining(object):
         print('>>', processor_dict)
         
         f = []
-        mypath = '/home/superizer/Documents/myfacedb'
+        mypath = '/home/yoschanin/Documents/myfacedb'
         for dirnames in walk(mypath):
             f.extend(dirnames)
             break
