@@ -57,7 +57,7 @@ class Storage:
 #                self.request.response.status = '403 Forbidden'
 #                return {'result':'user not processor owner or collaborator'}
     
-            s3_client.set_buckket_name(str(processor.id))
+            s3_client.set_bucket_name(str(processor.id))
             
             prefix = ""
             if len(uri[end_pos+1:]) > 0 and uri[end_pos+1:] != processor_id:
@@ -146,7 +146,7 @@ class Storage:
         key_name = "%s"%(uri[end_pos+1:])
         
         s3_client = self.request.s3_client
-        s3_client.set_buckket_name(processor.id)
+        s3_client.set_bucket_name(processor.id)
 
         s3_client.delete(key_name)
         
