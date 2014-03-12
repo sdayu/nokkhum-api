@@ -196,7 +196,7 @@ class Storage:
         file_name = "%s/%s/%s"%(cache_dir, processor.id, key_name)
         
         s3_client = self.request.s3_client
-        s3_client.set_buckket_name(str(processor.id))
+        s3_client.set_bucket_name(str(processor.id))
     
         if not s3_client.is_avialabel(key_name):
             return None
