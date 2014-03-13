@@ -40,8 +40,8 @@ class CameraView(object):
                             image_uri=camera.image_uri,
                             image_size=camera.image_size,
                             fps=camera.fps,
-                            create_date=camera.create_date,
-                            update_date=camera.update_date,
+                            created_date=camera.created_date,
+                            updated_date=camera.updated_date,
                             project=dict(
                                     id=camera.project.id,
                                     name=camera.project.name
@@ -76,7 +76,7 @@ class CameraView(object):
         camera.password = camera_dict["password"]
         camera.image_size   = camera_dict["image_size"]
         camera.fps      = camera_dict["fps"]
-        camera.create_date  = datetime.datetime.now()
+        camera.created_date  = datetime.datetime.now()
         
         camera.owner    = self.request.user
         camera.project  = models.Project.objects(id=camera_dict["project"]["id"]).first()

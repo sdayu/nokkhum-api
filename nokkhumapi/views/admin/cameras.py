@@ -24,8 +24,8 @@ class Camera:
                         image_size=camera.image_size,
                         fps=camera.fps,
                         status=camera.status,
-                        create_date=camera.create_date,
-                        update_date=camera.update_date,
+                        created_date=camera.created_date,
+                        updated_date=camera.updated_date,
                         project=dict(
                                 id=camera.project.id,
                                 name=camera.project.name

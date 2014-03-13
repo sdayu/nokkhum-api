@@ -32,8 +32,8 @@ class ComputeNode:
                    compute_node=dict(
                                      id=compute_node.id,
                                      name=compute_node.name,
-                                     update_date=compute_node.update_date,
-                                     create_date=compute_node.create_date,
+                                     updated_date=compute_node.updated_date,
+                                     created_date=compute_node.created_date,
                                      host=compute_node.host,
                                      is_vm=compute_node.is_vm(),
                                      system=compute_node.system,

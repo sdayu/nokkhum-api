@@ -20,8 +20,8 @@ class CommandLog:
                         id=cl.id,
                         attributes=cl.attributes,
                         action=cl.action,
-                        command_date=cl.command_date,
-                        complete_date=cl.complete_date,
+                        commanded_date=cl.commanded_date,
+                        completed_date=cl.completed_date,
                         status=cl.status,
                         message=cl.message,
                         owner=dict(

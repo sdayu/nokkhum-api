@@ -35,7 +35,7 @@ class UserProjectsView(object):
                                    description=project.description, 
                                    camera_number=project.get_camera_number(),
                                    processor_number=project.get_processor_number(),
-                                   create_date=project.create_date
+                                   created_date=project.created_date
                                    )
                                for project in projects],
                   "collaborate_projects":[dict(id=project.id, name=project.name, description=project.description, owner=project.owner.email) for project in collaborate_projects]
