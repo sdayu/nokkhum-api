@@ -16,7 +16,7 @@ class CameraRunningFail:
         
     @view_config(route_name='admin.processor_running_fail.list', request_method="GET")
     def list_camera(self):
-        fail_status = models.ProcessorRunningFail.objects().order_by("-id").limit(30).all()
+        fail_status = models.ProcessorRunFail.objects().order_by("-id").limit(30).all()
         return dict(
                     processor_running_fail=[
                          dict(
@@ -27,8 +27,8 @@ class CameraRunningFail:
                               compute_node=dict(
                                                 id=fs.compute_node.id
                                                 ),
-                              report_time=fs.report_time,
-                              process_time=fs.process_time,
+                              reported_date=fs.reported_date,
+                              processed_date=fs.processed_date,
                               message=fs.message
                               )
                          for fs in fail_status

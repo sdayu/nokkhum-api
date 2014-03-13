@@ -33,7 +33,7 @@ class ForumView(object):
                                    description=forum.description,
                                    ownerid=forum.owner.id,
                                    name=forum.owner.email,
-                                   create_date=forum.create_date,
+                                   created_date=forum.created_date,
                                    replys=[dict(description=reply.description, name=reply.user.email)for reply in forum.replys]) 
                                    for forum in forums]
                       )
@@ -45,8 +45,8 @@ class ForumView(object):
         if topic["forum_id"] is '':
             forum = models.Forum()
             forum.description = topic["description"]
-            forum.create_date = datetime.datetime.now()
-            forum.update_date = datetime.datetime.now()
+            forum.created_date = datetime.datetime.now()
+            forum.updated_date = datetime.datetime.now()
             forum.ip_address = self.request.environ.get('REMOTE_ADDR', '0.0.0.0')
             
             forum.owner = self.request.user

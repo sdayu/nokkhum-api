@@ -49,12 +49,12 @@ class ProcessorOperating(object):
         
 #         camera.operating.status = command_action
         processor.operating.user_command = user_command
-        processor.update_date = datetime.datetime.now()
+        processor.updated_date = datetime.datetime.now()
         processor.save()
         
         pc          = models.ProcessorCommand()
-        pc.command_date = datetime.datetime.now()
-        pc.update_date = datetime.datetime.now()
+        pc.commanded_date = datetime.datetime.now()
+        pc.updated_date = datetime.datetime.now()
         pc.action  = command_action
         pc.status  = 'waiting'
         pc.command_type = 'user'
@@ -99,7 +99,7 @@ class ProcessorOperating(object):
         result = dict(
                       processor_operating=dict(
                             status=processor.operating.status, 
-                            update_date=processor.operating.update_date,
+                            updated_date=processor.operating.updated_date,
                             user_command=processor.operating.user_command,
 #                                         compute_node={'id':camera.operating.compute_node._id}
                                 

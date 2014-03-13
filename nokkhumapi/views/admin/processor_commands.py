@@ -34,9 +34,9 @@ class ProcessorCommand:
                         id=processor_command.id,
                         action=processor_command.action,
                         status=processor_command.status,
-                        command_date=processor_command.command_date,
-                        complete_date=processor_command.complete_date,
-                        update_date=processor_command.update_date,
+                        commanded_date=processor_command.commanded_date,
+                        completed_date=processor_command.completed_date,
+                        updated_date=processor_command.updated_date,
                         message=processor_command.message,
                         command_type=processor_command.command_type,
                         processor=dict(

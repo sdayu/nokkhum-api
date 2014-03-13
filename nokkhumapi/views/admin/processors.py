@@ -20,12 +20,13 @@ class Processor:
         processor_operating=dict(
                              user_command=processor.operating.user_command,
                              status=processor.operating.status,
-                             update_date=processor.operating.update_date,
+                             updated_date=processor.operating.updated_date,
                              )
         if processor.operating.compute_node:
+            compute_node = models.ComputeNode.objects.with_id(processor.operating.compute_node.id)
             processor_operating['compute_node']=dict(
                                                id=processor.operating.compute_node.id,
-                                               name=processor.operating.compute_node.name
+                                               name=compute_node.name
                                                )
 
         result = dict(
@@ -33,8 +34,8 @@ class Processor:
                       name=processor.name,
                       storage_period=processor.storage_period,
                       image_processors=processor.image_processors,
-                      create_date=processor.create_date,
-                      update_date=processor.update_date,
+                      created_date=processor.created_date,
+                      updated_date=processor.updated_date,
                       status=processor.status,
                       project=dict(
                             id=processor.project.id,

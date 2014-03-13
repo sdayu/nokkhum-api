@@ -33,8 +33,8 @@ class ProjectView(object):
                             name=project.name,
                             description=project.description,
                             status=project.status,
-                            create_date=project.create_date,
-                            update_date=project.update_date,
+                            created_date=project.created_date,
+                            updated_date=project.updated_date,
                             ip_address=project.ip_address,
                             user=dict(
                                 id=project.owner.id, 
@@ -57,8 +57,8 @@ class ProjectView(object):
         project.name = project_dict["name"]
         project.description = project_dict["description"]
         project.status = project_dict.get('status', 'active')
-        project.create_date = datetime.datetime.now()
-        project.update_date = datetime.datetime.now()
+        project.created_date = datetime.datetime.now()
+        project.updated_date = datetime.datetime.now()
         project.ip_address = self.request.environ.get('REMOTE_ADDR', '0.0.0.0')
         project.owner = self.request.user
         project.save() 
@@ -80,6 +80,7 @@ class ProjectView(object):
         project_dict = self.request.json_body["project"]
         project.name = project_dict["name"]
         project.description = project_dict["description"]
+        project.updated_date = datetime.datetime.now()
         
         if 'status' in project_dict:
             project.status = project_dict["status"]

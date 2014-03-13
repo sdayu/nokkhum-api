@@ -46,7 +46,7 @@ class Tokens(object):
         if token is None:
             token = models.Token()
             token.user = user
-            token.access_date   = now
+            token.accessed_date   = now
             token.expired_date  = now + datetime.timedelta(hours=2)
             token.ip_address    = ip_address
             

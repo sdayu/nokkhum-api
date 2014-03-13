@@ -34,7 +34,7 @@ class User:
                             last_name=user.last_name,
                             status=user.status,
                             registration_date=user.registration_date,
-                            update_date=user.update_date,
+                            updated_date=user.updated_date,
                             roles=[dict(
                                         id=role.id,
                                         name=role.name
@@ -60,7 +60,7 @@ class User:
                             last_name=user.last_name,
                             status=user.status,
                             registration_date=user.registration_date,
-                            update_date=user.update_date,
+                            updated_date=user.updated_date,
                             roles=[dict(
                                         id=role.id,
                                         name=role.name
