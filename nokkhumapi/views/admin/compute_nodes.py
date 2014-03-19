@@ -12,7 +12,7 @@ class ComputeNode:
         
     @view_config(route_name='admin.compute_nodes.list', permission='role:admin', renderer='json')
     def list_compute_node(self):
-        compute_nodes = models.ComputeNode.objects().all()
+        compute_nodes = models.ComputeNode.objects().order_by("-updated_date").all()
         result = dict(
                     compute_nodes = [ dict(
                                            id=compute_node.id,
@@ -34,8 +34,10 @@ class ComputeNode:
                                      name=compute_node.name,
                                      updated_date=compute_node.updated_date,
                                      created_date=compute_node.created_date,
+                                     updated_resource_date=compute_node.updated_resource_date,
                                      host=compute_node.host,
                                      is_vm=compute_node.is_vm(),
+                                     online=compute_node.is_online(),
                                      system=compute_node.system,
                                      machine=compute_node.machine,
                                      cpu=dict(
