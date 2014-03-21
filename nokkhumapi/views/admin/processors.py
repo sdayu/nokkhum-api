@@ -26,8 +26,11 @@ class Processor:
             compute_node = models.ComputeNode.objects.with_id(processor.operating.compute_node.id)
             processor_operating['compute_node']=dict(
                                                id=processor.operating.compute_node.id,
-                                               name=compute_node.name
                                                )
+            if compute_node:
+                processor_operating['compute_node']['name'] = compute_node.name
+            else:
+                processor_operating['compute_node']['name'] = 'Unavailable'
 
         result = dict(
                       id=processor.id,
