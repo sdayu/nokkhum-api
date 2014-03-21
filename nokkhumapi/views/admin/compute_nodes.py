@@ -28,6 +28,10 @@ class ComputeNode:
         matchdict = self.request.matchdict
         compute_node_id = matchdict['compute_node_id']
         compute_node = models.ComputeNode.objects().with_id(compute_node_id)
+        if not compute_node:
+            return dict(compute_node=dict(
+                                          host='Unavailable'
+                                          ))
         return dict(
                    compute_node=dict(
                                      id=compute_node.id,
