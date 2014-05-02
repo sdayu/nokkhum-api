@@ -10,6 +10,7 @@ from pyramid.response import Response
 import json, datetime
 
 from nokkhumapi import models
+
 @view_defaults(route_name='projects', renderer="json", permission="authenticated")
 class ProjectView(object):
     def __init__(self, request):
@@ -65,14 +66,17 @@ class ProjectView(object):
         
         project_dict["id"] = project.id
         return {"project":project_dict}
+    
     @view_config(request_method='PUT')
     def update(self):
         matchdict = self.request.matchdict
         extension = matchdict.get('extension')
-        id = int(extension[0])
+        id = extension[0]
         
+        print("project id:", id)
         project = models.Project.objects(id=id).first()
         
+        print("project:",project)
         if not project:
             self.request.responce.status='404 Not Found'
             return {'result':"not found id : %d"%id}
@@ -82,6 +86,7 @@ class ProjectView(object):
         project.description = project_dict["description"]
         project.updated_date = datetime.datetime.now()
         
+        print(project_dict)
         if 'status' in project_dict:
             project.status = project_dict["status"]
 
@@ -90,6 +95,7 @@ class ProjectView(object):
         
         result = {"project":project_dict}
         return result
+    
     @view_config(request_method='DELETE')
     def delete(self):
         matchdict = self.request.matchdict
@@ -101,6 +107,24 @@ class ProjectView(object):
             self.request.responce.status = '404 Not Found'
             return {'result':"not found id : %d"%id}
         
-        project.delete()
+        models.Camera.objects(project=project).update(set__status='delete')
+        processors = models.Processor.objects(project=project)
+        for processor in processors:
+            pc = models.ProcessorCommand()
+            pc.owner = self.request.user
+            pc.processor = processor
+            pc.action = 'stop'
+            pc.command_type = 'user'
+            pc.message = 'stop, when delete project'
+            pc.save()
+            
+            pcq = models.ProcessorCommandQueue()
+            pcq.processor_command = pc
+            pc.save()
+            
+        models.Processor.objects(project=project).update(set__status='delete', set__operating__user_command="stop")
+                
+        project.status = "delete"
+        project.save()
         
-        return {'result':"Delete suscess"}
+        return {'result':"Delete Succeed"}
