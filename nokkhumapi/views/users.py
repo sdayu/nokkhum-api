@@ -34,7 +34,7 @@ class UserView(object):
         result = {"user":{}}
         result["user"]["id"] = user.id
         result["user"]["email"] = user.email
-        result["user"]["password"] = user.password
+        # result["user"]["password"] = user.password
         result["user"]["first_name"] = user.first_name
         result["user"]["last_name"] = user.last_name
         result["user"]["status"] = user.status

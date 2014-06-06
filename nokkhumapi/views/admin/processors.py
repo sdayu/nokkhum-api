@@ -51,16 +51,17 @@ class Processor:
                       cameras=[dict(id=camera.id, name=camera.name) for camera in processor.cameras],
                       processor_operating=processor_operating
                       )
-#         print("result:", result)
+#         print('result:', result)
         return result
     
-    @view_config(route_name="admin.processors.list", request_method="GET")
+    @view_config(route_name='admin.processors.list', request_method='GET')
     def list_processor(self):
         if 'user_id' in self.request.GET:
             user = models.User.objects.with_id(self.request.GET.get('user_id'))
-            processors = models.Processor.objects(owner=user, status="active").all()
+            processors = models.Processor.objects(owner=user, status='active').order_by('-operating__updated_date').all()
         else:
-            processors = models.Processor.objects(status="active").all()
+            processors = models.Processor.objects(status='active').order_by('-operating__updated_date').all()
+        
         result = dict(
                 processors=[ self.build_result(processor)
                   for processor in processors
@@ -69,7 +70,7 @@ class Processor:
         
         return result
     
-    @view_config(request_method="GET")
+    @view_config(request_method='GET')
     def get(self):
         processor_id = self.request.matchdict['processor_id']
         processor = models.Processor.objects().with_id(processor_id)
