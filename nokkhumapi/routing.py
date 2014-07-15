@@ -3,6 +3,41 @@ Created on Jun 28, 2012
 @author: boatkrap
 '''
 
+def admin_include(config):
+    # admin
+    config.add_route('admin.users.list', '/users')
+    config.add_route('admin.users', '/users/{user_id}')
+    config.add_route('admin.users.users_status', '/users/status/{status_name}')
+    config.add_route('admin.users.set_status', '/users/{user_id}/status/{status_name}')
+
+    config.add_route('admin.cameras.list', '/cameras')
+    config.add_route('admin.cameras', '/cameras/{camera_id}')
+
+    config.add_route('admin.processors.list', '/processors')
+    config.add_route('admin.processors', '/processors/{processor_id}')
+    config.add_route('admin.processors.operating', '/processors/{processor_id}/operating')
+    
+    config.add_route('admin.processor_commands.list', '/processor_commands')
+    config.add_route('admin.processor_commands', '/processor_commands/{processor_command_id}')
+    
+    config.add_route('admin.command_queue.list', '/processor_command_queue')
+    config.add_route('admin.command_queue', '/processor_command_queue/{command_id}')
+
+    config.add_route('admin.command_log.list', '/command_log')
+    config.add_route('admin.command_log', '/command_log/{command_id}')
+    
+    config.add_route('admin.compute_nodes.list', '/compute_nodes')
+    config.add_route('admin.compute_nodes', '/compute_nodes/{compute_node_id}')
+    config.add_route('admin.compute_nodes.vm', '/compute_nodes/{compute_node_id}/vm')
+    
+    config.add_route('admin.processor_running_fail.list', '/processor_running_fail')
+    config.add_route('admin.processor_running_fail', '/processor_running_fail/{log_id}')
+    
+    # administration cache manager
+    config.add_route('admin.cache', '/cache')
+ 
+
+
 def add_routes(config):
     config.add_route('index', '/')
     
@@ -73,34 +108,5 @@ def add_routes(config):
     config.add_route('storage.download', '/storage/download/{token}{extension:.*}')
     config.add_route('storage', '/storage{extension:.*}')
     
-    # admin
-    config.add_route('admin.users.list', '/admin/users')
-    config.add_route('admin.users', '/admin/users/{user_id}')
-    config.add_route('admin.users.users_status', '/admin/users/status/{status_name}')
-    config.add_route('admin.users.set_status', '/admin/users/{user_id}/status/{status_name}')
-
-    config.add_route('admin.cameras.list', '/admin/cameras')
-    config.add_route('admin.cameras', '/admin/cameras/{camera_id}')
-
-    config.add_route('admin.processors.list', '/admin/processors')
-    config.add_route('admin.processors', '/admin/processors/{processor_id}')
-    config.add_route('admin.processors.operating', '/admin/processors/{processor_id}/operating')
-    
-    config.add_route('admin.processor_commands.list', '/admin/processor_commands')
-    config.add_route('admin.processor_commands', '/admin/processor_commands/{processor_command_id}')
-    
-    config.add_route('admin.command_queue.list', '/admin/processor_command_queue')
-    config.add_route('admin.command_queue', '/admin/processor_command_queue/{command_id}')
-
-    config.add_route('admin.command_log.list', '/admin/command_log')
-    config.add_route('admin.command_log', '/admin/command_log/{command_id}')
-    
-    config.add_route('admin.compute_nodes.list', '/admin/compute_nodes')
-    config.add_route('admin.compute_nodes', '/admin/compute_nodes/{compute_node_id}')
-    
-    config.add_route('admin.processor_running_fail.list', '/admin/processor_running_fail')
-    config.add_route('admin.processor_running_fail', '/admin/processor_running_fail/{log_id}')
-    
-    # administration cache manager
-    config.add_route('admin.cache', '/admin/cache')
- 
+    # administrator route
+    config.include(admin_include, route_prefix='/admin')
