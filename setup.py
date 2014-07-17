@@ -12,6 +12,7 @@ requires = [
     'waitress',
     'mongoengine',
     'pycrypto',
+    'boto'
     ]
 
 setup(name='nokkhum-api',
