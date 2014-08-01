@@ -49,7 +49,7 @@ class ComputeNode:
                 system=compute_node.system,
                 machine=compute_node.machine,
                 cpu=dict(
-                    count=resource_information.cpu_count,
+                    count=resource_information.cpu_count if resource_information else 0,
                     used=resource.cpu.used if resource else 0,
                     used_per_cpu=resource.cpu.used_per_cpu if resource else 0
                     ),
