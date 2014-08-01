@@ -35,6 +35,7 @@ class ComputeNode:
                                           ))
 
         resource = compute_node.get_current_resources()
+        resource_information = compute_node.resource_information
         return dict(
             compute_node=dict(
                 id=compute_node.id,
@@ -48,7 +49,7 @@ class ComputeNode:
                 system=compute_node.system,
                 machine=compute_node.machine,
                 cpu=dict(
-                    count=resource.cpu.count if resource else 0,
+                    count=resource_information.cpu_count,
                     used=resource.cpu.used if resource else 0,
                     used_per_cpu=resource.cpu.used_per_cpu if resource else 0
                     ),
