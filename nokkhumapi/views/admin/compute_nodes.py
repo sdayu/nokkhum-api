@@ -33,6 +33,8 @@ class ComputeNode:
             return dict(compute_node=dict(
                                           host='Unavailable'
                                           ))
+
+        resource = compute_node.get_current_resources()
         return dict(
             compute_node=dict(
                 id=compute_node.id,
@@ -46,19 +48,19 @@ class ComputeNode:
                 system=compute_node.system,
                 machine=compute_node.machine,
                 cpu=dict(
-                    count=compute_node.cpu.count,
-                    used=compute_node.cpu.used,
-                    used_per_cpu=compute_node.cpu.used_per_cpu
+                    count=resource.cpu.count if resource else 0,
+                    used=resource.cpu.used if resource else 0,
+                    used_per_cpu=resource.cpu.used_per_cpu if resource else 0
                     ),
                 memory=dict(
-                    total=compute_node.memory.total,
-                    used=compute_node.memory.used,
-                    free=compute_node.memory.free,
+                    total=resource.memory.total if resource else 0,
+                    used=resource.memory.used if resource else 0,
+                    free=resource.memory.free if resource else 0,
                     ),
                 disk=dict(
-                    total=compute_node.disk.total,
-                    used=compute_node.disk.used,
-                    free=compute_node.disk.free,
+                    total=resource.disk.total if resource else 0,
+                    used=resource.disk.used if resource else 0,
+                    free=resource.disk.free if resource else 0,
                     ),
                 extra=compute_node.extra
                 )
