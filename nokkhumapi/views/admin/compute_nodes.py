@@ -3,6 +3,7 @@ from pyramid.view import view_config, view_defaults
 from pyramid.response import Response
 from pyramid.security import authenticated_userid
 
+from dateutil import tz, parser
 from nokkhumapi import models
 
 
@@ -101,12 +102,13 @@ class ComputeNode:
 
         compute_node = models.ComputeNode.objects().with_id(compute_node_id)
 
+        ctz = tz.tzlocal()
         resources = [
             dict(
                 cpu=r.cpu._data,
                 memory=r.memory._data,
                 disk=r.disk._data,
-                reported_date=r.reported_date
+                reported_date=r.reported_date.replace(tzinfo=ctz)
                 ) for r in compute_node.resource_records
             ]
 
