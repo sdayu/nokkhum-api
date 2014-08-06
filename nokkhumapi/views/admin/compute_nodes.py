@@ -92,6 +92,28 @@ class ComputeNode:
             ) for processor in processors]
         )
 
+    @view_config(route_name='admin.compute_nodes.resources',
+                 permission='admin',
+                 request_method='GET')
+    def get_resources(self):
+        matchdict = self.request.matchdict
+        compute_node_id = matchdict['compute_node_id']
+
+        compute_node = models.ComputeNode.objects().with_id(compute_node_id)
+
+        resources = [
+            dict(
+                cpu=r.cpu._data,
+                memory=r.memory._data,
+                disk=r.disk._data,
+                reported_date=r.reported_date
+                ) for r in compute_node.resource_records
+            ]
+
+        return dict(
+            resources=resources
+        )
+
 
 @view_defaults(route_name='admin.compute_nodes.vm', permission='role:admin', renderer="json")
 class VM:

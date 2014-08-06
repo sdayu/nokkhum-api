@@ -50,6 +50,8 @@ def admin_include(config):
                      '/compute_nodes/{compute_node_id}/vm')
     config.add_route('admin.compute_nodes.processors',
                      '/compute_nodes/{compute_node_id}/processors')
+    config.add_route('admin.compute_nodes.resources',
+                     '/compute_nodes/{compute_node_id}/resources')
 
     config.add_route('admin.processor_running_fail.list',
                      '/processor_running_fail')
