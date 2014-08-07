@@ -26,6 +26,8 @@ def admin_include(config):
                      '/processors/{processor_id}')
     config.add_route('admin.processors.operating',
                      '/processors/{processor_id}/operating')
+    config.add_route('admin.processors.resources',
+                     '/processors/{processor_id}/resources')
 
     config.add_route('admin.processor_commands.list',
                      '/processor_commands')
