@@ -14,7 +14,7 @@ class ComputeNode:
 
     @view_config(route_name='admin.compute_nodes.list', permission='role:admin', renderer='json')
     def list_compute_node(self):
-        compute_nodes = models.ComputeNode.objects().order_by("-updated_date").all()
+        compute_nodes = models.ComputeNode.objects().order_by("-updated_date").limit(30)
         result = dict(
             compute_nodes=[dict(
                 id=compute_node.id,
