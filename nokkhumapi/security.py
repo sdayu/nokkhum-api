@@ -62,24 +62,23 @@ class RequestWithUserAttribute(Request):
                 token=models.Token.objects(id=tokenid, expired_date__gt=datetime.datetime.now()).first()
             except:
                 return None
-            
+
             if not token:
                 return None
-            
+
             return token.user
-        
+
     @reify
     def secret_manager(self):
         from pyramid.threadlocal import get_current_registry
         settings = get_current_registry().settings
-        
+
         return settings.secret_manager
-        
-        
+
     @reify
     def userid(self):
         return unauthenticated_userid(self)
-    
+
     @reify
     def s3_client(self):
 
@@ -87,15 +86,16 @@ class RequestWithUserAttribute(Request):
         from pyramid.threadlocal import get_current_registry
         setting = get_current_registry().settings
 
-        access_key_id = setting.get('nokkhum.s3.access_key_id')
-        secret_access_key = setting.get('nokkhum.s3.secret_access_key')
-        host = setting.get('nokkhum.s3.host') 
-        port = int(setting.get('nokkhum.s3.port'))
+        access_key_id = setting.get('nokkhum.storage.s3.access_key_id')
+        secret_access_key = setting.get('nokkhum.storage.s3.secret_access_key')
+        host = setting.get('nokkhum.storage.s3.host') 
+        port = int(setting.get('nokkhum.storage.s3.port'))
         secure = False
-        if setting.get('nokkhum.s3.secure_connection') in ['true', 'True']:
+        if setting.get('nokkhum.storage.s3.secure_connection') in ['true', 'True']:
             secure = True
+
         s3_storage = s3.S3Client(access_key_id, secret_access_key, host, port, secure)
-        
+
         return s3_storage
 
 import hashlib
