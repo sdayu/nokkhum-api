@@ -56,9 +56,9 @@ class Storage:
 #                        break
 #                self.request.response.status = '403 Forbidden'
 #                return {'result':'user not processor owner or collaborator'}
-    
+
             s3_client.set_bucket_name(str(processor.id))
-            
+
             prefix = ""
             if len(uri[end_pos+1:]) > 0 and uri[end_pos+1:] != processor_id:
                 pos = uri.rfind(".")
@@ -69,18 +69,18 @@ class Storage:
                     single_file = True
                 else:
                     prefix = "%s/" % (uri[end_pos+1:])
-                    
+
             s3_items = []
-            
+
             try:
                 s3_items = s3_client.list_file(prefix)
             except:
                 print("file item not found")
                 pass
-            
+
             for s3_item in s3_items:
                 start_pos = s3_item.rfind("/")
-    
+
                 path = s3_item
 
                 file_extension = ""
@@ -89,10 +89,10 @@ class Storage:
                     file_extension = path[pos:]
                     if file_extension not in [".jpg", ".png", ".avi", ".webm", ".webp", ".ogg", ".ogv"]:
                         file_extension = ""
-                
+
                 download_link = None
                 if len(file_extension) > 0:
-                    
+
                     if self.request.registry.settings.get('nokkhum.api.ip', None):
                         download_link = self.request.environ.get('wsgi.url_scheme', "http") + "://"\
                                         + self.request.registry.settings.get('nokkhum.api.ip', None) \
@@ -100,19 +100,19 @@ class Storage:
                                         + self.request.route_path('storage.download', token=self.request.environ.get('HTTP_X_AUTH_TOKEN', None), extension="/%s/%s"%(processor.id, path))
                     else:
                         download_link = self.request.route_url('storage.download', token=self.request.environ.get('HTTP_X_AUTH_TOKEN', None), extension="/%s/%s"%(processor.id, path))
-                
+                        
                 view_link = self.request.route_path('storage', extension="/%s/%s"%(processor.id, path))
-                
+
                 item = dict(
                             name = s3_item[start_pos+1:], 
                             url = urllib.parse.unquote(view_link),
                             file = False
                             )
-                
+
                 if download_link is not None:
                     item['download'] = urllib.parse.unquote(download_link)
                     item['file'] = True
-                    
+
                 file_list.append(item)
 
         #self.request.response.headers['Access-Control-Allow-Origin'] = '*'
@@ -121,6 +121,7 @@ class Storage:
                         file=file_list[0]
                         )
         else:
+            print(file_list)
             return dict(
                     files=file_list,
                     )
