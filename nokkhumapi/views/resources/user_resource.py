@@ -35,7 +35,7 @@ class  UserResource:
         else:
             processor = models.Processor.objects(id=processor_id, owner = self.request.user).first()
         
-        processor_status = models.ProcessorStatus.objects(me.Q(report_date__gte = start_date) & me.Q(report_date__lt = end_date)
+        processor_status = models.ProcessorStatus.objects(me.Q(reported_date__gte = start_date) & me.Q(reported_date__lt = end_date)
                                                           & me.Q(processor = processor)).all()
                            
 #         print("start_processor_status :", processor_status[0])
@@ -54,7 +54,7 @@ class  UserResource:
         if len(processor_status) == 0:
             return resource_result
         
-        first_date = processor_status[0].report_date
+        first_date = processor_status[0].reported_date
         start_time = datetime.datetime(first_date.year, first_date.month, first_date.day, first_date.hour, first_date.minute)
         end_time = start_time + datetime.timedelta(minutes = 1)
         
@@ -81,7 +81,7 @@ class  UserResource:
         for status in processor_status:
 #             print("start time:", start_time)
 #             print("report date:", status.report_date)
-            if not (status.report_date >= start_time and status.report_date < end_time):
+            if not (status.reported_date >= start_time and status.reported_date < end_time):
 #                 print("new time")
                 result = build_result(start_date, cpu, ram)
                     
@@ -90,7 +90,7 @@ class  UserResource:
                 cpu = []
                 ram = []
 
-                next_date = status.report_date
+                next_date = status.reported_date
                 start_time = datetime.datetime(next_date.year, next_date.month, next_date.day, next_date.hour, next_date.minute)
                 end_time = start_time + datetime.timedelta(minutes = 1)
                 

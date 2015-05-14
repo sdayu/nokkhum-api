@@ -33,7 +33,7 @@ class  BillingCycle:
 
         results = []
         
-        started_date = start_processor_status.report_date.date()
+        started_date = start_processor_status.reported_date.date()
         end_date = datetime.datetime.now().date()
         while(True):
             
