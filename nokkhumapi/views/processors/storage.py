@@ -22,7 +22,9 @@ class Storage:
         file_list = []
         matchdict = self.request.matchdict
         extension = matchdict['extension']
-        
+
+        file_extension = [".jpg", ".png", ".avi", ".webm", ".webp", ".ogg", ".ogv", "mp4"]
+
         single_file = False
         
         if len(extension) == 0 or extension == "/":
@@ -64,7 +66,7 @@ class Storage:
                 pos = uri.rfind(".")
                 check = uri[pos:] 
 
-                if check in [".jpg", ".png", ".avi", ".webm", ".webp", ".ogg", ".ogv"]:
+                if check in file_extension:
                     prefix = uri[end_pos+1:]
                     single_file = True
                 else:
@@ -87,7 +89,7 @@ class Storage:
                 pos = path.rfind(".")
                 if pos > 0:
                     file_extension = path[pos:]
-                    if file_extension not in [".jpg", ".png", ".avi", ".webm", ".webp", ".ogg", ".ogv"]:
+                    if file_extension not in file_extension:
                         file_extension = ""
 
                 download_link = None
