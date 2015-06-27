@@ -23,7 +23,7 @@ class Storage:
         matchdict = self.request.matchdict
         extension = matchdict['extension']
 
-        allow_extensions = [".jpg", ".png", ".avi", ".webm", ".webp", ".ogg", ".ogv", "mp4"]
+        allow_extensions = [".jpg", ".png", ".avi", ".webm", ".webp", ".ogg", ".ogv", ".mp4"]
 
         single_file = False
         
@@ -64,7 +64,7 @@ class Storage:
             prefix = ""
             if len(uri[end_pos+1:]) > 0 and uri[end_pos+1:] != processor_id:
                 pos = uri.rfind(".")
-                check = uri[pos:] 
+                check = uri[pos:]
 
                 if check in allow_extensions:
                     prefix = uri[end_pos+1:]
