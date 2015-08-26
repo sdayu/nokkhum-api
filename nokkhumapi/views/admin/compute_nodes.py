@@ -37,6 +37,8 @@ class ComputeNode:
 
         resource = compute_node.get_current_resources()
         machine_specification = compute_node.machine_specification
+        if machine_specification is None:
+            machine_specification = models.MachineSpecification()
         return dict(
             compute_node=dict(
                 id=compute_node.id,
@@ -47,7 +49,6 @@ class ComputeNode:
                 host=compute_node.host,
                 is_vm=compute_node.is_vm(),
                 online=compute_node.is_online(),
-                machine_specification=machine_specification.to_mongo(),
                 cpu=dict(
                     count=machine_specification.cpu_count if machine_specification else 0,
                     used=resource.cpu.used if resource else 0,
