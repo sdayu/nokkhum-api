@@ -104,7 +104,8 @@ class Processor:
                 cpu=p.cpu,
                 memory=p.memory,
                 threads=p.threads,
-                reported_date=p.reported_date.replace(tzinfo=ctz)
+                reported_date=p.reported_date.replace(tzinfo=ctz),
+                messages=p.messages,
                 ) for p in processor_status
             ]
 
