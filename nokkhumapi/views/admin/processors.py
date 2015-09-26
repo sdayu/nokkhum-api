@@ -85,6 +85,36 @@ class Processor:
 
         return result
 
+    @view_config(request_method='PUT')
+    def update(self):
+        matchdict = self.request.matchdict
+        processor_id = matchdict.get('processor_id')
+
+        processor = models.Processor.objects(id=processor_id).first()
+
+        if not processor:
+            self.request.response.status = '404 Not Found'
+            return {}
+
+        processor_dict = self.request.json_body["processor"]
+
+        processor.name = processor_dict['name']
+        processor.storage_period = processor_dict['storage_period']
+        processor.image_processors = processor_dict['image_processors']
+
+        processor.cameras = list()
+        for camera_attribute in processor_dict['cameras']:
+            camera = models.Camera.objects(id=camera_attribute['id']).first()
+            processor.cameras.append(camera)
+
+        processor.save()
+        processor.reload()
+
+        return dict(
+                    processor=self.build_result(processor)
+                    )
+
+
     @view_config(route_name='admin.processors.resources',
                  permission='admin',
                  request_method='GET')
