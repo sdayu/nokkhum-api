@@ -103,15 +103,16 @@ class ComputeNode:
         compute_node = models.ComputeNode.objects().with_id(compute_node_id)
 
         ctz = tz.tzlocal()
+
         resources = [
             dict(
-                cpu=r.cpu._data,
-                memory=r.memory._data,
-                disk=r.disk._data,
+                cpu=dict(r.cpu.to_mongo()),
+                memory=dict(r.memory.to_mongo()),
+                disk=dict(r.disk.to_mongo()),
                 reported_date=r.reported_date.replace(tzinfo=ctz)
                 ) for r in compute_node.resource_records
             ]
-
+        #print(resources)
         return dict(
             resources=resources
         )
